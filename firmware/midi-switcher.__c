@@ -1,0 +1,13 @@
+[Settings]
+Active Directory=C:\Dev\GitHub\MIDI-Switcher\firmware\
+Target=PIC16F1825
+Active Compiler=BoostC
+Active Config=Release
+Config=1
+Last Ext=c
+[Files]
+Count=1
+File0=midi-switcher.c
+[Browser]
+UseSysHeaders=1
+UseNovoHeaders=1
