@@ -7,6 +7,7 @@
 //////////////////////////////////////////////////////////////////////////
 #include <system.h>
 #include <memory.h>
+#include "midi-switcher.h"
 
 // CONFIG OPTIONS 
 // - RESET INPUT DISABLED
@@ -63,12 +64,227 @@ int numParams = 0;
 byte midiParams[2] = {0};
 
 #define SZ_RXBUFFER 20
-#define NUM_OUTPUTS 8
 byte rxBuffer[SZ_RXBUFFER];
 byte rxHead = 0;
 byte rxTail = 0;
-int tmr[NUM_OUTPUTS] = {0};
 
+
+
+
+#define MIDI_NRPN_LO 99
+#define MIDI_NRPN_HI 98
+#define MIDI_DATA_HI 6
+#define MIDI_DATA_LO 38
+
+enum {
+	NRPN_HI_PORT1 = 1,
+	NRPN_HI_PORT2,
+	NRPN_HI_PORT3,
+	NRPN_HI_PORT4,
+	NRPN_HI_PORT5,
+	NRPN_HI_PORT6,
+	NRPN_HI_PORT7,
+	NRPN_HI_PORT8
+};
+
+enum {
+	NRPN_LO_COMMIT = 0,
+	NRPN_LO_TRIGGERCHANNEL = 1,
+	NRPN_LO_TRIGGERNOTE = 2,
+	NRPN_LO_DURATION = 3,
+	NRPN_LO_DURATIONMODULATOR = 4,
+	NRPN_LO_DUTY = 5,
+	NRPN_LO_DUTYMODULATOR = 6,
+	NRPN_LO_INVERT = 7
+};
+
+enum {
+	MODULATOR_NONE = 0x80,
+	MODULATOR_NOTEVELOCITY = 0x81,
+	MODULATOR_PITCHBEND = 0x82
+};
+
+
+typedef struct {
+	byte triggerChannel;
+	byte triggerNote;
+	int durationMax;
+	byte durationModulator;
+	byte dutyMax;
+	byte dutyModulator;
+	byte invert;
+} PORT_CONFIG;
+
+typedef struct
+{
+	int count;
+	int duration;				// Modulated duration
+	byte duty;					// Modulated duty 
+	byte durationCCValue;		// Last value for the CC modulating duration
+	byte dutyCCValue;			// Last value for the CC modulating duty
+	byte velocity;				// Last value for note velocity
+	byte pitchbendMSB;			// Last value for pitchbend MSB
+} PORT_STATUS;
+
+typedef struct
+{
+	PORT_CONFIG cfg;
+	PORT_STATUS status;
+} PORT_INFO;
+
+#define NUM_PORTS 8
+PORT_INFO port[NUM_PORTS];
+
+//////////////////////////////////////////////////////////////////////////////////
+// Set information for a single port to sensible default values
+void initPortInfo(PORT_INFO *p, int sequence)
+{
+	memset(p, 0, sizeof(PORT_INFO));
+	p->cfg.triggerChannel = 0;
+	p->cfg.triggerNote = 60 + sequence;
+	p->cfg.durationMax = 10;
+	p->cfg.durationModulator = MODULATOR_NONE;
+	p->cfg.dutyMax = 100;
+	p->cfg.dutyModulator = MODULATOR_NONE;
+	p->cfg.invert = 0;
+	
+	p->status.duration = p->cfg.durationMax;
+	p->status.duty = p->cfg.dutyMax;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+// handle NRPN message directed to specific port config
+byte handleNrpn(PORT_INFO *p, byte nrpnLo, byte data, byte isLSB)
+{
+	int data;
+	switch(nrpnLo)
+	{
+	case NRPN_LO_TRIGGERCHANNEL:
+		if(isLSB)
+			p->cfg.triggerChannel = data;
+		break;
+	case NRPN_LO_TRIGGERNOTE:
+		if(isLSB)
+			p->cfg.triggerNote = data;
+		break;
+	case NRPN_LO_DURATION:
+		if(isLSB)
+		{
+			p->cfg.durationMax &= ~0x7F;
+			p->cfg.durationMax |= data;
+		}
+		else
+		{
+			// we expect to see MSB first
+			p->cfg.durationMax = ((int)data)<<7;
+		}
+		break;
+	case NRPN_LO_DURATIONMODULATOR:
+		if(isLSB)
+		{
+			p->cfg.durationModulator &= ~0x7F;
+			p->cfg.durationModulator |= data;
+		}
+		else
+		{
+			p->cfg.durationModulator = ((int)data)<<7;
+		}
+		break;
+	case NRPN_LO_DUTY:
+		if(isLSB)
+			pcfg->dutyMax = data;
+		break;
+	case NRPN_LO_DUTYMODULATOR:
+		if(isLSB)
+		{
+			p->cfg.dutyModulator &= ~0x7F;
+			p->cfg.dutyModulator |= data;
+		}
+		else
+		{
+			p->cfg.dutyModulator = ((int)data)<<7;
+		}
+	case NRPN_LO_INVERT:
+		if(isLSB)
+			pcfg->invert = data;
+		break;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+byte handleCC(byte chan, byte cc, byte value)
+{
+	for(int i=0; i<MAX_PORTS; ++i)
+	{
+		PORT_INFO *p = &port[i];
+		if(p->cfg.triggerChannel == chan)
+		{
+			if(p->cfg.durationModulator == cc)
+				p->status.duration = (byte)(((float)p->cfg.durationMax * value)/127.0);
+			if(p->cfg.dutyModulator == cc)
+				p->status.duty = (byte)(((float)p->cfg.dutyMax * value)/127.0);
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+byte handlePitchBend(byte chan, byte MSB, byte LSB)
+{
+	for(int i=0; i<MAX_PORTS; ++i)
+	{
+		PORT_INFO *p = &port[i];
+		if(p->cfg.triggerChannel == chan)
+		{
+			if(p->cfg.durationModulator == MODULATOR_PITCHBEND)
+				p->status.duration = (byte)(((float)p->cfg.durationMax * MSB)/127.0);
+			if(p->cfg.dutyModulator == MODULATOR_PITCHBEND)
+				p->status.duty = (byte)(((float)p->cfg.dutyMax * MSB)/127.0);
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+byte handleNoteOn(byte chan, byte note, byte velocity)
+{
+	for(int i=0; i<MAX_PORTS; ++i)
+	{
+		PORT_INFO *p = &port[i];
+		if(p->cfg.triggerChannel == chan)
+		{
+			if(p->cfg.durationModulator == MODULATOR_NOTEVELOCITY)
+				p->status.duration = (byte)(((float)p->cfg.durationMax * velocity)/127.0);
+			if(p->cfg.dutyModulator == MODULATOR_NOTEVELOCITY)
+				p->status.duty = (byte)(((float)p->cfg.dutyMax * velocity)/127.0);
+			if(note == p->cfg.triggerNote)
+			{
+				if(p->cfg.invert)
+					p->status.count = 0;
+				else if(!p->status.duration) // infinite
+					p->status.count = -1;
+				else
+					p->status.count = p->status.duration;
+			}
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+byte handleNoteOff(byte chan, byte note)
+{
+	for(int i=0; i<MAX_PORTS; ++i)
+	{
+		PORT_INFO *p = &port[i];
+		if(p->cfg.triggerChannel == chan && note == p->cfg.triggerNote)
+		{
+			if(!p->cfg.invert)
+				p->status.count = 0;
+			else if(!p->status.duration) // infinite
+				p->status.count = -1;
+			else
+				p->status.count = p->status.duration;
+		}
+	}
+}
 
 ////////////////////////////////////////////////////////////
 // INITIALISE SERIAL PORT FOR MIDI
@@ -247,6 +463,8 @@ void flashLed(int i)
 // MAIN
 void main()
 { 
+	int i;
+	
 	// osc control / 8MHz / internal
 	osccon = 0b01110010;
 	
@@ -274,27 +492,60 @@ void main()
 	pie1.0 = 1; // timer 1 interrupt enable
 	
 	
-	memset(tmr,0,sizeof(tmr));
-	// initialise app variables
+	
+	byte nrpnLo = 0;
+	byte nrpnHi = 0;
+	byte pwm=0;
 	for(;;)
-	{
+	{	
+		// Fetch the next MIDI message
 		byte msg = receiveMessage();
-		if(((msg & 0xf0) == 0x90) && midiParams[1])
+		
+		// MIDI CONTROL CHANGE
+		if((msg & 0xf0) == 0xB0) 
 		{			
-			if((midiParams[0] >= ROOT_NOTE) && (midiParams[0] < ROOT_NOTE+8))
-				tmr[midiParams[0] - ROOT_NOTE] = 50;
+			switch(midiParams[0])
+			{
+				case MIDI_NRPN_HI: 
+					nrpnHi = midiParams[1]; 
+					break;
+				case MIDI_NRPN_LO: 
+					nrpnLo = midiParams[1]; 
+					break;
+				case MIDI_DATA_HI: 
+				case MIDI_DATA_LO: 
+					if(nrpnHi < NUM_PORTS)
+						processPortConfig(&port[nrpnHi], nrpnLo, midiParams[1], (midiParams[0] == MIDI_DATA_LO));
+					break;
+					break;
+				default:
+					handleCC((msg & 0x0F), midiParams[1], midiParams[2]);
+					break;
+					
+			}
 		}
-		for(int i=0; i<8; ++i)
-			if(tmr[i]) --tmr[i];
+		// NOTE ON
+		else if(((msg & 0xf0) == 0x90) && midiParams[1])
+		{
+			handleNoteOn(msg, midiParams[0], midiParams[1]);
+		}
+		// NOTE OFF
+		else if((((msg & 0xf0) == 0x80)||((msg & 0xf0) == 0x90)))
+		{
+			handleNoteOff(msg, midiParams[0], midiParams[1]);
+		}
 
-		P_OUT0 = (tmr[0] > 0);
-		P_OUT1 = (tmr[1] > 0);
-		P_OUT2 = (tmr[2] > 0);
-		P_OUT3 = (tmr[3] > 0);
-		P_OUT4 = (tmr[4] > 0);
-		P_OUT5 = (tmr[5] > 0);
-		P_OUT6 = (tmr[6] > 0);
-		P_OUT7 = (tmr[7] > 0);
-		delay_ms(1);
+		
+		
+		P_OUT0 = process_output(&outputs[0], pwm);
+		P_OUT1 = process_output(&outputs[1], pwm);
+		P_OUT2 = process_output(&outputs[2], pwm);
+		P_OUT3 = process_output(&outputs[3], pwm);
+		P_OUT4 = process_output(&outputs[4], pwm);
+		P_OUT5 = process_output(&outputs[5], pwm);
+		P_OUT6 = process_output(&outputs[6], pwm);
+		P_OUT7 = process_output(&outputs[7], pwm);
+		if(++pwm>=128)
+			pwm=0;
 	}
 }

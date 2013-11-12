@@ -5,6 +5,8 @@ Active Compiler=BoostC
 Active Config=Release
 Config=0
 Last Ext=c
+Last ExtIdx=1
+Last Dir=C:\Dev\GitHub\MIDI-Switcher\firmware\
 [Files]
 Count=1
 File0=midi-switcher.c
