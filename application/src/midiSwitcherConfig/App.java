@@ -1,4 +1,4 @@
-package midiSwitcherConfig;
+package MidiSwitcherConfig;
 
 public class App {
 	public static void main(String[] args) {		

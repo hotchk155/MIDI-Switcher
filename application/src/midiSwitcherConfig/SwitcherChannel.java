@@ -1,4 +1,4 @@
-package midiSwitcherConfig;
+package MidiSwitcherConfig;
 
 import javax.sound.midi.InvalidMidiDataException;
 
@@ -24,14 +24,24 @@ public class SwitcherChannel {
 	public static final String TAG_PITCHBEND = "p";
 	
 	// Channel config
-	int triggerChannel = 0;
-	int triggerNote = 60;
-	int duration = 5;
-	int durationModulator = MODULATOR_NONE;
-	int duty=100;
-	int dutyModulator = MODULATOR_NONE;
-	int invert=0;
+	int triggerChannel;
+	int triggerNote;
+	int duration;
+	int durationModulator;
+	int duty;
+	int dutyModulator;
+	int invert;
 
+	public SwitcherChannel(int sequence)
+	{
+		this.triggerChannel = 0;
+		this.triggerNote = 60+sequence;
+		this.duration = 5;
+		this.durationModulator = MODULATOR_NONE;
+		this.duty=100;
+		this.dutyModulator = MODULATOR_NONE;
+		this.invert=0;		
+	}
 	/////////////////////////////////////////////////////////////////
 	// Display string suffix for a modulator
 	public String formatModulator(int value)

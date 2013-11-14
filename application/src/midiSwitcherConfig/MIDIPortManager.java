@@ -1,4 +1,4 @@
-package midiSwitcherConfig;
+package MidiSwitcherConfig;
 
 import java.util.Vector;
 

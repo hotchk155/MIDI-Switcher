@@ -1,4 +1,4 @@
-package midiSwitcherConfig;
+package MidiSwitcherConfig;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

@@ -1,4 +1,4 @@
-package midiSwitcherConfig;
+package MidiSwitcherConfig;
 
 public class ConfigManager {
 	public static final int NUM_CHANNELS = 8;
@@ -10,7 +10,7 @@ public class ConfigManager {
 	{
 		this.switcherChannel = new SwitcherChannel[NUM_CHANNELS];		
 		for(int i=0;i<ConfigManager.NUM_CHANNELS;++i)
-			this.switcherChannel[i] = new SwitcherChannel();
+			this.switcherChannel[i] = new SwitcherChannel(i);
 	}
 	
 	public String format()
