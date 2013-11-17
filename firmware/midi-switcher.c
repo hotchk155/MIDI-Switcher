@@ -1,12 +1,32 @@
-//////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 //
-// FOR PIC16F1825
-// SOURCEBOOST C
+// MIDI SWITCHER
 //
+//    SOURCEBOOST C FOR PIC16F1825
 //
-//////////////////////////////////////////////////////////////////////////
+// This work is licensed under the Creative Commons 
+// Attribution-NonCommercial 3.0 Unported License. 
+// To view a copy of this license, please visit:
+// http://creativecommons.org/licenses/by-nc/3.0/
+//
+// Please contact me directly if you'd like a CC 
+// license allowing use for commercial purposes:
+// jason_hotchkiss<at>hotmail.com
+//
+// Full repository with hardware information:
+// https://github.com/hotchk155/MIDI-Switcher
+//
+// Ver Date 
+// 1.0 
+//
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 0
+//
+////////////////////////////////////////////////////////////
+
 #include <system.h>
 #include <memory.h>
+#include <eeprom.h>
 
 // CONFIG OPTIONS 
 // - RESET INPUT DISABLED
@@ -14,7 +34,6 @@
 // - INTERNAL OSC
 #pragma DATA _CONFIG1, _FOSC_INTOSC & _WDTE_OFF & _MCLRE_OFF &_CLKOUTEN_OFF
 #pragma DATA _CONFIG2, _WRT_OFF & _PLLEN_OFF & _STVREN_ON & _BORV_19 & _LVP_OFF
-
 #pragma CLOCK_FREQ 16000000
 
 // Define the GPIOs that are connected to each output
@@ -27,6 +46,7 @@
 #define P_OUT6		porta.1
 #define P_OUT7		porta.0
 #define P_LED		porta.5
+#define P_MODE		porta.4
 
 typedef unsigned char byte;
 
@@ -47,10 +67,19 @@ byte midiNumParams = 0;
 byte midiCurrentParam = 0;
 byte midiParams[2] = {0};
 
+// LED status
 int ledCount = 0;
 #define LEDCOUNT_BRIEF 10
 #define LEDCOUNT_MEDIUM 100
 #define LEDCOUNT_LONG 500
+
+// Special EEPROM data values
+#define EEPROM_ADDR_CHECKSUM 		255
+#define EEPROM_FLAG_INVERT	 		0x01
+
+// Total number of ports
+#define NUM_PORTS 8
+
 
 // Special MIDI CC numbers
 enum {
@@ -60,10 +89,12 @@ enum {
 	MIDI_DATA_LO = 38
 };
 
-// MIDI NRPN LSB used for passing config info
+
+// Configuration messages. 
+// NRPN MSB = Trigger (1-8)
+// NRPN LSB = Config param (from list below)
 enum {
-	NRPN_LO_COMMIT = 0,
-	NRPN_LO_TRIGGERCHANNEL = 1,
+	NRPN_LO_TRIGGERCHANNEL = 1,		
 	NRPN_LO_TRIGGERNOTE = 2,
 	NRPN_LO_DURATION = 3,
 	NRPN_LO_DURATIONMODULATOR = 4,
@@ -72,17 +103,27 @@ enum {
 	NRPN_LO_INVERT = 7
 };
 
-// Special modulator CC values
+// Data save message
+// NRPN MSB = 100
+// NRPN LSB = 1
+enum {
+	NRPN_HI_EEPROM = 100,
+	NRPN_LO_SAVE = 1
+};
+
+// Special modulator values. Stored instead of CC number in durationModulator/dutyModulator
 enum {
 	MODULATOR_NONE = 0x80,			// No modulation (0 not used as it is a valid CC number)
 	MODULATOR_NOTEVELOCITY = 0x81,	// Modulate by note velocity
 	MODULATOR_PITCHBEND = 0x82		// Modulate by pitchbend
 };
 
+// Special duration values
 enum {
-	WHILE_NOTE_HELD = -1			// Special unlimited duration value
+	WHILE_NOTE_HELD = -1			// Stay triggered until NOTE OFF received
 };
 
+/////////////////////////////////////////////////////////////////////
 // Structure defines configuration of a port
 typedef struct {
 	byte triggerChannel;		// MIDI channel on which trigger note is received
@@ -94,6 +135,7 @@ typedef struct {
 	byte invert;				// Whether output is active LOW
 } PORT_CONFIG;
 
+/////////////////////////////////////////////////////////////////////
 // Structure defines current state of port
 typedef struct
 {
@@ -106,6 +148,7 @@ typedef struct
 	byte pitchbendMSB;			// Last value for pitchbend MSB
 } PORT_STATUS;
 
+/////////////////////////////////////////////////////////////////////
 // Structure to contain all the information for a port
 typedef struct
 {
@@ -113,9 +156,7 @@ typedef struct
 	PORT_STATUS status;
 } PORT_INFO;
 
-// Total number of ports
-#define NUM_PORTS 8
-
+/////////////////////////////////////////////////////////////////////
 // Array of port info (due to limitation on PIC RAM paging these
 // cannot be allocated in a contiguous block)
 PORT_INFO* port[NUM_PORTS]; 
@@ -128,40 +169,10 @@ PORT_INFO port5;
 PORT_INFO port6;
 PORT_INFO port7;
 
-////////////////////////////////////////////////////////////
-// INITIALISE SERIAL PORT FOR MIDI
-void init_usart()
-{
-	pir1.1 = 1;		//TXIF 		
-	pir1.5 = 0;		//RCIF
-	
-	pie1.1 = 0;		//TXIE 		no interrupts
-	pie1.5 = 1;		//RCIE 		enable
-	
-	baudcon.4 = 0;	// SCKP		synchronous bit polarity 
-	baudcon.3 = 1;	// BRG16	enable 16 bit brg
-	baudcon.1 = 0;	// WUE		wake up enable off
-	baudcon.0 = 0;	// ABDEN	auto baud detect
-		
-	txsta.6 = 0;	// TX9		8 bit transmission
-	txsta.5 = 0;	// TXEN		transmit enable
-	txsta.4 = 0;	// SYNC		async mode
-	txsta.3 = 0;	// SEDNB	break character
-	txsta.2 = 0;	// BRGH		high baudrate 
-	txsta.0 = 0;	// TX9D		bit 9
-
-	rcsta.7 = 1;	// SPEN 	serial port enable
-	rcsta.6 = 0;	// RX9 		8 bit operation
-	rcsta.5 = 1;	// SREN 	enable receiver
-	rcsta.4 = 1;	// CREN 	continuous receive enable
-		
-	spbrgh = 0;		// brg high byte
-	spbrg = 30;		// brg low byte (31250)		
-	
-}
+byte isDirtyConfig = 0;
 
 ////////////////////////////////////////////////////////////
-// INTERRUPT HANDLER 
+// INTERRUPT SERVICE ROUTINE
 void interrupt( void )
 {
 	// TIMER 0 TICK
@@ -196,21 +207,53 @@ void interrupt( void )
 }
 
 ////////////////////////////////////////////////////////////
-// INCREMENT CIRCULAR BUFFER INDEX
-byte rxInc(byte *pbIndex)
+// FLASH DIAGNOSTIC LED
+void flashLed(int i)
 {
-	// any data in the buffer?
-	if((*pbIndex) == rxHead)
-		return 0;
-
-	// move to next char
-	if(++(*pbIndex) >= SZ_RXBUFFER) 
-		(*pbIndex) -= SZ_RXBUFFER;
-	return 1;
+	while(i>0)
+	{
+		P_LED = 1;
+		delay_ms(200);
+		P_LED = 0;
+		delay_ms(200);
+		--i;
+	}
 }
 
 ////////////////////////////////////////////////////////////
-// RECEIVE MIDI MESSAGE
+// INITIALISE SERIAL PORT FOR MIDI
+void init_usart()
+{
+	pir1.1 = 1;		//TXIF 		
+	pir1.5 = 0;		//RCIF
+	
+	pie1.1 = 0;		//TXIE 		no interrupts
+	pie1.5 = 1;		//RCIE 		enable
+	
+	baudcon.4 = 0;	// SCKP		synchronous bit polarity 
+	baudcon.3 = 1;	// BRG16	enable 16 bit brg
+	baudcon.1 = 0;	// WUE		wake up enable off
+	baudcon.0 = 0;	// ABDEN	auto baud detect
+		
+	txsta.6 = 0;	// TX9		8 bit transmission
+	txsta.5 = 0;	// TXEN		transmit enable
+	txsta.4 = 0;	// SYNC		async mode
+	txsta.3 = 0;	// SEDNB	break character
+	txsta.2 = 0;	// BRGH		high baudrate 
+	txsta.0 = 0;	// TX9D		bit 9
+
+	rcsta.7 = 1;	// SPEN 	serial port enable
+	rcsta.6 = 0;	// RX9 		8 bit operation
+	rcsta.5 = 1;	// SREN 	enable receiver
+	rcsta.4 = 1;	// CREN 	continuous receive enable
+		
+	spbrgh = 0;		// brg high byte
+	spbrg = 30;		// brg low byte (31250)		
+	
+}
+
+////////////////////////////////////////////////////////////
+// RECEIVE MIDI MESSAGE FROM BUFFER
 // Return the status byte or 0 if nothing complete received
 // caller must check midiParams array for byte 1 and 2
 byte receiveMessage()
@@ -250,34 +293,46 @@ byte receiveMessage()
 				midiCurrentParam = 0;
 				break;
 			case 0xF0: //  (non-musical commands) - ignore all data for now			
-				return q; 
+				break;
 			}
 		}
 		else
 		{
+			// store MIDI parameter
 			midiParams[midiCurrentParam++] = q;
 			if(midiCurrentParam >= midiNumParams)
 			{
+				// we have all the parameters for a new message
 				midiCurrentParam = 0;
-				return midiRunningStatus;
+				switch(midiRunningStatus & 0xF0)
+				{
+					// we only need to return one of:
+					case 0x80:	// note off
+					case 0x90:	// note on
+					case 0xB0:	// controller
+					case 0xE0:	// pitch bend
+						return midiRunningStatus;
+				}				
 			}
 		}
 	}
+	
+	// Cannot return a complete message
 	return 0;
 }
+
+////////////////////////////////////////////////////////////
+// CHECKSUM CALCULATION
+byte calcCheckSum(byte *base, int count, byte *cs)
+{
+	for(int i=0; i<count; ++i)
+		*cs = (*cs<<1) ^ base[i];
+}
+
 //////////////////////////////////////////////////////////////////////////////////
-// Set information for a ports to sensible default values
+// SET DEFAULT VALUES FOR PORT
 void initPortInfo()
 {
-	port[0] = &port0;
-	port[1] = &port1;
-	port[2] = &port2;
-	port[3] = &port3;
-	port[4] = &port4;
-	port[5] = &port5;
-	port[6] = &port6;
-	port[7] = &port7;
-
 	for(int i=0; i<NUM_PORTS; ++i)
 	{
 		PORT_INFO *p = port[i];
@@ -290,13 +345,79 @@ void initPortInfo()
 		p->cfg.dutyModulator = MODULATOR_NONE;
 		p->cfg.invert = 0;
 		
+		// full duration/duty
 		p->status.duration = p->cfg.durationMax;
 		p->status.duty = p->cfg.dutyMax;
 	}
 }
 
+////////////////////////////////////////////////////////////
+// SAVE PORT INFO TO EEPROM
+void savePortInfo()
+{
+	byte cs = 0;
+	for(int i=0; i<NUM_PORTS; ++i)
+	{
+		PORT_INFO *p = port[i];		
+		calcCheckSum((byte*)&p->cfg, sizeof(PORT_CONFIG), &cs); // include checksum
+		
+		int eepromAddr = 16 * i; // allocate 16 bytes for each port config
+		eeprom_write(eepromAddr+0, p->cfg.triggerChannel);
+		eeprom_write(eepromAddr+1, p->cfg.triggerNote);
+		eeprom_write(eepromAddr+2, (p->cfg.durationMax >> 8) & 0xFF);
+		eeprom_write(eepromAddr+3, p->cfg.durationMax & 0xFF);
+		eeprom_write(eepromAddr+4, p->cfg.durationModulator);
+		eeprom_write(eepromAddr+5, p->cfg.dutyMax);
+		eeprom_write(eepromAddr+6, p->cfg.dutyModulator);
+		
+		byte flags = 0;
+		if(p->cfg.invert) flags |= EEPROM_FLAG_INVERT;
+		eeprom_write(eepromAddr+7, flags);
+	}
+	eeprom_write(EEPROM_ADDR_CHECKSUM, cs);
+	
+	P_LED = 1;	delay_s(1);	P_LED = 0;
+}
+
+////////////////////////////////////////////////////////////
+// LOAD PORT INFO FROM EEPROM
+void loadPortInfo()
+{
+	byte cs = 0;
+	for(int i=0; i<NUM_PORTS; ++i)
+	{
+		PORT_INFO *p = port[i];
+		memset(p, 0, sizeof(PORT_INFO));
+		
+		int eepromAddr = 16 * i;
+		p->cfg.triggerChannel 	 = eeprom_read(eepromAddr + 0);
+		p->cfg.triggerNote 		 = eeprom_read(eepromAddr + 1);
+		p->cfg.durationMax		 = (int)eeprom_read(eepromAddr + 2) << 8;
+		p->cfg.durationMax	    |= (int)eeprom_read(eepromAddr + 3);
+		p->cfg.durationModulator = eeprom_read(eepromAddr + 4);
+		p->cfg.dutyMax			 = eeprom_read(eepromAddr + 5);
+		p->cfg.dutyModulator	 = eeprom_read(eepromAddr + 6);		
+		byte flags = eeprom_read(eepromAddr + 7);
+		p->cfg.invert = !!(flags & EEPROM_FLAG_INVERT);
+		
+		// default to full duration/duty
+		p->status.duration = p->cfg.durationMax;
+		p->status.duty = p->cfg.dutyMax;
+		
+		calcCheckSum((byte*)&p->cfg, sizeof(PORT_CONFIG), &cs); 
+	}
+	
+	if(eeprom_read(EEPROM_ADDR_CHECKSUM) != cs)
+	{
+		// failed checksum (possibly no previous stored config)
+		flashLed(5);
+		initPortInfo();
+		savePortInfo();
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////////////
-// handle NRPN message directed to specific port config
+// HANDLE NRPN INFO FOR PORT CONFIGURATION
 byte handleNrpn(PORT_INFO *p, byte nrpnLo, byte data, byte isLSB)
 {
 	byte recognised = 1;
@@ -363,12 +484,16 @@ byte handleNrpn(PORT_INFO *p, byte nrpnLo, byte data, byte isLSB)
 		break;
 	}
 	if(recognised)
+	{
+		isDirtyConfig = 1;
 		ledCount = LEDCOUNT_MEDIUM;
+	}
 }
 
 #define APPLY_MODULATOR(a,b) ((((long)(a) * (b))>>7)&0x7f)
 
 //////////////////////////////////////////////////////////////////////////////////
+// HANDLE MODULATION BY CC
 void handleCC(byte chan, byte cc, byte value)
 {
 	for(int i=0; i<NUM_PORTS; ++i)
@@ -391,6 +516,7 @@ void handleCC(byte chan, byte cc, byte value)
 }
 
 //////////////////////////////////////////////////////////////////////////////////
+// HANDLE MODULATION BY PITCHBEND
 void handlePitchBend(byte chan, byte MSB)
 {
 	for(int i=0; i<NUM_PORTS; ++i)
@@ -413,6 +539,7 @@ void handlePitchBend(byte chan, byte MSB)
 }
 
 //////////////////////////////////////////////////////////////////////////////////
+// HANDLE NOTE ON MESSAGE
 void handleNoteOn(byte chan, byte note, byte velocity)
 {
 	for(int i=0; i<NUM_PORTS; ++i)
@@ -444,6 +571,7 @@ void handleNoteOn(byte chan, byte note, byte velocity)
 }
 
 //////////////////////////////////////////////////////////////////////////////////
+// HANDLE NOTE OFF MESSAGE
 byte handleNoteOff(byte chan, byte note)
 {
 	for(int i=0; i<NUM_PORTS; ++i)
@@ -458,20 +586,6 @@ byte handleNoteOff(byte chan, byte note)
 }
 
 ////////////////////////////////////////////////////////////
-// FLASH DIAGNOSTIC LED
-void flashLed(int i)
-{
-	while(i>0)
-	{
-		P_LED = 1;
-		delay_ms(200);
-		P_LED = 0;
-		delay_ms(200);
-		--i;
-	}
-}
-
-////////////////////////////////////////////////////////////
 // MAIN
 void main()
 { 
@@ -479,20 +593,21 @@ void main()
 	
 	// osc control / 16MHz / internal
 	osccon = 0b01111010;
-	
-	
+		
 	// configure io
-	trisa = 0b00000000;              	
+	trisa = 0b00010000;              	
     trisc = 0b00100000;              
 	ansela = 0b00000000;
 	anselc = 0b00000000;
 	porta=0;
 	portc=0;
+	
+	wpua.4=1; // weak pull up on switch input
+	option_reg.7 = 0; // weak pull up enable
 
 	// initialise MIDI comms
 	init_usart();
-	flashLed(3);
-
+	
 	intcon.7 = 1; //GIE
 	intcon.6 = 1; //PEIE
 	
@@ -513,19 +628,30 @@ void main()
 	intcon.7 = 1; //GIE
 	intcon.6 = 1; //PEIE
 	
+	// Initialise the table of port info pointers
+	port[0] = &port0;
+	port[1] = &port1;
+	port[2] = &port2;
+	port[3] = &port3;
+	port[4] = &port4;
+	port[5] = &port5;
+	port[6] = &port6;
+	port[7] = &port7;
 	
-	initPortInfo();
+	// load port information from EEPROM (or default)
+	loadPortInfo();
 	
+	int modeHeld = 0;
+	byte enableNrpn = 0;
 	byte nrpnLo = 0;
 	byte nrpnHi = 0;
 	byte pwm=0;
+	int cycles = 0;
 	for(;;)
 	{	
-			
 		// Fetch the next MIDI message
 		byte msg = receiveMessage();
-		
-		
+				
 		// NOTE ON
 		if(((msg & 0xf0) == 0x90) && midiParams[1])
 		{
@@ -539,23 +665,32 @@ void main()
 		// CONTROLLER
 		else if((msg & 0xf0) == 0xb0) 
 		{			
-			switch(midiParams[0])
+			if(enableNrpn) 
 			{
-				case MIDI_NRPN_HI: 
-					nrpnHi = midiParams[1]; 
+				switch(midiParams[0])
+				{
+					case MIDI_NRPN_HI: 
+						nrpnHi = midiParams[1]; 
+						break;
+					case MIDI_NRPN_LO: 
+						nrpnLo = midiParams[1]; 
+						break;
+					case MIDI_DATA_HI: 
+					case MIDI_DATA_LO: 
+						if(nrpnHi < NUM_PORTS)
+							handleNrpn(port[nrpnHi], nrpnLo, midiParams[1], (midiParams[0] == MIDI_DATA_LO));
+						else if(nrpnHi == NRPN_HI_EEPROM && nrpnLo == NRPN_LO_SAVE)
+							savePortInfo();
 					break;
-				case MIDI_NRPN_LO: 
-					nrpnLo = midiParams[1]; 
-					break;
-				case MIDI_DATA_HI: 
-				case MIDI_DATA_LO: 
-					if(nrpnHi < NUM_PORTS)
-						handleNrpn(port[nrpnHi], nrpnLo, midiParams[1], (midiParams[0] == MIDI_DATA_LO));
-					break;
-				default:
-					handleCC(msg&0xF, midiParams[0], midiParams[1]);
-					break;
-					
+					default:
+						handleCC(msg&0xF, midiParams[0], midiParams[1]);
+						break;
+						
+				}
+			}
+			else
+			{
+				handleCC(msg&0xF, midiParams[0], midiParams[1]);			
 			}
 		}
 		// PITCH BEND
@@ -572,14 +707,52 @@ void main()
 		if(timerTicked)
 		{
 			timerTicked = 0;
+			
+			// Decrement nonzero port latch counts
 			for(i=0;i<NUM_PORTS;++i)
 			{				
 				if(port[i]->status.count>0)
 					--port[i]->status.count;
 			}
+				
+			// If the MODE button is held for 1 second
+			// this enables the receiving of config info		
+			if(!enableNrpn)
+			{
+				if(P_MODE)//mode button released
+				{
+					
+					modeHeld = 0;
+				}
+				else if(++modeHeld >= 1000)// mode button pressed for more than 1 second
+				{					
+					P_LED = 1; delay_s(1); P_LED = 0;
+					enableNrpn = 1;
+				}
+			}
+			else if(isDirtyConfig)//config has been updated
+			{
+				if(!P_MODE)//
+				{
+					savePortInfo();
+					isDirtyConfig = 0;					
+				}
+				else
+				{
+					++cycles;
+					if(!(cycles & 0x1FF) && !ledCount)
+						ledCount = LEDCOUNT_MEDIUM;
+				}
+			}
+			else
+			{
+				++cycles;
+				if(!(cycles & 0x7FF) && !ledCount)
+					ledCount = LEDCOUNT_LONG;
+			}
 		}
 		
-		// RUN OUTPUTS
+		// MANAGE OUTPUTS
 #define OUT_STATE(P) (P.status.count && (pwm < P.status.duty))
 #define OUT_STATEN(P) (!P.status.count && (pwm < P.status.duty))
 		P_OUT0 = port0.cfg.invert? OUT_STATEN(port0) : OUT_STATE(port0);
