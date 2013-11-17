@@ -5,7 +5,6 @@ import javax.sound.midi.InvalidMidiDataException;
 public class SwitcherChannel {
 	
 	// MIDI NRPN command LSB
-	public static final int NRPN_LO_COMMIT = 0;
 	public static final int NRPN_LO_TRIGGERCHANNEL = 1;
 	public static final int NRPN_LO_TRIGGERNOTE = 2;
 	public static final int NRPN_LO_DURATION = 3;
@@ -168,9 +167,6 @@ public class SwitcherChannel {
 					midi.sendNRPN(nrpnHi, NRPN_LO_DUTY, this.duty);
 					midi.sendNRPN(nrpnHi, NRPN_LO_DUTYMODULATOR, this.dutyModulator);
 					midi.sendNRPN(nrpnHi, NRPN_LO_INVERT, this.invert);
-					break;
-				case UserCommand.COMMIT:
-					midi.sendNRPN(nrpnHi, NRPN_LO_COMMIT, 1);
 					break;
 				case UserCommand.TRIGGER:
 					midi.sendTrigger(this.triggerChannel, this.triggerNote);

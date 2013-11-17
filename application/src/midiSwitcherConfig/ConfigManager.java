@@ -1,7 +1,11 @@
 package MidiSwitcherConfig;
 
+import javax.sound.midi.InvalidMidiDataException;
+
 public class ConfigManager {
 	public static final int NUM_CHANNELS = 8;
+	public static final int NRPN_HI_COMMIT = 100;
+	public static final int NRPN_LO_COMMIT = 1;
 	
 	int currentChannel = 0;
 	SwitcherChannel switcherChannel[];
@@ -13,7 +17,8 @@ public class ConfigManager {
 			this.switcherChannel[i] = new SwitcherChannel(i);
 	}
 	
-	public String format()
+	@Override
+	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
 		for(int i=0;i<ConfigManager.NUM_CHANNELS;++i)
@@ -43,6 +48,14 @@ public class ConfigManager {
 			if(ch < 'a'||ch>'h')
 				return false;
 			currentChannel = ch - 'a';
+		}
+		else if(command.type == UserCommand.COMMIT)
+		{
+			try {
+				midi.sendNRPN(NRPN_HI_COMMIT, NRPN_LO_COMMIT, 1);
+			} catch (InvalidMidiDataException e) {
+				return false;
+			}
 		}
 		else if(command.prefix == UserCommand.PREFIX_ALL)
 		{

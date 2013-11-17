@@ -49,7 +49,8 @@ public class MIDIPortManager {
 		    }
 		}
 	}
-	String format()
+	@Override
+	public String toString()
 	{		
 		StringBuilder builder = new StringBuilder();
 		builder.append("Installed MIDI output devices:\r\n");

@@ -19,9 +19,19 @@ public class UserCommand {
 	public static final int COMMIT = 108;
 	public static final int TRIGGER = 109;
 	public static final int DEVICE = 200;
-
+	
+	public static final int SEQ = 300;
+	public static final int SEQ_ASSIGN = 301;
+	public static final int SEQ_NOTE= 302;
+	public static final int SEQ_CHAN= 303;
+	public static final int SEQ_START = 304;
+	public static final int SEQ_LENGTH= 305;
+	public static final int SEQ_RATE= 306;
+	public static final int SEQ_REPEAT= 307;
+	
 	public static final int CHAN_COMMAND_START = 100;
 	public static final int DEVICE_COMMAND_START = 200;
+	public static final int SEQ_COMMAND_START = 300;
 
 	public static final int PREFIX_NONE = 0;
 	public static final int PREFIX_ALL = 1;
@@ -37,8 +47,17 @@ public class UserCommand {
 	public static final String TAG_INVERT = "inv";	
 	public static final String TAG_DEVICE = "dev";
 	public static final String TAG_TRANSMIT_ALL = "!";
-	public static final String TAG_COMMIT = "$";
+	public static final String TAG_COMMIT = "^";
 	public static final String TAG_TRIGGER = ".";
+	
+	public static final String TAG_SEQ = "$";
+	public static final String TAG_SEQ_NOTE= "$@";
+	public static final String TAG_SEQ_CHAN= "$ch";
+	public static final String TAG_SEQ_START = "$$";
+	public static final String TAG_SEQ_LENGTH= "$len";
+	public static final String TAG_SEQ_RATE= "$rate";
+	public static final String TAG_SEQ_REPEAT= "$rep";
+	
 
 	public static final String TAG_PREFIX_ALL= "*";
 	
@@ -59,6 +78,14 @@ public class UserCommand {
 		UserCommand.keywords.put(DUTY, TAG_DUTY);
 		UserCommand.keywords.put(INVERT, TAG_INVERT);
 		UserCommand.keywords.put(TRIGGER, TAG_TRIGGER);
+		UserCommand.keywords.put(COMMIT, TAG_COMMIT);
+		/*UserCommand.keywords.put(SEQ_NOTE, TAG_SEQ_NOTE);
+		UserCommand.keywords.put(SEQ_CHAN, TAG_SEQ_CHAN);
+		UserCommand.keywords.put(SEQ_START, TAG_SEQ_START);
+		UserCommand.keywords.put(SEQ_LENGTH, TAG_SEQ_LENGTH);
+		UserCommand.keywords.put(SEQ_RATE, TAG_SEQ_RATE);
+		UserCommand.keywords.put(SEQ_REPEAT, TAG_SEQ_REPEAT);
+		UserCommand.keywords.put(SEQ, TAG_SEQ);*/
 	}
 	
 	int type = NONE;
