@@ -1,8 +1,16 @@
 ////////////////////////////////////////////////////////////
 //
-// MIDI SWITCHER
+//   ///////  ///////  ////////  /////////    ////////
+//   ////  ////  ////    ////    ////   ////    ////
+//   ////  ////  ////    ////    ////   ////    ////
+//   ////        ////    ////    ////   ////    ////
+//   ////        ////  ////////  /////////    ////////
 //
-//    SOURCEBOOST C FOR PIC16F1825
+//   ////  //    // // ////// //// //   // ///// /////
+//  //     //    // //   //  //    //   // //    //  //
+//   ////  // // // //   //  //    /////// ////  /////
+//      // // // // //   //  //    //   // //    //  //
+//   ////  ///  /// //   //   //// //   // ///// //  //
 //
 // This work is licensed under the Creative Commons 
 // Attribution-NonCommercial 3.0 Unported License. 
@@ -68,7 +76,6 @@ byte midiCurrentParam = 0;
 byte midiParams[2] = {0};
 
 // LED status
-int ledCount = 0;
 #define LEDCOUNT_BRIEF 10
 #define LEDCOUNT_MEDIUM 100
 #define LEDCOUNT_LONG 500
@@ -83,10 +90,10 @@ int ledCount = 0;
 
 // Special MIDI CC numbers
 enum {
-	MIDI_NRPN_HI = 99,
-	MIDI_NRPN_LO = 98,
-	MIDI_DATA_HI = 6,
-	MIDI_DATA_LO = 38
+	MIDI_NRPN_HI 				= 99,
+	MIDI_NRPN_LO 				= 98,
+	MIDI_DATA_HI 				= 6,
+	MIDI_DATA_LO 				= 38
 };
 
 
@@ -94,28 +101,28 @@ enum {
 // NRPN MSB = Trigger (1-8)
 // NRPN LSB = Config param (from list below)
 enum {
-	NRPN_LO_TRIGGERCHANNEL = 1,		
-	NRPN_LO_TRIGGERNOTE = 2,
-	NRPN_LO_DURATION = 3,
-	NRPN_LO_DURATIONMODULATOR = 4,
-	NRPN_LO_DUTY = 5,
-	NRPN_LO_DUTYMODULATOR = 6,
-	NRPN_LO_INVERT = 7
+	NRPN_LO_TRIGGERCHANNEL 		= 1,		
+	NRPN_LO_TRIGGERNOTE 		= 2,
+	NRPN_LO_DURATION 			= 3,
+	NRPN_LO_DURATIONMODULATOR 	= 4,
+	NRPN_LO_DUTY 				= 5,
+	NRPN_LO_DUTYMODULATOR 		= 6,
+	NRPN_LO_INVERT 				= 7
 };
 
 // Data save message
 // NRPN MSB = 100
 // NRPN LSB = 1
 enum {
-	NRPN_HI_EEPROM = 100,
-	NRPN_LO_SAVE = 1
+	NRPN_HI_EEPROM 				= 100,
+	NRPN_LO_SAVE 				= 1
 };
 
 // Special modulator values. Stored instead of CC number in durationModulator/dutyModulator
 enum {
-	MODULATOR_NONE = 0x80,			// No modulation (0 not used as it is a valid CC number)
-	MODULATOR_NOTEVELOCITY = 0x81,	// Modulate by note velocity
-	MODULATOR_PITCHBEND = 0x82		// Modulate by pitchbend
+	MODULATOR_NONE 				= 0x80,	// No modulation (0 not used as it is a valid CC number)
+	MODULATOR_NOTEVELOCITY 		= 0x81,	// Modulate by note velocity
+	MODULATOR_PITCHBEND 		= 0x82	// Modulate by pitchbend
 };
 
 // Special duration values
@@ -169,6 +176,7 @@ PORT_INFO port5;
 PORT_INFO port6;
 PORT_INFO port7;
 
+// Flag to say config info has been changed but not saved
 byte isDirtyConfig = 0;
 
 ////////////////////////////////////////////////////////////
@@ -339,9 +347,9 @@ void initPortInfo()
 		memset(p, 0, sizeof(PORT_INFO));
 		p->cfg.triggerChannel = 0;
 		p->cfg.triggerNote = 60 + i;
-		p->cfg.durationMax = 10;
+		p->cfg.durationMax = 20; // default duration
 		p->cfg.durationModulator = MODULATOR_NONE;
-		p->cfg.dutyMax = 100;
+		p->cfg.dutyMax = 100; // duty
 		p->cfg.dutyModulator = MODULATOR_NONE;
 		p->cfg.invert = 0;
 		
@@ -374,14 +382,12 @@ void savePortInfo()
 		if(p->cfg.invert) flags |= EEPROM_FLAG_INVERT;
 		eeprom_write(eepromAddr+7, flags);
 	}
-	eeprom_write(EEPROM_ADDR_CHECKSUM, cs);
-	
-	P_LED = 1;	delay_s(1);	P_LED = 0;
+	eeprom_write(EEPROM_ADDR_CHECKSUM, cs);	
 }
 
 ////////////////////////////////////////////////////////////
 // LOAD PORT INFO FROM EEPROM
-void loadPortInfo()
+void loadPortInfo(byte forceReload)
 {
 	byte cs = 0;
 	for(int i=0; i<NUM_PORTS; ++i)
@@ -407,10 +413,10 @@ void loadPortInfo()
 		calcCheckSum((byte*)&p->cfg, sizeof(PORT_CONFIG), &cs); 
 	}
 	
-	if(eeprom_read(EEPROM_ADDR_CHECKSUM) != cs)
+	if(forceReload || eeprom_read(EEPROM_ADDR_CHECKSUM) != cs)
 	{
 		// failed checksum (possibly no previous stored config)
-		flashLed(5);
+		flashLed(10);
 		initPortInfo();
 		savePortInfo();
 	}
@@ -484,10 +490,7 @@ byte handleNrpn(PORT_INFO *p, byte nrpnLo, byte data, byte isLSB)
 		break;
 	}
 	if(recognised)
-	{
 		isDirtyConfig = 1;
-		ledCount = LEDCOUNT_MEDIUM;
-	}
 }
 
 #define APPLY_MODULATOR(a,b) ((((long)(a) * (b))>>7)&0x7f)
@@ -504,12 +507,10 @@ void handleCC(byte chan, byte cc, byte value)
 			if(p->cfg.durationModulator == cc)
 			{
 				p->status.duration = APPLY_MODULATOR(p->cfg.durationMax, value);
-				ledCount = LEDCOUNT_BRIEF;				
 			}
 			if(p->cfg.dutyModulator == cc)
 			{
 				p->status.duty = APPLY_MODULATOR(p->cfg.dutyMax, value);
-				ledCount = LEDCOUNT_BRIEF;				
 			}
 		}
 	}
@@ -527,12 +528,10 @@ void handlePitchBend(byte chan, byte MSB)
 			if(p->cfg.durationModulator == MODULATOR_PITCHBEND)
 			{
 				p->status.duration = APPLY_MODULATOR(p->cfg.durationMax, MSB);
-				ledCount = LEDCOUNT_BRIEF;				
 			}
 			if(p->cfg.dutyModulator == MODULATOR_PITCHBEND)
 			{
 				p->status.duty = APPLY_MODULATOR(p->cfg.dutyMax, MSB);
-				ledCount = LEDCOUNT_BRIEF;				
 			}
 		}
 	}
@@ -550,17 +549,14 @@ void handleNoteOn(byte chan, byte note, byte velocity)
 			if(p->cfg.durationModulator == MODULATOR_NOTEVELOCITY)
 			{
 				p->status.duration = APPLY_MODULATOR(p->cfg.durationMax, velocity);
-				ledCount = LEDCOUNT_BRIEF;				
 			}
 			if(p->cfg.dutyModulator == MODULATOR_NOTEVELOCITY)
 			{
 				p->status.duty = APPLY_MODULATOR(p->cfg.dutyMax,velocity);
-				ledCount = LEDCOUNT_BRIEF;				
 
 			}
 			if(note == p->cfg.triggerNote)
 			{
-				ledCount = LEDCOUNT_BRIEF;				
 				if(!p->cfg.durationMax) 
 					p->status.count = WHILE_NOTE_HELD;
 				else
@@ -579,7 +575,7 @@ byte handleNoteOff(byte chan, byte note)
 		PORT_INFO *p = port[i];
 		if(p->cfg.triggerChannel == chan && note == p->cfg.triggerNote)
 		{
-			if(p->status.duration == WHILE_NOTE_HELD) 
+			if(p->status.count == WHILE_NOTE_HELD) 
 				p->status.count = 0;
 		}
 	}
@@ -638,9 +634,14 @@ void main()
 	port[6] = &port6;
 	port[7] = &port7;
 	
-	// load port information from EEPROM (or default)
-	loadPortInfo();
 	
+	// allow time for input to settle then load 
+	// EEPROM settings, allowing a hold of MODE
+	// to restore default settings
+	delay_ms(5);
+	loadPortInfo((!P_MODE));		
+		
+	int ledCount = 0;
 	int modeHeld = 0;
 	byte enableNrpn = 0;
 	byte nrpnLo = 0;
@@ -651,6 +652,8 @@ void main()
 	{	
 		// Fetch the next MIDI message
 		byte msg = receiveMessage();
+		if(msg && !ledCount)
+			ledCount = LEDCOUNT_BRIEF;
 				
 		// NOTE ON
 		if(((msg & 0xf0) == 0x90) && midiParams[1])
@@ -734,6 +737,7 @@ void main()
 			{
 				if(!P_MODE)//
 				{
+					P_LED = 1;	delay_s(1);	P_LED = 0;				
 					savePortInfo();
 					isDirtyConfig = 0;					
 				}

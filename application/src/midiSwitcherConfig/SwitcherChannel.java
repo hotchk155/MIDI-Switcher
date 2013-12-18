@@ -35,7 +35,7 @@ public class SwitcherChannel {
 	{
 		this.triggerChannel = 0;
 		this.triggerNote = 60+sequence;
-		this.duration = 5;
+		this.duration = 20;
 		this.durationModulator = MODULATOR_NONE;
 		this.duty=100;
 		this.dutyModulator = MODULATOR_NONE;
