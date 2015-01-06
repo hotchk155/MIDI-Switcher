@@ -25,16 +25,19 @@
 // https://github.com/hotchk155/MIDI-Switcher
 //
 // Ver Date 
-// 1.0 
+// 1.0 	21Dec2013	Initial version
+// 1.1 	15Dec2014	Add support for relay board
 //
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 0
+#define VERSION_MINOR 1
 //
 ////////////////////////////////////////////////////////////
 
 #include <system.h>
 #include <memory.h>
 #include <eeprom.h>
+
+#define RELAY_SWITCHER 1
 
 // CONFIG OPTIONS 
 // - RESET INPUT DISABLED
@@ -45,16 +48,75 @@
 #pragma CLOCK_FREQ 16000000
 
 // Define the GPIOs that are connected to each output
-#define P_OUT0		portc.4 
-#define P_OUT1		portc.1 
-#define P_OUT2		portc.3
-#define P_OUT3		portc.2 
-#define P_OUT4		portc.0
-#define P_OUT5		porta.2 
-#define P_OUT6		porta.1
-#define P_OUT7		porta.0
 #define P_LED		porta.5
 #define P_MODE		porta.4
+
+#define T_LED		trisa.5
+#define T_MODE		trisa.4
+#define T_RX		trisc.5
+
+/*
+Original MIDI Switcher
+		
+		VDD - VSS
+LED		RA5	- RA0/PGD	P7
+SW		RA4 - RA1/PGC	P6
+		VPP - RA2		P5
+RX		RC5 - RC0		P4
+P0		RC4 - RC1		P1
+P2		RC3 - RC2		P3
+
+Relays Board
+		
+		VDD - VSS
+LED		RA5	- RA0/PGD	P7
+SW		RA4 - RA1/PGC	P6
+		VPP - RA2		P5
+RX		RC5 - RC0		P4
+P1		RC4 - RC1		P3
+P0		RC3 - RC2		P2
+		
+		
+*/
+#ifdef RELAY_SWITCHER
+	#define P_OUT0		portc.3 
+	#define P_OUT1		portc.4 
+	#define P_OUT2		portc.2
+	#define P_OUT3		portc.1 
+	#define P_OUT4		portc.0
+	#define P_OUT5		porta.2 
+	#define P_OUT6		porta.1
+	#define P_OUT7		porta.0	
+
+	#define T_OUT0		trisc.3 
+	#define T_OUT1		trisc.4 
+	#define T_OUT2		trisc.2
+	#define T_OUT3		trisc.1 
+	#define T_OUT4		trisc.0
+	#define T_OUT5		trisa.2 
+	#define T_OUT6		trisa.1
+	#define T_OUT7		trisa.0	
+
+#else
+	#define P_OUT0		portc.4 
+	#define P_OUT1		portc.1 
+	#define P_OUT2		portc.3
+	#define P_OUT3		portc.2 
+	#define P_OUT4		portc.0
+	#define P_OUT5		porta.2 
+	#define P_OUT6		porta.1
+	#define P_OUT7		porta.0
+	
+	#define T_OUT0		trisc.4 
+	#define T_OUT1		trisc.1 
+	#define T_OUT2		trisc.3
+	#define T_OUT3		trisc.2 
+	#define T_OUT4		trisc.0
+	#define T_OUT5		trisa.2 
+	#define T_OUT6		trisa.1
+	#define T_OUT7		trisa.0	
+#endif
+
 
 typedef unsigned char byte;
 
@@ -590,15 +652,19 @@ void main()
 	// osc control / 16MHz / internal
 	osccon = 0b01111010;
 		
-	// configure io
-	trisa = 0b00010000;              	
-    trisc = 0b00100000;              
+	// configure io. Initially all outputs are 
+	// disabled except for the LED and all outputs
+	// states are zeroed
+	trisa = 0b11111111;
+	trisc = 0b11111111;
+	T_LED = 0;    
 	ansela = 0b00000000;
 	anselc = 0b00000000;
-	porta=0;
-	portc=0;
-	
-	wpua.4=1; // weak pull up on switch input
+	porta =  0b00000000;
+	portc =  0b00000000;
+
+	wpua = 0b00010000; // weak pull up on switch input
+	wpuc = 0b00000000;
 	option_reg.7 = 0; // weak pull up enable
 
 	// initialise MIDI comms
@@ -623,7 +689,25 @@ void main()
 	// enable interrupts	
 	intcon.7 = 1; //GIE
 	intcon.6 = 1; //PEIE
-	
+
+/*
+porta = 0;
+for(;;) {
+trisa = 0b00000011;
+delay_ms(200);
+trisa = 0b00000111;
+delay_ms(200);
+trisa = 0b00000101;
+delay_ms(200);
+trisa = 0b00000111;
+delay_ms(200);
+trisa = 0b00000110;
+delay_ms(200);
+trisa = 0b00000111;
+delay_ms(200);
+}
+*/
+
 	// Initialise the table of port info pointers
 	port[0] = &port0;
 	port[1] = &port1;
@@ -640,6 +724,37 @@ void main()
 	// to restore default settings
 	delay_ms(5);
 	loadPortInfo((!P_MODE));		
+
+#ifdef RELAY_SWITCHER
+	// In relay switching mode set all output latches LOW
+	// and set default tristate (INPUT/1 selected for OFF)
+	T_OUT0 = !port0.cfg.invert;
+	T_OUT1 = !port1.cfg.invert;
+	T_OUT2 = !port2.cfg.invert;
+	T_OUT3 = !port3.cfg.invert;
+	T_OUT4 = !port4.cfg.invert;
+	T_OUT5 = !port5.cfg.invert;
+	T_OUT6 = !port6.cfg.invert;
+	T_OUT7 = !port7.cfg.invert;
+		
+	P_OUT0 = 0;		P_OUT1 = 0;		P_OUT2 = 0;		P_OUT3 = 0;
+	P_OUT4 = 0;		P_OUT5 = 0;		P_OUT6 = 0;		P_OUT7 = 0;
+		
+#else
+	// In transistor switching mode set default "off"
+	// states and enable digital outputs
+	P_OUT0 = !!port0.cfg.invert;
+	P_OUT1 = !!port1.cfg.invert;
+	P_OUT2 = !!port2.cfg.invert;
+	P_OUT3 = !!port3.cfg.invert;
+	P_OUT4 = !!port4.cfg.invert;
+	P_OUT5 = !!port5.cfg.invert;
+	P_OUT6 = !!port6.cfg.invert;
+	P_OUT7 = !!port7.cfg.invert;
+		
+	T_OUT0 = 0;		T_OUT1 = 0;		T_OUT2 = 0;		T_OUT3 = 0;
+	T_OUT4 = 0;		T_OUT5 = 0;		T_OUT6 = 0;		T_OUT7 = 0;
+#endif
 		
 	int ledCount = 0;
 	int modeHeld = 0;
@@ -755,10 +870,34 @@ void main()
 					ledCount = LEDCOUNT_LONG;
 			}
 		}
-		
-		// MANAGE OUTPUTS
-#define OUT_STATE(P) (P.status.count && (pwm < P.status.duty))
-#define OUT_STATEN(P) (!P.status.count && (pwm < P.status.duty))
+
+#ifdef RELAY_SWITCHER
+
+		// Manage outputs for relay switcher. PWM is ignored and switching
+		// is done on the TRIS bit
+		#define OUT_STATE(P) !(P.status.count)
+		#define OUT_STATEN(P) !!(P.status.count)
+		T_OUT0 = port0.cfg.invert? OUT_STATEN(port0) : OUT_STATE(port0);
+		T_OUT1 = port1.cfg.invert? OUT_STATEN(port1) : OUT_STATE(port1);
+		T_OUT2 = port2.cfg.invert? OUT_STATEN(port2) : OUT_STATE(port2);
+		T_OUT3 = port3.cfg.invert? OUT_STATEN(port3) : OUT_STATE(port3);
+		T_OUT4 = port4.cfg.invert? OUT_STATEN(port4) : OUT_STATE(port4);		
+		T_OUT5 = port5.cfg.invert? OUT_STATEN(port5) : OUT_STATE(port5);
+		T_OUT6 = port6.cfg.invert? OUT_STATEN(port6) : OUT_STATE(port6);
+		T_OUT7 = port7.cfg.invert? OUT_STATEN(port7) : OUT_STATE(port7);		
+		P_OUT0 = 0;		
+		P_OUT1 = 0;		
+		P_OUT2 = 0;		
+		P_OUT3 = 0;
+		P_OUT4 = 0;		
+		P_OUT5 = 0;		
+		P_OUT6 = 0;		
+		P_OUT7 = 0;		
+#else		
+		// Manage outputs for transistor switcher. PWM is used and switching
+		// is done on the digital output bit
+		#define OUT_STATE(P) (P.status.count && (pwm < P.status.duty))
+		#define OUT_STATEN(P) (!P.status.count && (pwm < P.status.duty))
 		P_OUT0 = port0.cfg.invert? OUT_STATEN(port0) : OUT_STATE(port0);
 		P_OUT1 = port1.cfg.invert? OUT_STATEN(port1) : OUT_STATE(port1);
 		P_OUT2 = port2.cfg.invert? OUT_STATEN(port2) : OUT_STATE(port2);
@@ -769,5 +908,7 @@ void main()
 		P_OUT7 = port7.cfg.invert? OUT_STATEN(port7) : OUT_STATE(port7);		
 		if(++pwm>100)
 			pwm=0;
+#endif 
+			
 	}
 }
