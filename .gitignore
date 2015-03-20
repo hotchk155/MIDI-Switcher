@@ -1,6 +1,3 @@
-*.tmp
-*.jbf
-
 # EAGLE
 
 *.b#1
@@ -34,9 +31,26 @@
 *.GTP
 *.GTS
 *.TXT
+*.gm1
+*.gbp
+*.zip
 
+# SOURCE BOOST
 
+*.brws
+makefile.*
+*.__f
+*.asm
+*.cof
+*.lst
+*.map
+*.casm
+*.obj
+*.stat
+*.tree
 
+Backup_of*.cdr
+*.jbf
 ############
 ## Windows
 ############
@@ -48,16 +62,3 @@ Thumbs.db
 Desktop.ini
 
 
-##############
-## Sourceboost
-##############
-*.asm
-*.brws
-*.casm
-*.cof
-*.lst
-*.map
-*.obj
-*.stat
-*.tree
-makefile.*

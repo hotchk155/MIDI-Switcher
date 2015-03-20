@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.4">
+<eagle version="6.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -12397,18 +12397,18 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <part name="IC1" library="jasons_stuff" deviceset="PIC16F1825" device="DIL14" value="PIC16F1825DIL14"/>
 <part name="IC2" library="optocoupler" deviceset="6N138" device=""/>
 <part name="MIDI_IN" library="jasons_stuff" deviceset="DIN5PIN" device="&quot;"/>
-<part name="R13" library="rcl" deviceset="R-EU_" device="0207/7"/>
-<part name="R10" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R12" library="rcl" deviceset="R-EU_" device="0207/2V"/>
+<part name="R13" library="rcl" deviceset="R-EU_" device="0207/7" value="220"/>
+<part name="R10" library="rcl" deviceset="R-EU_" device="0207/2V" value="1k5"/>
+<part name="R12" library="rcl" deviceset="R-EU_" device="0207/2V" value="1k5"/>
 <part name="C2" library="capacitor-wima" deviceset="C" device="2.5/2"/>
-<part name="R5" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R4" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R3" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R2" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R7" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R9" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R6" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R8" library="rcl" deviceset="R-EU_" device="0207/2V"/>
+<part name="R5" library="rcl" deviceset="R-EU_" device="0207/2V" value="100r"/>
+<part name="R4" library="rcl" deviceset="R-EU_" device="0207/2V" value="100r"/>
+<part name="R3" library="rcl" deviceset="R-EU_" device="0207/2V" value="100r"/>
+<part name="R2" library="rcl" deviceset="R-EU_" device="0207/2V" value="100r"/>
+<part name="R7" library="rcl" deviceset="R-EU_" device="0207/2V" value="100r"/>
+<part name="R9" library="rcl" deviceset="R-EU_" device="0207/2V" value="100r"/>
+<part name="R6" library="rcl" deviceset="R-EU_" device="0207/2V" value="100r"/>
+<part name="R8" library="rcl" deviceset="R-EU_" device="0207/2V" value="100r"/>
 <part name="ICSP" library="microbuilder" deviceset="HEADER-1X6" device=""/>
 <part name="E" library="adafruit" deviceset="PINHD-1X1" device=""/>
 <part name="F" library="adafruit" deviceset="PINHD-1X1" device=""/>
@@ -12420,9 +12420,9 @@ http://www.fairchildsemi.com/ds/LM/LM7805.pdf</description>
 <part name="B" library="adafruit" deviceset="PINHD-1X1" device=""/>
 <part name="C1" library="rcl" deviceset="CPOL-EU" device="E2.5-7"/>
 <part name="PWR" library="adafruit" deviceset="LED" device="3MM"/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="0207/2V"/>
+<part name="R1" library="rcl" deviceset="R-EU_" device="0207/2V" value="1k"/>
 <part name="ACTV" library="adafruit" deviceset="LED" device="3MM"/>
-<part name="R11" library="rcl" deviceset="R-EU_" device="0207/2V"/>
+<part name="R11" library="rcl" deviceset="R-EU_" device="0207/2V" value="1k"/>
 <part name="MODE" library="switch-omron" deviceset="10-XX" device=""/>
 <part name="GD" library="adafruit" deviceset="PINHD-1X1" device=""/>
 <part name="5V" library="adafruit" deviceset="PINHD-1X1" device=""/>
