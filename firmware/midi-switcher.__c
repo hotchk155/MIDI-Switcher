@@ -1,5 +1,5 @@
 [Settings]
-Active Directory=C:\Dev\GitHub\MIDI-Switcher\firmware\
+Active Directory=D:\GitHub\MIDI-Switcher\firmware\
 Target=PIC16F1825
 Active Compiler=BoostC
 Active Config=Release

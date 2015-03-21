@@ -27,9 +27,10 @@
 // Ver Date 
 // 1.0 	21Dec2013	Initial version
 // 1.1 	15Dec2014	Add support for relay board
+// 1.2 	21Mar2015	First release of relay board
 //
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 1
+#define VERSION_MINOR 2
 //
 ////////////////////////////////////////////////////////////
 
@@ -37,6 +38,7 @@
 #include <memory.h>
 #include <eeprom.h>
 
+// for Transistor board comment this line out 
 #define RELAY_SWITCHER 1
 
 // CONFIG OPTIONS 
@@ -79,14 +81,14 @@ P0		RC3 - RC2		P2
 		
 */
 #ifdef RELAY_SWITCHER
-	#define P_OUT0		portc.3 
-	#define P_OUT1		portc.4 
-	#define P_OUT2		portc.2
-	#define P_OUT3		portc.1 
-	#define P_OUT4		portc.0
-	#define P_OUT5		porta.2 
-	#define P_OUT6		porta.1
-	#define P_OUT7		porta.0	
+	#define P_OUT0		latc.3 
+	#define P_OUT1		latc.4 
+	#define P_OUT2		latc.2
+	#define P_OUT3		latc.1 
+	#define P_OUT4		latc.0
+	#define P_OUT5		lata.2 
+	#define P_OUT6		lata.1
+	#define P_OUT7		lata.0	
 
 	#define T_OUT0		trisc.3 
 	#define T_OUT1		trisc.4 
@@ -690,24 +692,6 @@ void main()
 	intcon.7 = 1; //GIE
 	intcon.6 = 1; //PEIE
 
-/*
-porta = 0;
-for(;;) {
-trisa = 0b00000011;
-delay_ms(200);
-trisa = 0b00000111;
-delay_ms(200);
-trisa = 0b00000101;
-delay_ms(200);
-trisa = 0b00000111;
-delay_ms(200);
-trisa = 0b00000110;
-delay_ms(200);
-trisa = 0b00000111;
-delay_ms(200);
-}
-*/
-
 	// Initialise the table of port info pointers
 	port[0] = &port0;
 	port[1] = &port1;
@@ -717,7 +701,6 @@ delay_ms(200);
 	port[5] = &port5;
 	port[6] = &port6;
 	port[7] = &port7;
-	
 	
 	// allow time for input to settle then load 
 	// EEPROM settings, allowing a hold of MODE
@@ -884,7 +867,7 @@ delay_ms(200);
 		T_OUT4 = port4.cfg.invert? OUT_STATEN(port4) : OUT_STATE(port4);		
 		T_OUT5 = port5.cfg.invert? OUT_STATEN(port5) : OUT_STATE(port5);
 		T_OUT6 = port6.cfg.invert? OUT_STATEN(port6) : OUT_STATE(port6);
-		T_OUT7 = port7.cfg.invert? OUT_STATEN(port7) : OUT_STATE(port7);		
+		T_OUT7 = port7.cfg.invert? OUT_STATEN(port7) : OUT_STATE(port7);	
 		P_OUT0 = 0;		
 		P_OUT1 = 0;		
 		P_OUT2 = 0;		
