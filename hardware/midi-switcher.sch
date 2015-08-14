@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="6.4">
+<eagle version="6.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -8500,6 +8500,20 @@ Source: http://products.nichicon.co.jp/en/pdf/XJA043/e-ud.pdf</description>
 <vertex x="-3.05" y="-2.475"/>
 </polygon>
 </package>
+<package name="1812X7R">
+<description>&lt;b&gt;Chip Monolithic Ceramic Capacitors&lt;/b&gt; Medium Voltage High Capacitance for General Use&lt;p&gt;
+Source: http://www.murata.com .. GRM43DR72E224KW01.pdf</description>
+<wire x1="-1.1" y1="1.5" x2="1.1" y2="1.5" width="0.2032" layer="51"/>
+<wire x1="1.1" y1="-1.5" x2="-1.1" y2="-1.5" width="0.2032" layer="51"/>
+<wire x1="-0.6" y1="1.5" x2="0.6" y2="1.5" width="0.2032" layer="21"/>
+<wire x1="0.6" y1="-1.5" x2="-0.6" y2="-1.5" width="0.2032" layer="21"/>
+<smd name="1" x="-1.425" y="0" dx="0.8" dy="3.5" layer="1"/>
+<smd name="2" x="1.425" y="0" dx="0.8" dy="3.5" layer="1" rot="R180"/>
+<text x="-1.9456" y="1.9958" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.9456" y="-3.7738" size="1.27" layer="27">&gt;VALUE</text>
+<rectangle x1="-1.4" y1="-1.6" x2="-1.1" y2="1.6" layer="51"/>
+<rectangle x1="1.1" y1="-1.6" x2="1.4" y2="1.6" layer="51" rot="R180"/>
+</package>
 </packages>
 <symbols>
 <symbol name="R-EU">
@@ -9290,6 +9304,15 @@ Source: http://products.nichicon.co.jp/en/pdf/XJA043/e-ud.pdf</description>
 </technologies>
 </device>
 <device name="R1218" package="R1218">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1812X7R" package="1812X7R">
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
@@ -13353,14 +13376,14 @@ General purpose 1N400x type rectifier
 <part name="R2" library="rcl" deviceset="R-EU_" device="0207/7"/>
 <part name="R3" library="rcl" deviceset="R-EU_" device="0207/7"/>
 <part name="C2" library="rcl" deviceset="C-EU" device="025-025X050"/>
-<part name="R15" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R17" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R19" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R21" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R13" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R11" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R9" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R7" library="rcl" deviceset="R-EU_" device="0207/2V"/>
+<part name="R15" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R17" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R19" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R21" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R13" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R11" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R9" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R7" library="rcl" deviceset="R-EU_" device="0207/7"/>
 <part name="ICSP" library="microbuilder" deviceset="HEADER-1X6" device=""/>
 <part name="OP1-" library="adafruit" deviceset="PINHD-1X1" device=""/>
 <part name="OP2-" library="adafruit" deviceset="PINHD-1X1" device=""/>
@@ -13385,14 +13408,14 @@ General purpose 1N400x type rectifier
 <part name="C4" library="rcl" deviceset="CPOL-EU" device="E2.5-7"/>
 <part name="C5" library="rcl" deviceset="CPOL-EU" device="E2.5-7"/>
 <part name="LED5" library="adafruit" deviceset="LED" device="3MM"/>
-<part name="R14" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R16" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R18" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R20" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R12" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R10" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R8" library="rcl" deviceset="R-EU_" device="0207/2V"/>
-<part name="R6" library="rcl" deviceset="R-EU_" device="0207/2V"/>
+<part name="R14" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R16" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R18" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R20" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R12" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R10" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R8" library="rcl" deviceset="R-EU_" device="0207/7"/>
+<part name="R6" library="rcl" deviceset="R-EU_" device="0207/7"/>
 <part name="LED_6" library="adafruit" deviceset="LED" device="3MM"/>
 <part name="LED_7" library="adafruit" deviceset="LED" device="3MM"/>
 <part name="LED8" library="adafruit" deviceset="LED" device="3MM"/>
@@ -14125,63 +14148,63 @@ General purpose 1N400x type rectifier
 <approved hash="111,1,360.68,-109.22,N$13,,,,,"/>
 <approved hash="111,1,381,-119.38,N$14,,,,,"/>
 <approved hash="111,1,401.32,-129.54,N$15,,,,,"/>
-<approved hash="115,1,87.9052,81.28,R1,,,,,"/>
-<approved hash="115,1,67.5852,33.02,R2,,,,,"/>
-<approved hash="115,1,65.0452,33.02,R3,,,,,"/>
-<approved hash="115,1,67.31,-5.94869,C2,,,,,"/>
-<approved hash="115,1,223.52,-59.4148,R15,,,,,"/>
-<approved hash="115,1,223.52,-69.5748,R17,,,,,"/>
-<approved hash="115,1,223.52,-79.7348,R19,,,,,"/>
-<approved hash="115,1,223.52,-89.8948,R21,,,,,"/>
-<approved hash="115,1,223.52,-100.055,R13,,,,,"/>
-<approved hash="115,1,223.52,-110.215,R11,,,,,"/>
-<approved hash="115,1,223.52,-120.375,R9,,,,,"/>
-<approved hash="115,1,223.52,-130.535,R7,,,,,"/>
-<approved hash="115,1,147.557,-15.1088,ICSP,,,,,"/>
-<approved hash="115,1,267.839,-35.3229,OP1-,,,,,"/>
-<approved hash="115,1,290.699,-35.3229,OP2-,,,,,"/>
-<approved hash="115,1,313.559,-35.3229,OP3-,,,,,"/>
-<approved hash="115,1,336.419,-35.3229,OP4-,,,,,"/>
-<approved hash="115,1,359.279,-35.3229,OP5-,,,,,"/>
-<approved hash="115,1,379.599,-35.3229,OP6-,,,,,"/>
-<approved hash="115,1,399.919,-35.3229,OP7-,,,,,"/>
-<approved hash="115,1,420.239,-35.3229,OP8-,,,,,"/>
-<approved hash="115,1,294.877,21.7212,OP1+,,,,,"/>
-<approved hash="115,1,294.877,11.5612,OP2+,,,,,"/>
-<approved hash="115,1,294.877,1.40123,OP3+,,,,,"/>
-<approved hash="115,1,294.877,-8.75877,OP4+,,,,,"/>
-<approved hash="115,1,276.623,-11.5612,OP5+,,,,,"/>
-<approved hash="115,1,276.623,-1.40123,12V,,,,,"/>
-<approved hash="115,1,276.623,8.75877,OP7+,,,,,"/>
-<approved hash="115,1,276.623,18.9188,OP8+,,,,,"/>
-<approved hash="115,1,307.577,44.5812,JP18,,,,,"/>
-<approved hash="115,1,307.577,31.8812,JP19,,,,,"/>
-<approved hash="115,1,153.269,36.83,C3,,,,,"/>
-<approved hash="115,1,178.669,36.83,C1,,,,,"/>
-<approved hash="115,1,194.398,36.83,C4,,,,,"/>
-<approved hash="115,1,141.058,36.83,C5,,,,,"/>
-<approved hash="115,1,132.402,-153.67,LED5,,,,,"/>
-<approved hash="115,1,133.075,-142.24,R14,,,,,"/>
-<approved hash="115,1,143.235,-142.24,R16,,,,,"/>
-<approved hash="115,1,153.395,-142.24,R18,,,,,"/>
-<approved hash="115,1,163.555,-142.24,R20,,,,,"/>
-<approved hash="115,1,173.715,-142.24,R12,,,,,"/>
-<approved hash="115,1,183.875,-142.24,R10,,,,,"/>
-<approved hash="115,1,194.035,-142.24,R8,,,,,"/>
-<approved hash="115,1,204.195,-142.24,R6,,,,,"/>
-<approved hash="115,1,142.562,-153.67,LED_6,,,,,"/>
-<approved hash="115,1,152.722,-153.67,LED_7,,,,,"/>
-<approved hash="115,1,162.882,-153.67,LED8,,,,,"/>
-<approved hash="115,1,173.042,-153.67,LED4,,,,,"/>
-<approved hash="115,1,183.202,-153.67,LED3,,,,,"/>
-<approved hash="115,1,193.362,-153.67,LED2,,,,,"/>
-<approved hash="115,1,203.522,-153.67,LED1,,,,,"/>
-<approved hash="115,1,96.1983,52.07,PWR,,,,,"/>
-<approved hash="115,1,107.675,53.34,R5,,,,,"/>
-<approved hash="115,1,13.97,-18.1017,ACT,,,,,"/>
-<approved hash="115,1,27.94,-18.7748,R4,,,,,"/>
-<approved hash="115,1,17.78,-25.7895,MODE,,,,,"/>
-<approved hash="115,1,167.64,38.5826,REG1,,,,,"/>
+<approved hash="113,1,87.9052,81.28,R1,,,,,"/>
+<approved hash="113,1,67.5852,33.02,R2,,,,,"/>
+<approved hash="113,1,65.0452,33.02,R3,,,,,"/>
+<approved hash="113,1,67.31,-5.94869,C2,,,,,"/>
+<approved hash="113,1,223.52,-59.4148,R15,,,,,"/>
+<approved hash="113,1,223.52,-69.5748,R17,,,,,"/>
+<approved hash="113,1,223.52,-79.7348,R19,,,,,"/>
+<approved hash="113,1,223.52,-89.8948,R21,,,,,"/>
+<approved hash="113,1,223.52,-100.055,R13,,,,,"/>
+<approved hash="113,1,223.52,-110.215,R11,,,,,"/>
+<approved hash="113,1,223.52,-120.375,R9,,,,,"/>
+<approved hash="113,1,223.52,-130.535,R7,,,,,"/>
+<approved hash="113,1,147.557,-15.1088,ICSP,,,,,"/>
+<approved hash="113,1,267.839,-35.3229,OP1-,,,,,"/>
+<approved hash="113,1,290.699,-35.3229,OP2-,,,,,"/>
+<approved hash="113,1,313.559,-35.3229,OP3-,,,,,"/>
+<approved hash="113,1,336.419,-35.3229,OP4-,,,,,"/>
+<approved hash="113,1,359.279,-35.3229,OP5-,,,,,"/>
+<approved hash="113,1,379.599,-35.3229,OP6-,,,,,"/>
+<approved hash="113,1,399.919,-35.3229,OP7-,,,,,"/>
+<approved hash="113,1,420.239,-35.3229,OP8-,,,,,"/>
+<approved hash="113,1,294.877,21.7212,OP1+,,,,,"/>
+<approved hash="113,1,294.877,11.5612,OP2+,,,,,"/>
+<approved hash="113,1,294.877,1.40123,OP3+,,,,,"/>
+<approved hash="113,1,294.877,-8.75877,OP4+,,,,,"/>
+<approved hash="113,1,276.623,-11.5612,OP5+,,,,,"/>
+<approved hash="113,1,276.623,-1.40123,12V,,,,,"/>
+<approved hash="113,1,276.623,8.75877,OP7+,,,,,"/>
+<approved hash="113,1,276.623,18.9188,OP8+,,,,,"/>
+<approved hash="113,1,307.577,44.5812,JP18,,,,,"/>
+<approved hash="113,1,307.577,31.8812,JP19,,,,,"/>
+<approved hash="113,1,153.269,36.83,C3,,,,,"/>
+<approved hash="113,1,178.669,36.83,C1,,,,,"/>
+<approved hash="113,1,194.398,36.83,C4,,,,,"/>
+<approved hash="113,1,141.058,36.83,C5,,,,,"/>
+<approved hash="113,1,132.402,-153.67,LED5,,,,,"/>
+<approved hash="113,1,133.075,-142.24,R14,,,,,"/>
+<approved hash="113,1,143.235,-142.24,R16,,,,,"/>
+<approved hash="113,1,153.395,-142.24,R18,,,,,"/>
+<approved hash="113,1,163.555,-142.24,R20,,,,,"/>
+<approved hash="113,1,173.715,-142.24,R12,,,,,"/>
+<approved hash="113,1,183.875,-142.24,R10,,,,,"/>
+<approved hash="113,1,194.035,-142.24,R8,,,,,"/>
+<approved hash="113,1,204.195,-142.24,R6,,,,,"/>
+<approved hash="113,1,142.562,-153.67,LED_6,,,,,"/>
+<approved hash="113,1,152.722,-153.67,LED_7,,,,,"/>
+<approved hash="113,1,162.882,-153.67,LED8,,,,,"/>
+<approved hash="113,1,173.042,-153.67,LED4,,,,,"/>
+<approved hash="113,1,183.202,-153.67,LED3,,,,,"/>
+<approved hash="113,1,193.362,-153.67,LED2,,,,,"/>
+<approved hash="113,1,203.522,-153.67,LED1,,,,,"/>
+<approved hash="113,1,96.1983,52.07,PWR,,,,,"/>
+<approved hash="113,1,107.675,53.34,R5,,,,,"/>
+<approved hash="113,1,13.97,-18.1017,ACT,,,,,"/>
+<approved hash="113,1,27.94,-18.7748,R4,,,,,"/>
+<approved hash="113,1,17.78,-25.7895,MODE,,,,,"/>
+<approved hash="113,1,167.64,38.5826,REG1,,,,,"/>
 </errors>
 </schematic>
 </drawing>
