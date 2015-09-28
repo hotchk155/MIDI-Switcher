@@ -13946,7 +13946,7 @@ Source: www.kingbright.com</description>
 <part name="Q7" library="jason_eagle6" deviceset="MJD122G" device="DPAK"/>
 <part name="Q8" library="jason_eagle6" deviceset="MJD122G" device="DPAK"/>
 <part name="D2" library="jasons_stuff" deviceset="0805DIODE" device=""/>
-<part name="D1" library="adafruit" deviceset="DIODE" device="_SOD-123FL"/>
+<part name="D1" library="adafruit" deviceset="DIODE" device="SMA"/>
 <part name="REG1" library="jason_eagle6" deviceset="LD1086" device=""/>
 </parts>
 <sheets>
