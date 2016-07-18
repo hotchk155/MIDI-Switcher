@@ -18252,7 +18252,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <approved hash="113,1,40.64,-72.1148,R12,,,,,"/>
 <approved hash="113,1,40.64,-69.5748,R11,,,,,"/>
 <approved hash="113,1,293.18,-69.85,ICSP,,,,,"/>
-<approved hash="113,1,199.791,-95.25,C3,,,,,"/>
+<approved hash="113,1,197.062,-95.25,C3,,,,,"/>
 <approved hash="113,1,143.598,-16.51,C4,,,,,"/>
 <approved hash="113,1,184.238,-16.51,C5,,,,,"/>
 <approved hash="113,1,148.991,-16.51,C2,,,,,"/>

@@ -180,12 +180,14 @@
 <text x="107.188" y="29.591" size="1.524" layer="51" font="vector" rot="R90">TR</text>
 <text x="137.922" y="26.543" size="1.524" layer="51" font="vector" rot="R90">TR</text>
 <text x="37.084" y="29.337" size="1.778" layer="51" font="vector" rot="R270">A/B</text>
-<text x="65.151" y="29.337" size="1.778" layer="51" font="vector" rot="R270">A/B</text>
-<text x="93.091" y="29.083" size="1.778" layer="51" font="vector" rot="R270">C/D</text>
-<text x="121.031" y="29.337" size="1.778" layer="51" font="vector" rot="R270">E/F</text>
-<text x="70.993" y="38.354" size="2.032" layer="51" font="vector" rot="R180">TRS JACK SWITCHER</text>
-<text x="51.816" y="40.894" size="2.032" layer="51" font="vector" rot="R180">MIDI TO</text>
-<text x="72.009" y="36.068" size="1.524" layer="51" font="vector" rot="R180">rev 1</text>
+<text x="65.151" y="29.337" size="1.778" layer="51" font="vector" rot="R270">C/D</text>
+<text x="93.091" y="29.083" size="1.778" layer="51" font="vector" rot="R270">E/F</text>
+<text x="121.031" y="29.337" size="1.778" layer="51" font="vector" rot="R270">G/H</text>
+<text x="71.247" y="41.783" size="2.54" layer="51" font="vector" rot="R180">MIDI SWITCHER</text>
+<text x="64.008" y="38.1" size="1.524" layer="51" font="vector" rot="R180">rev 1</text>
+<text x="29.083" y="18.669" size="1.524" layer="51" font="vector" rot="R270">hotchk155</text>
+<text x="148.59" y="33.02" size="1.524" layer="51" font="vector" rot="R270">six4pix.com/switcher</text>
+<text x="53.467" y="38.862" size="2.54" layer="51" font="vector" rot="R180">TRS</text>
 </plain>
 <libraries>
 <library name="jason_eagle6">
