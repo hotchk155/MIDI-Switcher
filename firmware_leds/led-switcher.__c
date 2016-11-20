@@ -1,0 +1,30 @@
+[Settings]
+Active Directory=D:\GitHub\MIDI-Switcher\firmware_leds\
+Target=PIC16F1825
+Active Compiler=BoostC
+Active Config=Release
+Config=0
+Last Ext=c
+Last ExtIdx=1
+Last Dir=C:\Dev\GitHub\MIDI-Hub\
+Profiling=0
+Snapshot=0
+Type=0
+Warnings=1
+Model=0
+[Files]
+Count=1
+File0=led-switcher.c
+[Browser]
+UseSysHeaders=1
+UseNovoHeaders=1
+[Debugger]
+DebugFromMain=1
+[Watch]
+Count=0
+[Watchpoint]
+Count=0
+[Tools]
+BoostDir=C:\Program Files (x86)\SourceBoost\
+Programmer=
+PrefixWithBuildThreadNum=0
