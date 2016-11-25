@@ -84,15 +84,10 @@ CCP4	RC1
 
 typedef unsigned char byte;
 
-// Timer settings
-#define TIMER_0_INIT_SCALAR		240
-
-#define PWM_MAX		63
-#define PWM_MASK	0x3F
 
 volatile byte midi_status = 0;
 volatile byte midi_param = 0;
-volatile byte *this_duty = NULL;
+volatile byte which_cc = 0;
 									
 // the duty at each port - full duty is 127
 volatile byte duty0 = 0;
@@ -103,18 +98,6 @@ volatile byte duty4 = 0;
 volatile byte duty5 = 0;
 volatile byte duty6 = 0;
 volatile byte duty7 = 0;
-
-volatile byte pwm_end_0 = 0;
-volatile byte pwm_end_1 = 0;
-volatile byte pwm_end_2 = 0;
-volatile byte pwm_end_3 = 0;
-volatile byte pwm_end_4 = 0;
-volatile byte pwm_end_5 = 0;
-volatile byte pwm_end_6 = 0;
-volatile byte pwm_end_7 = 0;
-
-volatile byte pwm_phase = 0;
-volatile byte tick_flag = 0;
 
 rom char *gamma = {
 0, 0, 0, 0, 0, 0, 0, 0, 
@@ -134,89 +117,62 @@ rom char *gamma = {
 180, 184, 189, 193, 198, 203, 208, 213, 
 218, 223, 228, 233, 239, 244, 249, 255 };
 
+typedef struct {
+	byte first;
+	byte second;
+	byte next;
+} PWM_PAIR;
+
+PWM_PAIR port01;
+PWM_PAIR port23;
+PWM_PAIR port45;
+PWM_PAIR port67;
+
+#define ON_CCP_INT(_pair, _portbit1, _portbit2) 	\
+	t1con.0 = 0; 									\
+	_portbit1 = (tmr1l < _pair.first);  			\
+	_portbit2 = (tmr1l < _pair.second); 			\
+	ccpr1l = _pair.next; 							\
+	t1con.0 = 1;						
+
+#define SET_CCP_INT(_pair, _ccpie, _ccpr, _pwm1, _pwm2) \
+	_pair.first = _pwm1; 							\
+	_pair.second = _pwm2; 							\
+	_pair.next = (_pwm1 > _pwm2)? _pwm1 : _pwm2; 	\
+	_ccpr  = (_pwm1 > _pwm2)? _pwm2 : _pwm1; 		\
+	_ccpie = !!_ccpr; 								
+		
+#define INIT_STATE(_pair, _portbit1, _portbit2) 	\
+	_portbit1 = !!_pair.first; 							\
+	_portbit2 = !!_pair.second;
+
 ////////////////////////////////////////////////////////////
 // INTERRUPT SERVICE ROUTINE
 void interrupt( void )
 {
 
+	
 	////////////////////////////////////////////////////////////
-	// CCP1 interrupt 
+	// CCP compare interrupt
 	if(pir1.CCP1IF) 
 	{
-		t1con.0 = 0;	// pause the timer
-		pir1.CCP1IF = 0; 	// clear interrupt
-	
-		P_OUT0 = (tmr1l < pwm_end_0);
-		P_OUT1 = (tmr1l < pwm_end_1);
-
-		if(tmr1l < pwm_end_0)
-			ccpr1l = pwm_end_0; // schedule interrupt at end of duty 0
-		else if(tmr1l < pwm_end_1)
-			ccpr1l = pwm_end_1; // schedule interrupt at end of duty 1
-		else 
-			pie1.CCP1IE = 0; // no more interrupts
-		t1con.0 = 1;	// resume the timer 
-					
+		ON_CCP_INT(port01, P_OUT0, P_OUT1);
+		pir1.CCP1IF = 0;
 	}
-	////////////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////
-	// CCP2 interrupt 
 	if(pir2.CCP2IF) 
 	{
-		t1con.0 = 0;	
-		pir2.CCP2IF = 0; 
-	
-		P_OUT2 = (tmr1l < pwm_end_2);
-		P_OUT3 = (tmr1l < pwm_end_3);
-
-		if(tmr1l < pwm_end_2)
-			ccpr1l = pwm_end_2; 
-		else if(tmr1l < pwm_end_3)
-			ccpr1l = pwm_end_3; 
-		else 
-			pie2.CCP2IE = 0; 
-		t1con.0 = 1;						
+		ON_CCP_INT(port23, P_OUT2, P_OUT3);
+		pir2.CCP2IF = 0;
 	}
-	////////////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////
-	// CCP3 interrupt 
 	if(pir3.CCP3IF) 
 	{
-		t1con.0 = 0;	
-		pir3.CCP3IF = 0; 
-	
-		P_OUT4 = (tmr1l < pwm_end_4);
-		P_OUT5 = (tmr1l < pwm_end_5);
-
-		if(tmr1l < pwm_end_4)
-			ccpr1l = pwm_end_4; 
-		else if(tmr1l < pwm_end_5)
-			ccpr1l = pwm_end_5; 
-		else 
-			pie3.CCP3IE = 0; 
-		t1con.0 = 1;						
-	}
-	////////////////////////////////////////////////////////////
-
-	////////////////////////////////////////////////////////////
-	// CCP4 interrupt 
+		ON_CCP_INT(port45, P_OUT4, P_OUT5);
+		pir3.CCP3IF = 0;
+	}	
 	if(pir3.CCP4IF) 
 	{
-		t1con.0 = 0;	
-		pir3.CCP4IF = 0; 
-	
-		P_OUT6 = (tmr1l < pwm_end_6);
-		P_OUT7 = (tmr1l < pwm_end_7);
-
-		if(tmr1l < pwm_end_6)
-			ccpr1l = pwm_end_6; 
-		else if(tmr1l < pwm_end_7)
-			ccpr1l = pwm_end_7; 
-		else 
-			pie3.CCP4IE = 0; 
-		t1con.0 = 1;						
+		ON_CCP_INT(port67, P_OUT6, P_OUT7);
+		pir3.CCP4IF = 0;
 	}
 	////////////////////////////////////////////////////////////
 	
@@ -225,93 +181,22 @@ void interrupt( void )
 	if(pir1.TMR1IF) 
 	{
 		// clear interrupt
-		P_OUT1 = !P_OUT1;
 		pir1.TMR1IF = 0;		
 		
+		SET_CCP_INT(port01, pie1.CCP1IE, ccpr1l, duty0, duty1);
+		SET_CCP_INT(port23, pie2.CCP2IE, ccpr2l, duty2, duty3);
+		SET_CCP_INT(port45, pie3.CCP3IE, ccpr3l, duty4, duty5);
+		SET_CCP_INT(port67, pie3.CCP4IE, ccpr4l, duty6, duty7);
 		
-		// copy over the latest duty cycles
-		pwm_end_0 = duty0;
-		pwm_end_1 = duty1;
-		pwm_end_2 = duty2;
-		pwm_end_3 = duty3;
-		pwm_end_4 = duty4;
-		pwm_end_5 = duty5;
-		pwm_end_6 = duty6;
-		pwm_end_7 = duty7;
-		
-		// set initial states of outputs (we rely on the previous
-		// PWM cycle to have turned off any output with less than
-		// full duty)
-		
-		// --- CCP1
-		if(pwm_end_0) 
-		{
-			P_OUT0 = 1;		// Set output on
-			if(pwm_end_0 <= pwm_end_1) 
-				ccpr1l = pwm_end_0;
-			pie1.CCP1IE = 1;		
-		}		
-		if(pwm_end_1) 
-		{
-			P_OUT1 = 1;		// Set output on
-			if(pwm_end_1 < pwm_end_0) 
-				ccpr1l = pwm_end_1;
-			pie1.CCP1IE = 1;		// CCP1IE enable
-		}
-
-		// --- CCP2
-		if(pwm_end_2) 
-		{
-			P_OUT2 = 1;		// Set output on
-			if(pwm_end_2 <= pwm_end_3) 
-				ccpr2l = pwm_end_2;
-			pie2.CCP2IE = 1;		
-		}		
-		if(pwm_end_3) 
-		{
-			P_OUT3 = 1;		// Set output on
-			if(pwm_end_3 < pwm_end_2) 
-				ccpr2l = pwm_end_3;
-			pie2.CCP2IE = 1;		
-		}
-
-		// --- CCP3
-		if(pwm_end_4) 
-		{
-			P_OUT4 = 1;		// Set output on
-			if(pwm_end_4 <= pwm_end_5) 
-				ccpr3l = pwm_end_4;
-			pie3.CCP3IE = 1;		
-		}		
-		if(pwm_end_5) 
-		{
-			P_OUT5 = 1;		// Set output on
-			if(pwm_end_5 < pwm_end_4) 
-				ccpr3l = pwm_end_5;
-			pie3.CCP3IE = 1;		
-		}
-
-		// --- CCP4
-		if(pwm_end_6) 
-		{
-			P_OUT6 = 1;		// Set output on
-			if(pwm_end_6 <= pwm_end_7) 
-				ccpr4l = pwm_end_6;
-			pie3.CCP4IE = 1;		
-		}		
-		if(pwm_end_7) 
-		{
-			P_OUT7 = 1;		// Set output on
-			if(pwm_end_7 < pwm_end_6) 
-				ccpr4l = pwm_end_7;
-			pie3.CCP4IE = 1;		
-		}
+		INIT_STATE(port01, P_OUT0, P_OUT1);
+		INIT_STATE(port23, P_OUT2, P_OUT3);
+		INIT_STATE(port45, P_OUT4, P_OUT5);
+		INIT_STATE(port67, P_OUT6, P_OUT7);
 		
 		// reset the timer
 		tmr1h = 255;
 		tmr1l = 0;
-		
-		
+				
 	}
 	/////////////////////////////////////////////////////
 	
@@ -322,34 +207,32 @@ void interrupt( void )
 	{
 		// get the byte
 		byte b = rcreg;
-		P_LED = 1;
-		if(b&0x80) {
+		if(!!(b & 0x80)) {
 			midi_status = b;
 			midi_param = 1;
 		}
-		else if(midi_status = 0xB0) {
+		else if(midi_status == 0xB0) {
+			P_LED = 1;
 			if(midi_param == 1) {
-				switch(b) {
-					case CC_PORT0: this_duty = &duty0; break;
-					case CC_PORT1: this_duty = &duty1; break;
-					case CC_PORT2: this_duty = &duty2; break;
-					case CC_PORT3: this_duty = &duty3; break;
-					case CC_PORT4: this_duty = &duty4; break;
-					case CC_PORT5: this_duty = &duty5; break;
-					case CC_PORT6: this_duty = &duty6; break;
-					case CC_PORT7: this_duty = &duty7; break;
-					default: this_duty = NULL; break;
-				}
+				which_cc = b;
 				midi_param = 2;
 			}
 			else 
 			{
-				if(this_duty) {
-					*this_duty = gamma[b];
+				switch(which_cc) {
+					case CC_PORT0: duty0 = b; break;
+					case CC_PORT1: duty1 = b; break;
+					case CC_PORT2: duty2 = b; break;
+					case CC_PORT3: duty3 = b; break;
+					case CC_PORT4: duty4 = b; break;
+					case CC_PORT5: duty5 = b; break;
+					case CC_PORT6: duty6 = b; break;
+					case CC_PORT7: duty7 = b; break;
 				}
 				midi_param = 1;
 			}
 		}
+		pir1.5 = 0;
 	}
 }
 
@@ -462,14 +345,14 @@ void main()
 	t1con.0 = 1;	// enable timer 1
 
 	
-	duty0 = 10;
-	duty1 = 20;
-	duty2 = 30;
-	duty3 = 40;
-	duty4 = 50;
-	duty5 = 60;
-	duty6 = 70;
-	duty7 = 80;
+	duty0 = 1;
+	duty1 = 2;
+	duty2 = 4;
+	duty3 = 8;
+	duty4 = 16;
+	duty5 = 32;
+	duty6 = 64;
+	duty7 = 128;
 	while(1);
 
 }
