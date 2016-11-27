@@ -16,18 +16,9 @@
 #pragma DATA _CONFIG2, _WRT_OFF & _PLLEN_OFF & _STVREN_ON & _BORV_19 & _LVP_OFF
 #pragma CLOCK_FREQ 16000000
 
-#define CC_DISABLE 0x80
-#define CC_PORT0 71
-#define CC_PORT1 72
-#define CC_PORT2 73
-#define CC_PORT3 74
-#define CC_PORT4 75
-#define CC_PORT5 76
-#define CC_PORT6 77
-#define CC_PORT7 78
-
-
-
+#define CC_CHAN1	71
+#define CC_CHAN2	73
+#define CC_CHAN3	72
 
 /*
 Original MIDI Switcher
@@ -45,37 +36,19 @@ P2		RC3 - RC2		P3
 PWM OUTPUTS
 
 
-CCP1	RC5
-CCP2	RA5
+CCP1	RC5(not usable)
+CCP2	RA5(not usable)/RC3
 CCP3	RA2
 CCP4	RC1
 		
 */
-#define P_OUT0		latc.4 
-#define P_OUT1		latc.1 
-#define P_OUT2		latc.3
-#define P_OUT3		latc.2 
-#define P_OUT4		latc.0
-#define P_OUT5		lata.2 
-#define P_OUT6		lata.1
-#define P_OUT7		lata.0
-
-#define P_OUT0_CBIT		(1<<4)
-#define P_OUT1_CBIT		(1<<1) 
-#define P_OUT2_CBIT		(1<<3)
-#define P_OUT3_CBIT		(1<<2) 
-#define P_OUT4_CBIT		(1<<0)
-#define P_OUT5_ABIT		(1<<2) 
-#define P_OUT6_ABIT		(1<<1)
-#define P_OUT7_ABIT		(1<<0)
-
 
 #define P_LED		porta.5
 #define P_MODE		porta.4
 
 					//76543210
-#define TRIS_A		0b11011000
-#define TRIS_C		0b11100000
+#define TRIS_A		0b11011111
+#define TRIS_C		0b11111111
 
 
 #define P_WPU		wpua.4
@@ -89,16 +62,6 @@ volatile byte midi_status = 0;
 volatile byte midi_param = 0;
 volatile byte which_cc = 0;
 									
-// the duty at each port - full duty is 127
-volatile byte duty0 = 0;
-volatile byte duty1 = 0;
-volatile byte duty2 = 0;
-volatile byte duty3 = 0;
-volatile byte duty4 = 0;
-volatile byte duty5 = 0;
-volatile byte duty6 = 0;
-volatile byte duty7 = 0;
-
 rom char *gamma = {
 0, 0, 0, 0, 0, 0, 0, 0, 
 0, 0, 0, 0, 0, 0, 1, 1, 
@@ -117,91 +80,10 @@ rom char *gamma = {
 180, 184, 189, 193, 198, 203, 208, 213, 
 218, 223, 228, 233, 239, 244, 249, 255 };
 
-typedef struct {
-	byte first;
-	byte second;
-	byte next;
-} PWM_PAIR;
-
-PWM_PAIR port01;
-PWM_PAIR port23;
-PWM_PAIR port45;
-PWM_PAIR port67;
-
-#define ON_CCP_INT(_pair, _portbit1, _portbit2) 	\
-	t1con.0 = 0; 									\
-	_portbit1 = (tmr1l < _pair.first);  			\
-	_portbit2 = (tmr1l < _pair.second); 			\
-	ccpr1l = _pair.next; 							\
-	t1con.0 = 1;						
-
-#define SET_CCP_INT(_pair, _ccpie, _ccpr, _pwm1, _pwm2) \
-	_pair.first = _pwm1; 							\
-	_pair.second = _pwm2; 							\
-	_pair.next = (_pwm1 > _pwm2)? _pwm1 : _pwm2; 	\
-	_ccpr  = (_pwm1 > _pwm2)? _pwm2 : _pwm1; 		\
-	_ccpie = !!_ccpr; 								
-		
-#define INIT_STATE(_pair, _portbit1, _portbit2) 	\
-	_portbit1 = !!_pair.first; 							\
-	_portbit2 = !!_pair.second;
-
 ////////////////////////////////////////////////////////////
 // INTERRUPT SERVICE ROUTINE
 void interrupt( void )
 {
-
-	
-	////////////////////////////////////////////////////////////
-	// CCP compare interrupt
-	if(pir1.CCP1IF) 
-	{
-		ON_CCP_INT(port01, P_OUT0, P_OUT1);
-		pir1.CCP1IF = 0;
-	}
-	if(pir2.CCP2IF) 
-	{
-		ON_CCP_INT(port23, P_OUT2, P_OUT3);
-		pir2.CCP2IF = 0;
-	}
-	if(pir3.CCP3IF) 
-	{
-		ON_CCP_INT(port45, P_OUT4, P_OUT5);
-		pir3.CCP3IF = 0;
-	}	
-	if(pir3.CCP4IF) 
-	{
-		ON_CCP_INT(port67, P_OUT6, P_OUT7);
-		pir3.CCP4IF = 0;
-	}
-	////////////////////////////////////////////////////////////
-	
-	/////////////////////////////////////////////////////
-	// timer 1 overflow - at end of PWM cycle
-	if(pir1.TMR1IF) 
-	{
-		// clear interrupt
-		pir1.TMR1IF = 0;		
-		
-		SET_CCP_INT(port01, pie1.CCP1IE, ccpr1l, duty0, duty1);
-		SET_CCP_INT(port23, pie2.CCP2IE, ccpr2l, duty2, duty3);
-		SET_CCP_INT(port45, pie3.CCP3IE, ccpr3l, duty4, duty5);
-		SET_CCP_INT(port67, pie3.CCP4IE, ccpr4l, duty6, duty7);
-		
-		INIT_STATE(port01, P_OUT0, P_OUT1);
-		INIT_STATE(port23, P_OUT2, P_OUT3);
-		INIT_STATE(port45, P_OUT4, P_OUT5);
-		INIT_STATE(port67, P_OUT6, P_OUT7);
-		
-		// reset the timer
-		tmr1h = 255;
-		tmr1l = 0;
-				
-	}
-	/////////////////////////////////////////////////////
-	
-
-	
 	// SERIAL RECEIVE CHARACTERR
 	if(pir1.5)
 	{
@@ -220,14 +102,9 @@ void interrupt( void )
 			else 
 			{
 				switch(which_cc) {
-					case CC_PORT0: duty0 = b; break;
-					case CC_PORT1: duty1 = b; break;
-					case CC_PORT2: duty2 = b; break;
-					case CC_PORT3: duty3 = b; break;
-					case CC_PORT4: duty4 = b; break;
-					case CC_PORT5: duty5 = b; break;
-					case CC_PORT6: duty6 = b; break;
-					case CC_PORT7: duty7 = b; break;
+					case CC_CHAN1: ccpr2l = gamma[b]; break;
+					case CC_CHAN2: ccpr3l = gamma[b]; break;
+					case CC_CHAN3: ccpr4l = gamma[b]; break;
 				}
 				midi_param = 1;
 			}
@@ -305,54 +182,65 @@ void main()
 	//intcon.5 = 1; 	  // enabled timer 0 interrrupt
 	//intcon.2 = 0;     // clear interrupt fired flag
 
+	//pr2=255;
 
-//	pie1.2 = 0;		// CCP1IE
-//	pie2.0 = 0;		// CCP2IE
-//	pie3.4 = 0;		// CCP3IE
-//	pie3.5 = 0;		// CCP4IE
+	
 
-
-	// set each compare module to generate interrupt only
-	ccp1con = 0b00001010; 
-	ccp2con = 0b00001010; 
-	ccp3con = 0b00001010; 
-	ccp4con = 0b00001010; 
-
-	// the high byte of each compare register is 255
-	ccpr1h = 255;
-	ccpr2h = 255;
-	ccpr3h = 255;
-	ccpr4h = 255;
 	
 	// enable interrupts	
 	intcon.7 = 1; //GIE
 	intcon.6 = 1; //PEIE	
 
-	// initialise timer1
-	tmr1h = 0;
-	tmr1l = 0;
-	pir1.TMR1IF = 0;		
-	
-	
-	pie1.TMR1IE = 1; 	// enable timer 1 interrupt
-	t1con.7 = 0;	// }	drive from instruction clock
-	t1con.6 = 0;	// }
-	t1con.5 = 1;	// } 	prescale
-	t1con.4 = 1;	// }
-	t1con.3 = 0;	
-	t1con.2 = 1;	// do not sync with external input
-	//t1con.1 = 0;	// unimplemented
-	t1con.0 = 1;	// enable timer 1
+/*CCP4	RC1*/
 
+/*
+CCP1	RC5(not usable)
+CCP2	RC3
+CCP3	RA2
+CCP4	RC1
+
+*/
+
+	// ensure the output drivers for each
+	// of the CCPx outputs are disabled
+	trisa.2 = 1;
+	trisc.1 = 1; 
+	trisc.3 = 1; 	
+		
+	// Set CCP2, CCP3, CCP4 to standard PWM mode
+	ccp2con = 0b00001100; 
+	ccp3con = 0b00001100; 
+	ccp4con = 0b00001100; 
+
+	// zero all duty cycles
+	ccpr2l = 30; 
+	ccpr3l = 30; 
+	ccpr4l = 30; 
 	
-	duty0 = 1;
-	duty1 = 2;
-	duty2 = 4;
-	duty3 = 8;
-	duty4 = 16;
-	duty5 = 32;
-	duty6 = 64;
-	duty7 = 128;
+	// set each CCP module to use timer 2
+	ccptmrs = 0b00000000;
+	
+	// Configure timer 2 for x16 prescaler
+	t2con = 0b00000010;
+
+	// load timer 2 period register for 255 duty cycles	
+	pr2 = 0xFF; 
+	
+	// clear Timer2 interrupt flag
+	pir1.1 = 0;
+	
+	// start up the timer
+	t2con.2 = 1;	
+	
+	// wait for Timer2 to overflow once
+	while(!pir1.1); 
+
+	// now we can enable the output drivers
+	trisa.2 = 0;
+	trisc.1 = 0; 
+	trisc.3 = 0; 	
+
+
 	while(1);
 
 }
