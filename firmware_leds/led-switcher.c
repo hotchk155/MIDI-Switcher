@@ -1,8 +1,43 @@
-#define VERSION_MAJOR 1
-#define VERSION_MINOR 0
+////////////////////////////////////////////////////////////
+//
+//   ////        ///////////  /////////    
+//   ////        ////         ////   ////  
+//   ////        ////////     ////   ////  
+//   ////        ////         ////   ////  
+//   /////////// ///////////  /////////    
+//
+//   ////  //    // // ////// //// //   // ///// /////
+//  //     //    // //   //  //    //   // //    //  //
+//   ////  // // // //   //  //    /////// ////  /////
+//      // // // // //   //  //    //   // //    //  //
+//   ////  ///  /// //   //   //// //   // ///// //  //
+//
+// Special firmware build for Original MIDI Switcher
+// hardware. Provides three channels of 1kHz PWM 
+// control for LEDs etc
+//
+// The LEDs are mapped as follows
+//
+// CHANNEL 1 (RED)   - 
+// CHANNEL 2 (GREEN) - 
+// CHANNEL 3 (BLUE)  - 
+// 
+// This work is licensed under the Creative Commons 
+// Attribution-NonCommercial 3.0 Unported License. 
+// To view a copy of this license, please visit:
+// http://creativecommons.org/licenses/by-nc/3.0/
+//
+// Please contact me directly if you'd like a CC 
+// license allowing use for commercial purposes:
+// jason_hotchkiss<at>hotmail.com
+//
+// Full repository with hardware information:
+// https://github.com/hotchk155/MIDI-Switcher
+//
+// Ver Date 
+// 0.1 	17Dec2016	Initial version
 //
 ////////////////////////////////////////////////////////////
-
 #include <system.h>
 #include <memory.h>
 #include <eeprom.h>
@@ -16,12 +51,13 @@
 #pragma DATA _CONFIG2, _WRT_OFF & _PLLEN_OFF & _STVREN_ON & _BORV_19 & _LVP_OFF
 #pragma CLOCK_FREQ 16000000
 
+// Defiine MIDI CCs to control the three channels
 #define CC_CHAN1	71
 #define CC_CHAN2	73
 #define CC_CHAN3	72
 
 /*
-Original MIDI Switcher
+Original MIDI Switcher outputs
 		
 		VDD - VSS
 LED		RA5	- RA0/PGD	P7
@@ -30,11 +66,9 @@ SW		RA4 - RA1/PGC	P6
 RX		RC5 - RC0		P4
 P0		RC4 - RC1		P1
 P2		RC3 - RC2		P3
+		
 	
-	
-	
-PWM OUTPUTS
-
+PIC PWM RESOURCES
 
 CCP1	RC5(not usable)
 CCP2	RA5(not usable)/RC3
@@ -43,25 +77,34 @@ CCP4	RC1
 		
 */
 
+//
+// MACRO DEFS
+//
 #define P_LED		porta.5
 #define P_MODE		porta.4
 
 					//76543210
 #define TRIS_A		0b11011111
 #define TRIS_C		0b11111111
-
-
 #define P_WPU		wpua.4
 
+#define ACTIVITY_LED_ON_TIME	10 // ms
 
-
+//
+// TYPE DEFS
+//
 typedef unsigned char byte;
 
-
+//
+// GLOBAL DATA
+//
 volatile byte midi_status = 0;
 volatile byte midi_param = 0;
 volatile byte which_cc = 0;
-									
+volatile byte led_on = 0;
+				
+// Gamma correction table - map 7 bit CC value to 
+// 8 bit PWM brightness level									
 rom char *gamma = {
 0, 0, 0, 0, 0, 0, 0, 0, 
 0, 0, 0, 0, 0, 0, 1, 1, 
@@ -89,26 +132,38 @@ void interrupt( void )
 	{
 		// get the byte
 		byte b = rcreg;
-		if(!!(b & 0x80)) {
+		if(!!(b & 0x80)) { // it is a MIDI status byte			
 			midi_status = b;
 			midi_param = 1;
 		}
-		else if(midi_status == 0xB0) {
+		else if(midi_status == 0xB0) { // it is a MIDI CC on MIDI channel 1 			
+		
+			// turn activity LED on
 			P_LED = 1;
+			led_on = ACTIVITY_LED_ON_TIME; 
+			
+			// first parameter is CC number - just store it until
+			// we get param 2 (CC value)
 			if(midi_param == 1) {
 				which_cc = b;
 				midi_param = 2;
 			}
 			else 
 			{
+				// MIDI param 2 - now we can check which CC we are 
+				// working with and assign it
 				switch(which_cc) {
 					case CC_CHAN1: ccpr2l = gamma[b]; break;
 					case CC_CHAN2: ccpr3l = gamma[b]; break;
 					case CC_CHAN3: ccpr4l = gamma[b]; break;
 				}
+				
+				// back to param 1 
 				midi_param = 1;
 			}
 		}
+		
+		// interrupt handled
 		pir1.5 = 0;
 	}
 }
@@ -172,34 +227,9 @@ void main()
 	// initialise MIDI comms
 	init_usart();
 	
-	// Configure timer 0 (controls pwm clock)
-	// 	timer 0 runs at 4MHz
-	//option_reg.5 = 0; // timer 0 driven from instruction cycle clock
-	//option_reg.3 = 1; // } prescalar
-	//option_reg.2 = 0; // }
-	//option_reg.1 = 0; // } 
-	//option_reg.0 = 0; // }
-	//intcon.5 = 1; 	  // enabled timer 0 interrrupt
-	//intcon.2 = 0;     // clear interrupt fired flag
-
-	//pr2=255;
-
-	
-
-	
 	// enable interrupts	
 	intcon.7 = 1; //GIE
 	intcon.6 = 1; //PEIE	
-
-/*CCP4	RC1*/
-
-/*
-CCP1	RC5(not usable)
-CCP2	RC3
-CCP3	RA2
-CCP4	RC1
-
-*/
 
 	// ensure the output drivers for each
 	// of the CCPx outputs are disabled
@@ -213,9 +243,9 @@ CCP4	RC1
 	ccp4con = 0b00001100; 
 
 	// zero all duty cycles
-	ccpr2l = 30; 
-	ccpr3l = 30; 
-	ccpr4l = 30; 
+	ccpr2l = 0; 
+	ccpr3l = 0; 
+	ccpr4l = 0; 
 	
 	// set each CCP module to use timer 2
 	ccptmrs = 0b00000000;
@@ -240,7 +270,25 @@ CCP4	RC1
 	trisc.1 = 0; 
 	trisc.3 = 0; 	
 
-
-	while(1);
-
+	// main app loop
+	while(1) {
+	
+		// time the activity LED on period
+		delay_ms(1);
+		if(led_on) {
+			if(--led_on == 0) 
+				P_LED = 0;
+		}
+		
+		// if the MODE button is pressed, turn all the channels off
+		if(!P_MODE) {
+			ccpr2l = 0;
+			ccpr3l = 0;
+			ccpr4l = 0;
+		}
+	}
 }
+
+//
+// END
+//
