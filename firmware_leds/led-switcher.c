@@ -18,9 +18,9 @@
 //
 // The LEDs are mapped as follows
 //
-// CHANNEL 1 (RED)   - 
-// CHANNEL 2 (GREEN) - 
-// CHANNEL 3 (BLUE)  - 
+// CHANNEL 1 (RED)   - SWITCH PORT "B"
+// CHANNEL 2 (GREEN) - SWITCH PORT "C"
+// CHANNEL 3 (BLUE)  - SWITCH PORT "F"
 // 
 // This work is licensed under the Creative Commons 
 // Attribution-NonCommercial 3.0 Unported License. 
@@ -52,9 +52,9 @@
 #pragma CLOCK_FREQ 16000000
 
 // Defiine MIDI CCs to control the three channels
-#define CC_CHAN1	71
+#define CC_CHAN1	72
 #define CC_CHAN2	73
-#define CC_CHAN3	72
+#define CC_CHAN3	71
 
 /*
 Original MIDI Switcher outputs
@@ -129,7 +129,8 @@ void interrupt( void )
 {
 	// SERIAL RECEIVE CHARACTERR
 	if(pir1.5)
-	{
+	{		
+		
 		// get the byte
 		byte b = rcreg;
 		if(!!(b & 0x80)) { // it is a MIDI status byte			
@@ -137,11 +138,7 @@ void interrupt( void )
 			midi_param = 1;
 		}
 		else if(midi_status == 0xB0) { // it is a MIDI CC on MIDI channel 1 			
-		
-			// turn activity LED on
-			P_LED = 1;
-			led_on = ACTIVITY_LED_ON_TIME; 
-			
+					
 			// first parameter is CC number - just store it until
 			// we get param 2 (CC value)
 			if(midi_param == 1) {
@@ -152,16 +149,20 @@ void interrupt( void )
 			{
 				// MIDI param 2 - now we can check which CC we are 
 				// working with and assign it
+				P_LED = 1;
+				led_on = ACTIVITY_LED_ON_TIME; 
 				switch(which_cc) {
 					case CC_CHAN1: ccpr2l = gamma[b]; break;
 					case CC_CHAN2: ccpr3l = gamma[b]; break;
 					case CC_CHAN3: ccpr4l = gamma[b]; break;
+					default: led_on = 1; 
 				}
 				
 				// back to param 1 
 				midi_param = 1;
 			}
 		}
+	
 		
 		// interrupt handled
 		pir1.5 = 0;
@@ -197,7 +198,7 @@ void init_usart()
 	rcsta.4 = 1;	// CREN 	continuous receive enable
 		
 	spbrgh = 0;		// brg high byte
-	spbrg = 30;		// brg low byte (31250)		
+	spbrg = 31;		// brg low byte (31250)		
 	
 }
 
@@ -223,6 +224,9 @@ void main()
 	P_WPU = 1; // weak pull up on switch input
 	option_reg.7 = 0; // weak pull up enable
 
+	// we are alive...
+	P_LED = 1; delay_ms(100); P_LED = 0; delay_ms(100);
+	P_LED = 1; delay_ms(100); P_LED = 0; delay_ms(100);
 
 	// initialise MIDI comms
 	init_usart();
@@ -270,6 +274,10 @@ void main()
 	trisc.1 = 0; 
 	trisc.3 = 0; 	
 
+	// we are still alive...
+	P_LED = 1; delay_ms(100); P_LED = 0; delay_ms(100);
+	P_LED = 1; delay_ms(100); P_LED = 0; delay_ms(100);
+	
 	// main app loop
 	while(1) {
 	
