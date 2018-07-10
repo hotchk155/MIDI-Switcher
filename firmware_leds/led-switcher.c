@@ -18,9 +18,9 @@
 //
 // The LEDs are mapped as follows
 //
-// CHANNEL 1 (RED)   - SWITCH PORT "B"
-// CHANNEL 2 (GREEN) - SWITCH PORT "C"
-// CHANNEL 3 (BLUE)  - SWITCH PORT "F"
+// RED   - SWITCH PORT "B" - CC#71 MIDI CHANNEL #1
+// GREEN - SWITCH PORT "C" - CC#72 MIDI CHANNEL #1
+// BLUE  - SWITCH PORT "F" - CC#73 MIDI CHANNEL #1
 // 
 // This work is licensed under the Creative Commons 
 // Attribution-NonCommercial 3.0 Unported License. 

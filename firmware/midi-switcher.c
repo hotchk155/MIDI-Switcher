@@ -39,7 +39,11 @@
 #include <eeprom.h>
 
 // for Transistor board comment this line out 
-#define RELAY_SWITCHER 1
+//#define RELAY_SWITCHER 1
+//#define TRS_SWITCHER 1
+#define SMT_SWITCHER 1
+
+
 
 // CONFIG OPTIONS 
 // - RESET INPUT DISABLED
@@ -49,13 +53,6 @@
 #pragma DATA _CONFIG2, _WRT_OFF & _PLLEN_OFF & _STVREN_ON & _BORV_19 & _LVP_OFF
 #pragma CLOCK_FREQ 16000000
 
-// Define the GPIOs that are connected to each output
-#define P_LED		porta.5
-#define P_MODE		porta.4
-
-#define T_LED		trisa.5
-#define T_MODE		trisa.4
-#define T_RX		trisc.5
 
 /*
 Original MIDI Switcher
@@ -78,6 +75,26 @@ RX		RC5 - RC0		P4
 P1		RC4 - RC1		P3
 P0		RC3 - RC2		P2
 		
+
+TRS Switcher Board
+		
+		VDD - VSS
+SW		RA5	- RA0/PGD	P0
+LED		RA4 - RA1/PGC	P1
+		VPP - RA2		P5
+RX		RC5 - RC0		P4
+P7		RC4 - RC1		P3
+P6		RC3 - RC2		P2
+
+SMT Switcher Board
+		
+		VDD - VSS
+P0		RA5	- RA0/PGD	
+LED		RA4 - RA1/PGC	RX
+SW		VPP - RA2		P4
+P2		RC5 - RC0		P8
+P5		RC4 - RC1		P3
+P6		RC3 - RC2		P7
 		
 */
 #ifdef RELAY_SWITCHER
@@ -99,6 +116,79 @@ P0		RC3 - RC2		P2
 	#define T_OUT6		trisa.1
 	#define T_OUT7		trisa.0	
 
+	#define P_LED		porta.5
+	#define P_MODE		porta.4
+	
+	#define T_LED		trisa.5
+	#define T_MODE		trisa.4
+	#define T_RX		trisc.5
+
+	#define P_WPU		wpua.4
+	
+	#define APFCON0_MASK	0
+	
+#elif TRS_SWITCHER
+
+	#define P_OUT0		lata.0
+	#define P_OUT1		lata.1 
+	#define P_OUT2		latc.2
+	#define P_OUT3		latc.1 
+	#define P_OUT4		latc.0
+	#define P_OUT5		lata.2 
+	#define P_OUT6		latc.3
+	#define P_OUT7		latc.4	
+
+	#define T_OUT0		trisa.0
+	#define T_OUT1		trisa.1 
+	#define T_OUT2		trisc.2
+	#define T_OUT3		trisc.1 
+	#define T_OUT4		trisc.0
+	#define T_OUT5		trisa.2 
+	#define T_OUT6		trisc.3
+	#define T_OUT7		trisc.4	
+
+	#define P_LED		porta.4
+	#define P_MODE		porta.5
+	
+	#define T_LED		trisa.4
+	#define T_MODE		trisa.5
+	#define T_RX		trisc.5
+
+	#define P_WPU		wpua.5
+
+	#define APFCON0_MASK	0
+
+#elif SMT_SWITCHER
+
+	#define P_OUT0		lata.5
+	#define P_OUT1		latc.5
+	#define P_OUT2		latc.1
+	#define P_OUT3		lata.2
+	#define P_OUT4		latc.4
+	#define P_OUT5		latc.3
+	#define P_OUT6		latc.2
+	#define P_OUT7		latc.0
+	
+	#define T_OUT0		trisa.5
+	#define T_OUT1		trisc.5 
+	#define T_OUT2		trisc.1
+	#define T_OUT3		trisa.2 
+	#define T_OUT4		trisc.4
+	#define T_OUT5		trisc.3 
+	#define T_OUT6		trisc.2
+	#define T_OUT7		trisc.0	
+	
+	#define P_LED		porta.4
+	#define P_MODE		porta.3
+	
+	#define T_LED		trisa.4
+	#define T_MODE		trisa.3
+	#define T_RX		trisa.1
+
+	#define P_WPU		wpua.3
+
+	#define APFCON0_MASK	0x80
+
 #else
 	#define P_OUT0		portc.4 
 	#define P_OUT1		portc.1 
@@ -117,6 +207,18 @@ P0		RC3 - RC2		P2
 	#define T_OUT5		trisa.2 
 	#define T_OUT6		trisa.1
 	#define T_OUT7		trisa.0	
+	
+	#define P_LED		porta.5
+	#define P_MODE		porta.4
+	
+	#define T_LED		trisa.5
+	#define T_MODE		trisa.4
+	#define T_RX		trisc.5
+
+	#define P_WPU		wpua.4
+
+	#define APFCON0_MASK	0
+	
 #endif
 
 
@@ -320,7 +422,7 @@ void init_usart()
 	rcsta.4 = 1;	// CREN 	continuous receive enable
 		
 	spbrgh = 0;		// brg high byte
-	spbrg = 30;		// brg low byte (31250)		
+	spbrg = 31;		// brg low byte (31250)		
 	
 }
 
@@ -621,10 +723,10 @@ void handleNoteOn(byte chan, byte note, byte velocity)
 			}
 			if(note == p->cfg.triggerNote)
 			{
-				if(!p->cfg.durationMax) 
+				//if(!p->cfg.durationMax) 
 					p->status.count = WHILE_NOTE_HELD;
-				else
-					p->status.count = p->status.duration;
+				//else
+					//p->status.count = p->status.duration;
 			}
 		}
 	}
@@ -654,19 +756,21 @@ void main()
 	// osc control / 16MHz / internal
 	osccon = 0b01111010;
 		
+	apfcon0 = APFCON0_MASK;
+	
 	// configure io. Initially all outputs are 
 	// disabled except for the LED and all outputs
 	// states are zeroed
 	trisa = 0b11111111;
 	trisc = 0b11111111;
+
 	T_LED = 0;    
 	ansela = 0b00000000;
 	anselc = 0b00000000;
 	porta =  0b00000000;
 	portc =  0b00000000;
 
-	wpua = 0b00010000; // weak pull up on switch input
-	wpuc = 0b00000000;
+	P_WPU = 1; // weak pull up on switch input
 	option_reg.7 = 0; // weak pull up enable
 
 	// initialise MIDI comms
@@ -876,6 +980,17 @@ void main()
 		P_OUT5 = 0;		
 		P_OUT6 = 0;		
 		P_OUT7 = 0;		
+#elif (TRS_SWITCHER || SMT_SWITCHER)
+		#define OUT_STATE(P) !!(P.status.count)
+		#define OUT_STATEN(P) !(P.status.count)
+		P_OUT0 = port0.cfg.invert? OUT_STATEN(port0) : OUT_STATE(port0);
+		P_OUT1 = port1.cfg.invert? OUT_STATEN(port1) : OUT_STATE(port1);
+		P_OUT2 = port2.cfg.invert? OUT_STATEN(port2) : OUT_STATE(port2);
+		P_OUT3 = port3.cfg.invert? OUT_STATEN(port3) : OUT_STATE(port3);
+		P_OUT4 = port4.cfg.invert? OUT_STATEN(port4) : OUT_STATE(port4);
+		P_OUT5 = port5.cfg.invert? OUT_STATEN(port5) : OUT_STATE(port5);
+		P_OUT6 = port6.cfg.invert? OUT_STATEN(port6) : OUT_STATE(port6);
+		P_OUT7 = port7.cfg.invert? OUT_STATEN(port7) : OUT_STATE(port7);		
 #else		
 		// Manage outputs for transistor switcher. PWM is used and switching
 		// is done on the digital output bit
