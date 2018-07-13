@@ -221,6 +221,37 @@
 <circle x="0" y="0" radius="2.25" width="0.127" layer="21"/>
 <text x="-5.08" y="7.62" size="1.778" layer="21">&gt;NAME</text>
 </package>
+<package name="SOIC8">
+<description>&lt;b&gt;Small Outline IC&lt;/b&gt;</description>
+<wire x1="2.4" y1="1.9" x2="2.4" y2="-1.4" width="0.2032" layer="51"/>
+<wire x1="2.4" y1="-1.4" x2="2.4" y2="-1.9" width="0.2032" layer="51"/>
+<wire x1="2.4" y1="-1.9" x2="-2.4" y2="-1.9" width="0.2032" layer="51"/>
+<wire x1="-2.4" y1="-1.9" x2="-2.4" y2="-1.4" width="0.2032" layer="51"/>
+<wire x1="-2.4" y1="-1.4" x2="-2.4" y2="1.9" width="0.2032" layer="51"/>
+<wire x1="2.4" y1="-1.4" x2="-2.4" y2="-1.4" width="0.2032" layer="51"/>
+<wire x1="-2.4" y1="1.9" x2="2.4" y2="1.9" width="0.2032" layer="51"/>
+<wire x1="-2.4" y1="-1.9" x2="-2.4" y2="1.9" width="0.127" layer="21"/>
+<wire x1="2.4" y1="1.9" x2="2.4" y2="-1.9" width="0.127" layer="21"/>
+<circle x="-1.9304" y="-0.889" radius="0.254" width="0.127" layer="21"/>
+<smd name="2" x="-0.635" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="7" x="-0.635" y="2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="1" x="-1.905" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="3" x="0.635" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="4" x="1.905" y="-2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="8" x="-1.905" y="2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="6" x="0.635" y="2.6" dx="0.6" dy="2.2" layer="1"/>
+<smd name="5" x="1.905" y="2.6" dx="0.6" dy="2.2" layer="1"/>
+<text x="-1.905" y="0.381" size="0.4064" layer="25">&gt;NAME</text>
+<text x="-1.905" y="-0.381" size="0.4064" layer="27">&gt;VALUE</text>
+<rectangle x1="-2.15" y1="-3.1" x2="-1.66" y2="-2" layer="51"/>
+<rectangle x1="-0.88" y1="-3.1" x2="-0.39" y2="-2" layer="51"/>
+<rectangle x1="0.39" y1="-3.1" x2="0.88" y2="-2" layer="51"/>
+<rectangle x1="1.66" y1="-3.1" x2="2.15" y2="-2" layer="51"/>
+<rectangle x1="1.66" y1="2" x2="2.15" y2="3.1" layer="51"/>
+<rectangle x1="0.39" y1="2" x2="0.88" y2="3.1" layer="51"/>
+<rectangle x1="-0.88" y1="2" x2="-0.39" y2="3.1" layer="51"/>
+<rectangle x1="-2.15" y1="2" x2="-1.66" y2="3.1" layer="51"/>
+</package>
 </packages>
 <symbols>
 <symbol name="KS-S">
@@ -360,6 +391,20 @@
 <wire x1="0" y1="4.572" x2="-0.508" y2="5.08" width="0.254" layer="94"/>
 <wire x1="-0.508" y1="5.08" x2="0" y2="5.588" width="0.254" layer="94"/>
 </symbol>
+<symbol name="SP34063A_BOOST_REG">
+<pin name="SW_C" x="-17.78" y="2.54" length="middle"/>
+<pin name="SW_E" x="-17.78" y="0" length="middle"/>
+<pin name="TC" x="-17.78" y="-2.54" length="middle"/>
+<pin name="GND" x="-17.78" y="-5.08" length="middle"/>
+<pin name="COMP" x="17.78" y="-5.08" length="middle" rot="R180"/>
+<pin name="VCC" x="17.78" y="-2.54" length="middle" rot="R180"/>
+<pin name="SENS" x="17.78" y="0" length="middle" rot="R180"/>
+<pin name="DR_C" x="17.78" y="2.54" length="middle" rot="R180"/>
+<wire x1="-12.7" y1="5.08" x2="-12.7" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="-12.7" y1="-7.62" x2="12.7" y2="-7.62" width="0.254" layer="94"/>
+<wire x1="12.7" y1="-7.62" x2="12.7" y2="5.08" width="0.254" layer="94"/>
+<wire x1="12.7" y1="5.08" x2="-12.7" y2="5.08" width="0.254" layer="94"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="ACJM-MHDRA" prefix="X">
@@ -449,6 +494,28 @@ Stereo jack with two switches. Kycon STX3100, CUI SJ1-3555NG and/or 4UCon 05544<
 <connect gate="G$1" pin="BARREL" pad="BARREL"/>
 <connect gate="G$1" pin="NC" pad="NC"/>
 <connect gate="G$1" pin="PIN" pad="PIN"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="SP34063A_BOOST_REG">
+<gates>
+<gate name="G$1" symbol="SP34063A_BOOST_REG" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="SOIC8">
+<connects>
+<connect gate="G$1" pin="COMP" pad="5"/>
+<connect gate="G$1" pin="DR_C" pad="8"/>
+<connect gate="G$1" pin="GND" pad="4"/>
+<connect gate="G$1" pin="SENS" pad="7"/>
+<connect gate="G$1" pin="SW_C" pad="1"/>
+<connect gate="G$1" pin="SW_E" pad="2"/>
+<connect gate="G$1" pin="TC" pad="3"/>
+<connect gate="G$1" pin="VCC" pad="6"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -2181,12 +2248,31 @@ BF959 corrected 2008.03.06&lt;br&gt;</description>
 <text x="-2.54" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
 <pin name="GND" x="0" y="2.54" visible="off" length="short" direction="sup" rot="R270"/>
 </symbol>
+<symbol name="+5V">
+<wire x1="1.27" y1="-1.905" x2="0" y2="0" width="0.254" layer="94"/>
+<wire x1="0" y1="0" x2="-1.27" y2="-1.905" width="0.254" layer="94"/>
+<text x="-2.54" y="-5.08" size="1.778" layer="96" rot="R90">&gt;VALUE</text>
+<pin name="+5V" x="0" y="-2.54" visible="off" length="short" direction="sup" rot="R90"/>
+</symbol>
 </symbols>
 <devicesets>
 <deviceset name="GND" prefix="GND">
 <description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
 <gates>
 <gate name="1" symbol="GND" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="+5V" prefix="P+">
+<description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
+<gates>
+<gate name="1" symbol="+5V" x="0" y="0"/>
 </gates>
 <devices>
 <device name="">
@@ -16602,197 +16688,478 @@ Two variants - one "with legs" (for hands-free fit on PCB) and another "without 
 </deviceset>
 </devicesets>
 </library>
-<library name="rectifier">
-<description>&lt;b&gt;Rectifiers&lt;/b&gt;&lt;p&gt;
-General Instrument, Semikron, Diotec, Fagor&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<library name="microbuilder">
+<description>&lt;h2&gt;&lt;b&gt;microBuilder.eu&lt;/b&gt; Eagle Footprint Library&lt;/h2&gt;
+
+&lt;p&gt;Footprints for common components used in our projects and products.  This is the same library that we use internally, and it is regularly updated.  The newest version can always be found at &lt;b&gt;www.microBuilder.eu&lt;/b&gt;.  If you find this library useful, please feel free to purchase something from our online store. Please also note that all holes are optimised for metric drill bits!&lt;/p&gt;
+
+&lt;h3&gt;Obligatory Warning&lt;/h3&gt;
+&lt;p&gt;While it probably goes without saying, there are no guarantees that the footprints or schematic symbols in this library are flawless, and we make no promises of fitness for production, prototyping or any other purpose. These libraries are provided for information puposes only, and are used at your own discretion.  While we make every effort to produce accurate footprints, and many of the items found in this library have be proven in production, we can't make any promises of suitability for a specific purpose. If you do find any errors, though, please feel free to contact us at www.microbuilder.eu to let us know about it so that we can update the library accordingly!&lt;/p&gt;
+
+&lt;h3&gt;Revision History&lt;/h3&gt;
+&lt;p&gt;
+&lt;table width="100%" bgcolor="#EEE"&gt;
+&lt;tr bgcolor="#CCC"&gt;
+  &lt;td width="60"&gt;
+&lt;b&gt;Version&lt;/b&gt;
+  &lt;/td&gt;
+  &lt;td width="100"&gt;
+&lt;b&gt;Release Date&lt;/b&gt;
+  &lt;/td&gt;
+  &lt;td&gt;
+&lt;b&gt;Changes&lt;/b&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;1.07&lt;/td&gt;
+  &lt;td&gt;--&lt;/td&gt;
+  &lt;td&gt;
+  Parts Added:
+  &lt;ul&gt;
+    &lt;li&gt;2N7002PS - Dual N-Channel MOSFET (SOT363)&lt;/li&gt;
+    &lt;li&gt;24AA256 - 256K (32K x 8) I2C EEPROM&lt;/li&gt;
+    &lt;li&gt;74HC4050D - 6-channel level shifter&lt;/li&gt;
+    &lt;li&gt;74LCX245MTC - 8-bit 5.0-3.3V level shifter&lt;/li&gt;
+    &lt;li&gt;93LC46B - 1K 16-Bit EEPROM (for FT2232H)&lt;/li&gt;
+    &lt;li&gt;A4983 - Stepper Motor Driver&lt;/li&gt;
+    &lt;li&gt;AD7780 - 24-Bit Sigma-Delta ADC with 128x PGA&lt;/li&gt;
+    &lt;li&gt;ADP3303 - High Accuracy 200 mA LDO&lt;/li&gt;
+    &lt;li&gt;ADXL345 - Digital Accelerometer&lt;/li&gt;
+    &lt;li&gt;ANT-868-SP - 868MHz SMT Antenna&lt;/li&gt;
+    &lt;li&gt;BMP085 - Digital Pressue Sensor&lt;/li&gt;
+    &lt;li&gt;FT2232H - Dual High-Speed USB to UART (LQFP64)&lt;/li&gt;
+    &lt;li&gt;ILI9481_LCD - 320x480 LCD&lt;/li&gt;
+    &lt;li&gt;ISL12022M - Temp Comp. RTC&lt;/li&gt;
+    &lt;li&gt;HMC5883L - Digital 3-Axis Compass&lt;/li&gt;
+    &lt;li&gt;ITG-3200 - Digital 3-Axis Gyroscope&lt;/li&gt;
+    &lt;li&gt;L3G2400D - 3-Axis I²C/SPI Gyroscope&lt;/li&gt;
+    &lt;li&gt;LAN8720 - 10/100 Ethernet PHY (QFN-24)&lt;/li&gt;
+    &lt;li&gt;LM4811 - Headphone Amplifier&lt;/li&gt;
+    &lt;li&gt;LOADCELL - Connectors for 4-wire load cells&lt;/li&gt;
+    &lt;li&gt;LPC1227/6/5/4 - Cortex M0 MCU&lt;/li&gt;
+    &lt;li&gt;LTC3581 - 3.3A Boost/Inverting DC/DC&lt;/li&gt;
+    &lt;li&gt;M25P16 - 16MBit Serial Flash (SPI)&lt;/li&gt;
+    &lt;li&gt;MAX3421E - USB Device/Host Controller&lt;/li&gt;
+    &lt;li&gt;MCP6022 - Dual 10MHz Op-Amp (SOIC8)&lt;/li&gt;
+    &lt;li&gt;MCP73871 - LIPO Battery Charger&lt;/li&gt;
+    &lt;li&gt;OL2381 - 315/434/868/915 MHz Transceiver&lt;/li&gt;
+    &lt;li&gt;PCF2129A - High Accuracy RTC w/Integrated Crystal&lt;/li&gt;
+    &lt;li&gt;SN74AUP - Tri-State Buffer&lt;/li&gt;
+    &lt;li&gt;SPX29302 - 3A 1% Adjustable LDO Regulator (TO263)&lt;/li&gt;
+    &lt;li&gt;STEREOJACK - 3.5mm Headphone Jack (Courtesy Adafruit)&lt;/li&gt;
+    &lt;li&gt;TPS61029 - Boost Converter/li&gt;
+    &lt;li&gt;TXS0102 - 2-Bit bi-directional level shifter (I2C)&lt;/li&gt;
+    &lt;li&gt;TXB0104PWR - 4-Bit bi-directional level shifter&lt;/li&gt;
+    &lt;li&gt;TXB0108PWR - 8-Bit bi-directional level shifter&lt;/li&gt;
+    &lt;li&gt;UPD5713TK - 50MHz-2.5GHz SPDT Switch&lt;/li&gt;
+    &lt;li&gt;VCNL4000 - Digital Proximity and Light Sensor&lt;/li&gt;
+  &lt;/ul&gt;
+Parts Updated:
+  &lt;ul&gt;
+    &lt;li&gt;LPC1754 - Removed 1756+ pin labels (ENET+I2S)&lt;/li&gt;
+    &lt;li&gt;JST_2PIN - Added SH-type connector as well&lt;/li&gt;
+    &lt;li&gt;LED_RGB_PLCC6 - Changed to CREE CLV61-FKB&lt;/li&gt;
+    &lt;li&gt;TSL2561 - Added DFN footprint (CS obsolete)&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;br/&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;1.06&lt;/td&gt;
+  &lt;td&gt;10 August 2010&lt;/td&gt;
+  &lt;td&gt;
+  Parts Added:
+  &lt;ul&gt;
+    &lt;li&gt;ADM1191 - I2C Digital Power Monitor&lt;/li&gt;
+    &lt;li&gt;ADT7410 - 13-bit +/-0.5°C I2C Temp. Sensor&lt;/li&gt;
+    &lt;li&gt;DP83848 - 10/100 Ethernet Transceiver (40-LLP)&lt;/li&gt;
+    &lt;li&gt;ILI9325 - 2.8" TFT LCD w/Touch Screen&lt;/li&gt;
+    &lt;li&gt;LM358 - SOIC8 OP-AMP&lt;/li&gt;
+    &lt;li&gt;LM2671 - 500mA Switching Step-Down Voltage Regulator&lt;/li&gt;
+    &lt;li&gt;LPC1768 - 100MHz Cortex M3, 512KB Flash/64KB SRAM&lt;/li&gt;
+    &lt;li&gt;LPC313x/314x - ARM926EJ-S MCUs (TFBGA180)&lt;/li&gt;
+    &lt;li&gt;LTC3554 - USB Lipo Charger w/Dual Step-Down&lt;/li&gt;
+    &lt;li&gt;MBED - MBED footprint and pinout&lt;/li&gt;
+    &lt;li&gt;MIC5387 - 3 Output 150mA LDO&lt;/li&gt;
+    &lt;li&gt;MICROSD - uSD/Transflash Connector&lt;/li&gt;
+    &lt;li&gt;MOSFET-P - P-Channel MOSFET&lt;/li&gt;
+    &lt;li&gt;MT48H32M16LF - 512Mb Low-Power SDRAM (VFBGA54)&lt;/li&gt;
+    &lt;li&gt;OSCILLATOR - 5x7mm SMT Oscillator&lt;/li&gt;
+    &lt;li&gt;S1D13743 - TFT LCD Controller with 464K SRAM&lt;/li&gt;
+    &lt;li&gt;VREG_SOT23-5 - Single Part for SOT23-5 Linear Regulators&lt;/li&gt;
+  &lt;/ul&gt;
+  Parts Updated:
+  &lt;ul&gt;
+    &lt;li&gt;DCBarrel: Fixed reversed GND/GNDBreak pins on SMT version&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;br/&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;1.05&lt;/td&gt;
+  &lt;td&gt;24 April, 2010&lt;/td&gt;
+  &lt;td&gt;
+  Parts Added:
+  &lt;ul&gt;
+    &lt;li&gt;AT25040A - Atmel 1K/4K SPI EEPROM (SOIC8 and TSSOP8)&lt;/li&gt;
+    &lt;li&gt;BRIDGERECTIFIER - Comchip C4S-G 400V 800mA Peak 1.1V Vf&lt;/li&gt;
+    &lt;li&gt;DIODE-ZENER - Zener Diode&lt;/li&gt;
+    &lt;li&gt;FTDIUSBCABLE - Connector for FTDI's TTL-232R USB/RS232 Cable&lt;/li&gt;
+    &lt;li&gt;LED_RGB_PLCC4 - PLCC4 RGB LED (Common Anode)&lt;/li&gt;
+    &lt;li&gt;LPC1113/4_QFN - LPC1113/LPC1114 in QFN33&lt;/li&gt;
+    &lt;li&gt;LD39015xx - Ultra low dropout 150mA voltage regulator&lt;/li&gt;
+    &lt;li&gt;MCP24AA32 - Microchip 32K 1.8V I2C EEPROM (SOT23-5)&lt;/li&gt;
+    &lt;li&gt;PN532 - 13.56MHz contactless communication transceiver&lt;/li&gt;
+    &lt;li&gt;TRANSISTOR_NPN - 500mA 45V NPN Transistor (BC817)&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;br/&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;1.04&lt;/td&gt;
+  &lt;td&gt;14 January, 2010&lt;/td&gt;
+  &lt;td&gt;
+  Parts Added:
+  &lt;ul&gt;
+    &lt;li&gt;ANTENNA868MHZ - 868MHz SMT/Chip Antenna&lt;/li&gt;
+    &lt;li&gt;AT86RF212 - 700/800/900 MHz Transceiver&lt;/li&gt;
+    &lt;li&gt;BALUN - 800-1000 MHz (1206)&lt;/li&gt;
+    &lt;li&gt;BALUN+LP - 863-928 MHz Balun with Built-In LP Filter (0805)&lt;/li&gt;
+    &lt;li&gt;LOWPASSFILTER - 869MHz RF Low Pass Filter (0603)&lt;/li&gt;
+    &lt;li&gt;SMACONNECTOR - 90° DIP SMA Connector&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;br/&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;1.03&lt;/td&gt;
+  &lt;td&gt;15 December 2009&lt;/td&gt;
+  &lt;td&gt;
+  Parts Added:
+  &lt;ul&gt;
+    &lt;li&gt;BUTTON_SMT - 4-Pin soft-touch SMT button&lt;/li&gt;
+    &lt;li&gt;DIODE - Add SOD-323, SOD-523 Footprints&lt;/li&gt;
+    &lt;li&gt;FERRITE - 120 0hm, 600mA Ferrite Chip&lt;/li&gt;
+    &lt;li&gt;PSP_LCDOUTLINE - Dimensional Drawing for Sharp LQ043 LCD&lt;/li&gt;
+    &lt;li&gt;RJ45 - Ethernet Connector with LEDs and internal transformer&lt;/li&gt;
+  &lt;/ul&gt;
+Parts Updated:
+&lt;ul&gt;
+&lt;li&gt;DCBARREL - SMT version updated to improve manufacturability (added tRestrict polygons)&lt;/li&gt;
+&lt;li&gt;JTAG-CORTEXM3 - Footprints updated to correspond to real physical dimensions&lt;/li&gt;
+&lt;/ul&gt;
+  &lt;br/&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;1.02&lt;/td&gt;
+  &lt;td&gt;26 November 2009&lt;/td&gt;
+  &lt;td&gt;
+  Parts Added:
+  &lt;ul&gt;
+    &lt;li&gt;BAT54C - 200mA 30V Dual Schottky Diode (Common Cathode) &lt;/li&gt;
+    &lt;li&gt;HEADER-1x20 - 1x20 2.54mm/0.1" Header Pins&lt;/li&gt;
+    &lt;li&gt;LPC2478 - 72MHz ARM7 MCU (QFP208 Package)&lt;/li&gt;
+    &lt;li&gt;LPC1113/4 - 50MHz Cortex M0 MCU (QFP48 Package)&lt;/li&gt;
+    &lt;li&gt;MAX1698 - Step-Up Current Regulator for LED Backlights&lt;/li&gt;
+    &lt;li&gt;MT48LC4M16A2P - Micron 64MB SDRAM (4Mb x 16)&lt;/li&gt;
+    &lt;li&gt;PTC - 100ma, 250ma and 750mA PTCs&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;br/&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;1.01&lt;/td&gt;
+  &lt;td&gt;14 November 2009&lt;/td&gt;
+  &lt;td&gt;
+  Parts Added:
+  &lt;ul&gt;
+    &lt;li&gt;NCP1400A - 100mA PWM Step-Up Regulator (3.3V and 5.0V SOT23-5)&lt;/li&gt;
+    &lt;li&gt;MIC5320 - Dual 150mA ULDO Linear Regulator&lt;/li&gt;
+    &lt;li&gt;INDUCTOR - 10µH, 22µH and 47µH 1007 Inductors&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;br/&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;1.00&lt;/td&gt;
+  &lt;td&gt;12 November 2009&lt;/td&gt;
+  &lt;td&gt;Initial Release&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/p&gt;
+
+&lt;h3&gt;License&lt;/h3&gt;
+&lt;p&gt;This work is placed in the public domain, and may be freely used for commercial and non-commercial work with the following conditions:&lt;/p&gt;
+&lt;p&gt;THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+&lt;/p&gt;</description>
 <packages>
-<package name="SOIC-4">
-<description>&lt;b&gt;SOIC-4 Package&lt;/b&gt;&lt;p&gt;
-Source: http://www.fairchildsemi.com/products/discrete/pdf/soic4_dim.pdf</description>
-<wire x1="-2.35" y1="2" x2="2.35" y2="2" width="0.2032" layer="21"/>
-<wire x1="2.35" y1="2" x2="2.35" y2="-2" width="0.2032" layer="21"/>
-<wire x1="2.35" y1="-2" x2="-2.35" y2="-2" width="0.2032" layer="21"/>
-<wire x1="-2.35" y1="-2" x2="-2.35" y2="2" width="0.2032" layer="21"/>
-<wire x1="-1.905" y1="0.97" x2="-1.27" y2="0.97" width="0.1016" layer="21"/>
-<wire x1="1.27" y1="1.27" x2="1.27" y2="0.635" width="0.1016" layer="21"/>
-<wire x1="0.955" y1="0.945" x2="1.59" y2="0.945" width="0.1016" layer="21"/>
-<wire x1="-1.9" y1="-1.275" x2="-1.6" y2="-1.275" width="0.1016" layer="21" curve="-99.939481"/>
-<wire x1="-1.3" y1="-1.275" x2="-1.6" y2="-1.275" width="0.1016" layer="21" curve="-99.939481"/>
-<wire x1="1.275" y1="-1.275" x2="1.575" y2="-1.275" width="0.1016" layer="21" curve="-99.939481"/>
-<wire x1="1.875" y1="-1.275" x2="1.575" y2="-1.275" width="0.1016" layer="21" curve="-99.939481"/>
-<smd name="-" x="-1.3" y="3.05" dx="1.2" dy="1.2" layer="1"/>
-<smd name="+" x="1.3" y="3.05" dx="1.2" dy="1.2" layer="1"/>
-<smd name="~2" x="1.3" y="-3.05" dx="1.2" dy="1.2" layer="1" rot="R180"/>
-<smd name="~1" x="-1.3" y="-3.05" dx="1.2" dy="1.2" layer="1" rot="R180"/>
-<text x="-2.54" y="-1.905" size="1.27" layer="25" rot="R90">&gt;NAME</text>
-<text x="3.81" y="-1.905" size="1.27" layer="27" rot="R90">&gt;VALUE</text>
-<rectangle x1="-1.75" y1="2.05" x2="-0.95" y2="3.45" layer="51"/>
-<rectangle x1="0.95" y1="2.05" x2="1.75" y2="3.45" layer="51"/>
-<rectangle x1="0.95" y1="-3.45" x2="1.75" y2="-2.05" layer="51" rot="R180"/>
-<rectangle x1="-1.75" y1="-3.45" x2="-0.95" y2="-2.05" layer="51" rot="R180"/>
-<rectangle x1="-2.05" y1="1.5" x2="2.05" y2="1.8" layer="21"/>
+<package name="SMADIODE">
+<description>&lt;b&gt;SMA Surface Mount Diode&lt;/b&gt;</description>
+<wire x1="-2.15" y1="1.3" x2="2.15" y2="1.3" width="0.2032" layer="51"/>
+<wire x1="2.15" y1="1.3" x2="2.15" y2="-1.3" width="0.2032" layer="51"/>
+<wire x1="2.15" y1="-1.3" x2="-2.15" y2="-1.3" width="0.2032" layer="51"/>
+<wire x1="-2.15" y1="-1.3" x2="-2.15" y2="1.3" width="0.2032" layer="51"/>
+<wire x1="-3.789" y1="-1.394" x2="-3.789" y2="-1.146" width="0.127" layer="21"/>
+<wire x1="-3.789" y1="-1.146" x2="-3.789" y2="1.6" width="0.127" layer="21"/>
+<wire x1="-3.789" y1="1.6" x2="3.816" y2="1.6" width="0.127" layer="21"/>
+<wire x1="3.816" y1="1.6" x2="3.816" y2="1.394" width="0.127" layer="21"/>
+<wire x1="3.816" y1="1.394" x2="3.816" y2="1.3365" width="0.127" layer="21"/>
+<wire x1="3.816" y1="1.394" x2="3.816" y2="-1.6" width="0.127" layer="21"/>
+<wire x1="3.816" y1="-1.6" x2="-3.789" y2="-1.6" width="0.127" layer="21"/>
+<wire x1="-3.789" y1="-1.6" x2="-3.789" y2="-1.146" width="0.127" layer="21"/>
+<wire x1="0.254" y1="0.762" x2="0.254" y2="-0.762" width="0.127" layer="21"/>
+<wire x1="0.254" y1="-0.762" x2="-0.508" y2="0" width="0.127" layer="21"/>
+<wire x1="-0.508" y1="0" x2="0.254" y2="0.762" width="0.127" layer="21"/>
+<wire x1="-0.508" y1="0.762" x2="-0.508" y2="0" width="0.127" layer="21"/>
+<wire x1="-0.508" y1="0" x2="-0.508" y2="-0.762" width="0.127" layer="21"/>
+<smd name="C" x="-2.3495" y="0" dx="2.54" dy="2.54" layer="1"/>
+<smd name="A" x="2.3495" y="0" dx="2.54" dy="2.54" layer="1" rot="R180"/>
+<text x="-2.54" y="1.905" size="0.4064" layer="25" font="vector">&gt;NAME</text>
+<text x="-2.54" y="-2.286" size="0.4064" layer="27" font="vector">&gt;VALUE</text>
+<rectangle x1="-2.825" y1="-1.1" x2="-2.175" y2="1.1" layer="51"/>
+<rectangle x1="2.175" y1="-1.1" x2="2.825" y2="1.1" layer="51" rot="R180"/>
+<rectangle x1="-1.75" y1="-1.225" x2="-1.075" y2="1.225" layer="51"/>
+</package>
+<package name="DO-1N4148">
+<wire x1="-2.54" y1="0.762" x2="2.54" y2="0.762" width="0.2032" layer="21"/>
+<wire x1="2.54" y1="0.762" x2="2.54" y2="0" width="0.2032" layer="21"/>
+<wire x1="2.54" y1="0" x2="2.54" y2="-0.762" width="0.2032" layer="21"/>
+<wire x1="2.54" y1="-0.762" x2="-2.54" y2="-0.762" width="0.2032" layer="21"/>
+<wire x1="-2.54" y1="-0.762" x2="-2.54" y2="0" width="0.2032" layer="21"/>
+<wire x1="-2.54" y1="0" x2="-2.54" y2="0.762" width="0.2032" layer="21"/>
+<wire x1="2.54" y1="0" x2="2.794" y2="0" width="0.2032" layer="21"/>
+<wire x1="-2.54" y1="0" x2="-2.794" y2="0" width="0.2032" layer="21"/>
+<wire x1="1.905" y1="0.635" x2="1.905" y2="-0.635" width="0.2032" layer="21"/>
+<pad name="A" x="-3.81" y="0" drill="0.9"/>
+<pad name="C" x="3.81" y="0" drill="0.9"/>
+<text x="-2.54" y="1.27" size="0.4064" layer="25">&gt;Name</text>
+<text x="-2.032" y="-0.254" size="0.6096" layer="21">&gt;Value</text>
+</package>
+<package name="SOT23-R">
+<description>&lt;b&gt;SOT23&lt;/b&gt; - Reflow soldering</description>
+<wire x1="1.5724" y1="0.6604" x2="1.5724" y2="-0.6604" width="0.1524" layer="51"/>
+<wire x1="1.5724" y1="-0.6604" x2="-1.5724" y2="-0.6604" width="0.1524" layer="51"/>
+<wire x1="-1.5724" y1="-0.6604" x2="-1.5724" y2="0.6604" width="0.1524" layer="51"/>
+<wire x1="-1.5724" y1="0.6604" x2="1.5724" y2="0.6604" width="0.1524" layer="51"/>
+<wire x1="-1.5724" y1="-0.6524" x2="-1.5724" y2="0.6604" width="0.1524" layer="21"/>
+<wire x1="-1.5724" y1="0.6604" x2="-0.5136" y2="0.6604" width="0.1524" layer="21"/>
+<wire x1="1.5724" y1="0.6604" x2="1.5724" y2="-0.6524" width="0.1524" layer="21"/>
+<wire x1="0.5636" y1="0.6604" x2="1.5724" y2="0.6604" width="0.1524" layer="21"/>
+<wire x1="0.4224" y1="-0.6604" x2="-0.4364" y2="-0.6604" width="0.1524" layer="21"/>
+<smd name="3" x="0" y="1" dx="0.6" dy="0.7" layer="1"/>
+<smd name="2" x="0.95" y="-1" dx="0.6" dy="0.7" layer="1"/>
+<smd name="1" x="-0.95" y="-1" dx="0.6" dy="0.7" layer="1"/>
+<text x="1.778" y="0.254" size="0.4064" layer="25">&gt;NAME</text>
+<text x="1.778" y="-0.508" size="0.4064" layer="27">&gt;VALUE</text>
+<rectangle x1="-0.2286" y1="0.7112" x2="0.2286" y2="1.2954" layer="51"/>
+<rectangle x1="0.7112" y1="-1.2954" x2="1.1684" y2="-0.7112" layer="51"/>
+<rectangle x1="-1.1684" y1="-1.2954" x2="-0.7112" y2="-0.7112" layer="51"/>
+</package>
+<package name="SOT23-W">
+<description>&lt;b&gt;SOT23&lt;/b&gt; - Wave soldering</description>
+<wire x1="1.5724" y1="0.6604" x2="1.5724" y2="-0.6604" width="0.1524" layer="51"/>
+<wire x1="1.5724" y1="-0.6604" x2="-1.5724" y2="-0.6604" width="0.1524" layer="51"/>
+<wire x1="-1.5724" y1="-0.6604" x2="-1.5724" y2="0.6604" width="0.1524" layer="51"/>
+<wire x1="-1.5724" y1="0.6604" x2="1.5724" y2="0.6604" width="0.1524" layer="51"/>
+<wire x1="-1.5724" y1="-0.3984" x2="-1.5724" y2="0.6604" width="0.1524" layer="21"/>
+<wire x1="1.5724" y1="0.6604" x2="1.5724" y2="-0.3984" width="0.1524" layer="21"/>
+<wire x1="0.2954" y1="-0.6604" x2="-0.3094" y2="-0.6604" width="0.1524" layer="21"/>
+<smd name="3" x="0" y="1.3" dx="2.8" dy="1.4" layer="1"/>
+<smd name="2" x="1.1" y="-1.3" dx="1.2" dy="1.4" layer="1"/>
+<smd name="1" x="-1.1" y="-1.3" dx="1.2" dy="1.4" layer="1"/>
+<text x="2.032" y="0.254" size="0.4064" layer="25">&gt;NAME</text>
+<text x="2.032" y="-0.508" size="0.4064" layer="27">&gt;VALUE</text>
+<rectangle x1="-0.2286" y1="0.7112" x2="0.2286" y2="1.2954" layer="51"/>
+<rectangle x1="0.7112" y1="-1.2954" x2="1.1684" y2="-0.7112" layer="51"/>
+<rectangle x1="-1.1684" y1="-1.2954" x2="-0.7112" y2="-0.7112" layer="51"/>
+</package>
+<package name="SOD-523">
+<description>SOD-523 (0.8x1.2mm)
+
+&lt;p&gt;Source: http://www.rohm.com/products/databook/di/pdf/rb751s-40.pdf&lt;/p&gt;</description>
+<wire x1="-0.75" y1="1.5" x2="0.75" y2="1.5" width="0.127" layer="21"/>
+<wire x1="0.75" y1="1.5" x2="0.75" y2="-1.5" width="0.127" layer="21"/>
+<wire x1="0.75" y1="-1.5" x2="-0.75" y2="-1.5" width="0.127" layer="21"/>
+<wire x1="-0.75" y1="-1.5" x2="-0.75" y2="1.5" width="0.127" layer="21"/>
+<wire x1="1" y1="0.25" x2="1.5" y2="0.25" width="0.127" layer="51"/>
+<wire x1="1.5" y1="0.25" x2="2" y2="0.25" width="0.127" layer="51"/>
+<wire x1="1" y1="-0.25" x2="1.5" y2="-0.25" width="0.127" layer="51"/>
+<wire x1="1.5" y1="-0.25" x2="2" y2="-0.25" width="0.127" layer="51"/>
+<wire x1="2" y1="-0.25" x2="1.5" y2="0.25" width="0.127" layer="51"/>
+<wire x1="1.5" y1="0.25" x2="1" y2="-0.25" width="0.127" layer="51"/>
+<wire x1="1.5" y1="0.25" x2="1.5" y2="0.75" width="0.127" layer="51"/>
+<wire x1="1.5" y1="-0.25" x2="1.5" y2="-0.75" width="0.127" layer="51"/>
+<wire x1="-0.4445" y1="-0.1905" x2="0.4445" y2="-0.1905" width="0.127" layer="21"/>
+<wire x1="0.4445" y1="-0.1905" x2="0" y2="0.1905" width="0.127" layer="21"/>
+<wire x1="0" y1="0.1905" x2="-0.4445" y2="-0.1905" width="0.127" layer="21"/>
+<wire x1="-0.4445" y1="0.1905" x2="0.4445" y2="0.1905" width="0.127" layer="21"/>
+<smd name="K" x="0" y="0.8" dx="0.8" dy="0.6" layer="1"/>
+<smd name="A" x="0" y="-0.8" dx="0.8" dy="0.6" layer="1"/>
+<text x="1.016" y="1.016" size="0.4064" layer="25">&gt;NAME</text>
+<text x="1.016" y="-1.524" size="0.4064" layer="27">&gt;VALUE</text>
+<rectangle x1="-0.4" y1="-0.6" x2="0.4" y2="0.6" layer="51"/>
+<rectangle x1="-0.15" y1="-0.8" x2="0.15" y2="-0.6" layer="51"/>
+<rectangle x1="-0.15" y1="0.6" x2="0.15" y2="0.8" layer="51"/>
+</package>
+<package name="SOD-323">
+<description>&lt;b&gt;SOD323&lt;/b&gt; (2.5x1.2mm)</description>
+<wire x1="-1" y1="0.7" x2="1" y2="0.7" width="0.1524" layer="51"/>
+<wire x1="1" y1="0.7" x2="1" y2="-0.7" width="0.1524" layer="51"/>
+<wire x1="1" y1="-0.7" x2="-1" y2="-0.7" width="0.1524" layer="51"/>
+<wire x1="-1" y1="-0.7" x2="-1" y2="0.7" width="0.1524" layer="51"/>
+<wire x1="-0.5" y1="0" x2="0.1" y2="0.4" width="0.1524" layer="51"/>
+<wire x1="0.1" y1="0.4" x2="0.1" y2="-0.4" width="0.1524" layer="51"/>
+<wire x1="0.1" y1="-0.4" x2="-0.5" y2="0" width="0.1524" layer="51"/>
+<wire x1="-1.778" y1="0.762" x2="1.778" y2="0.762" width="0.127" layer="21"/>
+<wire x1="1.778" y1="0.762" x2="1.778" y2="-0.762" width="0.127" layer="21"/>
+<wire x1="1.778" y1="-0.762" x2="-1.778" y2="-0.762" width="0.127" layer="21"/>
+<wire x1="-1.778" y1="-0.762" x2="-1.778" y2="0.762" width="0.127" layer="21"/>
+<smd name="C" x="-1.1" y="0" dx="0.6" dy="0.6" layer="1"/>
+<smd name="A" x="1.1" y="0" dx="0.6" dy="0.6" layer="1"/>
+<text x="-1.1" y="1" size="0.4064" layer="25">&gt;NAME</text>
+<text x="-1.1" y="-1.284" size="0.4064" layer="27">&gt;VALUE</text>
+<text x="0.557" y="0.2917" size="0.6096" layer="51" rot="SR180">41</text>
+<rectangle x1="-0.7" y1="-0.7" x2="-0.5" y2="0.7" layer="51"/>
+</package>
+<package name="SOD-123">
+<description>&lt;b&gt;SOD-123&lt;/b&gt;
+&lt;p&gt;Source: http://www.diodes.com/datasheets/ds30139.pdf&lt;/p&gt;</description>
+<wire x1="-0.5" y1="0.746" x2="-0.5" y2="0" width="0.254" layer="21"/>
+<wire x1="-0.5" y1="0" x2="-0.5" y2="-0.746" width="0.254" layer="21"/>
+<wire x1="-0.5" y1="0" x2="0.5" y2="0.746" width="0.254" layer="21"/>
+<wire x1="0.5" y1="0.746" x2="0.5" y2="-0.746" width="0.254" layer="21"/>
+<wire x1="0.5" y1="-0.746" x2="-0.5" y2="0" width="0.254" layer="21"/>
+<wire x1="-1.35" y1="0.775" x2="1.35" y2="0.775" width="0.127" layer="51"/>
+<wire x1="1.35" y1="0.775" x2="1.35" y2="-0.775" width="0.127" layer="51"/>
+<wire x1="1.35" y1="-0.775" x2="-1.35" y2="-0.775" width="0.127" layer="51"/>
+<wire x1="-1.35" y1="-0.775" x2="-1.35" y2="0.775" width="0.127" layer="51"/>
+<wire x1="-1.4" y1="0.6" x2="-1.4" y2="0.8" width="0.127" layer="21"/>
+<wire x1="-1.4" y1="0.8" x2="-0.9" y2="0.8" width="0.127" layer="21"/>
+<wire x1="1.4" y1="0.6" x2="1.4" y2="0.8" width="0.127" layer="21"/>
+<wire x1="1.4" y1="0.8" x2="0.9" y2="0.8" width="0.127" layer="21"/>
+<wire x1="-1.4" y1="-0.6" x2="-1.4" y2="-0.8" width="0.127" layer="21"/>
+<wire x1="-1.4" y1="-0.8" x2="-0.9" y2="-0.8" width="0.127" layer="21"/>
+<wire x1="1.4" y1="-0.6" x2="1.4" y2="-0.8" width="0.127" layer="21"/>
+<wire x1="1.4" y1="-0.8" x2="0.9" y2="-0.8" width="0.127" layer="21"/>
+<smd name="C" x="-1.85" y="0" dx="0.7" dy="1.2" layer="1" rot="R90"/>
+<smd name="A" x="1.85" y="0" dx="0.7" dy="1.2" layer="1" rot="R90"/>
+<text x="-1.27" y="1.27" size="0.4064" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-1.524" size="0.4064" layer="25">&gt;VALUE</text>
 </package>
 </packages>
 <symbols>
-<symbol name="DB">
-<wire x1="-1.905" y1="-3.175" x2="-4.064" y2="-2.794" width="0.254" layer="94"/>
-<wire x1="-1.905" y1="-3.175" x2="-2.286" y2="-1.016" width="0.254" layer="94"/>
-<wire x1="-2.7178" y1="-4.0386" x2="-0.9398" y2="-2.2606" width="0.254" layer="94"/>
-<wire x1="-1.905" y1="3.175" x2="-4.064" y2="2.794" width="0.254" layer="94"/>
-<wire x1="-1.905" y1="3.175" x2="-2.286" y2="1.016" width="0.254" layer="94"/>
-<wire x1="-2.7178" y1="4.0386" x2="-1.0668" y2="2.3876" width="0.254" layer="94"/>
-<wire x1="3.175" y1="1.905" x2="2.794" y2="4.064" width="0.254" layer="94"/>
-<wire x1="3.175" y1="1.905" x2="1.016" y2="2.286" width="0.254" layer="94"/>
-<wire x1="2.3622" y1="1.016" x2="4.1402" y2="2.794" width="0.254" layer="94"/>
-<wire x1="3.175" y1="-1.905" x2="2.794" y2="-4.064" width="0.254" layer="94"/>
-<wire x1="3.175" y1="-1.905" x2="1.016" y2="-2.286" width="0.254" layer="94"/>
-<wire x1="2.3622" y1="-1.0668" x2="4.1402" y2="-2.8448" width="0.254" layer="94"/>
-<wire x1="5.08" y1="0" x2="3.175" y2="-1.905" width="0.1524" layer="94"/>
-<wire x1="0" y1="-5.08" x2="-1.905" y2="-3.175" width="0.1524" layer="94"/>
-<wire x1="-3.2766" y1="-1.8034" x2="-5.08" y2="0" width="0.1524" layer="94"/>
-<wire x1="-4.064" y1="-2.794" x2="-2.286" y2="-1.016" width="0.254" layer="94"/>
-<wire x1="-5.08" y1="0" x2="-3.2766" y2="1.8034" width="0.1524" layer="94"/>
-<wire x1="-4.064" y1="2.794" x2="-2.286" y2="1.016" width="0.254" layer="94"/>
-<wire x1="-1.905" y1="3.175" x2="0" y2="5.08" width="0.1524" layer="94"/>
-<wire x1="0" y1="5.08" x2="1.8034" y2="3.2766" width="0.1524" layer="94"/>
-<wire x1="1.016" y1="2.286" x2="2.794" y2="4.064" width="0.254" layer="94"/>
-<wire x1="3.175" y1="1.905" x2="5.08" y2="0" width="0.1524" layer="94"/>
-<wire x1="0" y1="-5.08" x2="1.8034" y2="-3.2766" width="0.1524" layer="94"/>
-<wire x1="1.016" y1="-2.286" x2="2.794" y2="-4.064" width="0.254" layer="94"/>
-<text x="5.08" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
-<text x="5.08" y="2.54" size="1.778" layer="95">&gt;NAME</text>
-<pin name="AC1" x="0" y="5.08" visible="off" length="point" direction="pas" rot="R270"/>
-<pin name="+" x="5.08" y="0" visible="off" length="point" direction="pas" rot="R180"/>
-<pin name="AC2" x="0" y="-5.08" visible="off" length="point" direction="pas" rot="R90"/>
-<pin name="-" x="-5.08" y="0" visible="off" length="point" direction="pas"/>
+<symbol name="DIODE">
+<wire x1="-1.27" y1="1.27" x2="-1.27" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="-1.27" y1="-1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="-1.27" y2="1.27" width="0.254" layer="94"/>
+<wire x1="1.27" y1="1.27" x2="1.27" y2="0" width="0.254" layer="94"/>
+<wire x1="1.27" y1="0" x2="1.27" y2="-1.27" width="0.254" layer="94"/>
+<text x="-2.54" y="2.54" size="1.27" layer="95">&gt;NAME</text>
+<text x="-2.54" y="-3.81" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="A" x="-2.54" y="0" visible="off" length="short" direction="pas"/>
+<pin name="C" x="2.54" y="0" visible="off" length="short" direction="pas" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="MB*S" prefix="B">
-<description>&lt;b&gt;Bridge Rectifier&lt;/b&gt;&lt;p&gt;
-Source: http://www.fairchildsemi.com/ds/MB/MB6S.pdf</description>
+<deviceset name="DIODE" prefix="D" uservalue="yes">
+<description>&lt;b&gt;Diode&lt;/b&gt;
+&lt;p&gt;
+&lt;b&gt;SMADIODE&lt;/b&gt; - SMA Surface Mount Package
+&lt;ul&gt;
+&lt;li&gt;20V 1A Schottky Diode Digikey (500mV @ 1A, 500uA Vr @ 20V): 641-1014-6-ND&lt;/li&gt;
+&lt;li&gt;10V 2A Schottky Diode Digikey (350mV @ 2A, 700uA Vr @ 10V): MBRA210LT3&lt;/li&gt;
+&lt;/ul&gt;
+&lt;b&gt;SOD-123&lt;/b&gt;
+&lt;ul&gt;
+&lt;li&gt;30V 200mA (800mV Vf, 2uA Vr @ 25V) Schottky Diode (very fast switching for boost, etc.) - Digikey: BAT54T1GOSTR-ND&lt;/li&gt;
+&lt;li&gt;30V 500mA (430mV Vf, 130uA Vr @ 30V) Schottky Diode - Digikey: B0530W-FDICT-ND&lt;/li&gt;
+&lt;li&gt;MBR120 1A 20V (0.34Vf) Schottky Diode - Digikey: MBR120VLSFT1GOSCT-ND&lt;/li&gt;
+&lt;/ul&gt;
+&lt;b&gt;SOD-323&lt;/b&gt;
+&lt;ul&gt;
+&lt;li&gt;10V 570mA (380mV Vf, 3ns) Schottky Diode - Digikey: ZLLS410CT-ND&lt;/li&gt;
+&lt;li&gt;1N4148WS - 75V 150mA (1V Vf @ 10mA, 4ns) Simple Diode - Digikey: 1N4148WSFSCT-ND, Mouser: 512-1N4148WS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;b&gt;SOD-523&lt;/b&gt;
+&lt;ul&gt;
+&lt;li&gt;BAT54 30V 200mA Schottky (0.8 Vf @ 100mA, 5ns) - Digikey: BAT54XV2CT-ND&lt;/li&gt;
+&lt;li&gt;30V 30mA Schottky Diode (RB751S-40TE61) - Digikey: RB751S-40TE61CT-ND&lt;/li&gt;
+&lt;/ul&gt;
+&lt;b&gt;SOT23-R/W&lt;/b&gt; - SOT23 Package (R = Solder Paste/Reflow Ovens, W = Hand-Soldering)
+&lt;ul&gt;
+&lt;li&gt;BAT54Film 40V 300mA - Digikey: 497-7162-1-ND&lt;/li&gt;
+&lt;/ul&gt;
+&lt;b&gt;DO-1N4148&lt;/b&gt;
+&lt;ul&gt;
+&lt;li&gt;Through Hole Small Current Diode (any model)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/p&gt;</description>
 <gates>
-<gate name="G$1" symbol="DB" x="0" y="0"/>
+<gate name="G$1" symbol="DIODE" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="SOIC-4">
+<device name="SMA" package="SMADIODE">
 <connects>
-<connect gate="G$1" pin="+" pad="+"/>
-<connect gate="G$1" pin="-" pad="-"/>
-<connect gate="G$1" pin="AC1" pad="~1"/>
-<connect gate="G$1" pin="AC2" pad="~2"/>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
 </connects>
 <technologies>
-<technology name="1"/>
-<technology name="2"/>
-<technology name="4"/>
-<technology name="6"/>
-<technology name="8"/>
+<technology name=""/>
 </technologies>
 </device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
-<library name="burr-brown">
-<description>&lt;b&gt;Burr-Brown Components&lt;/b&gt;&lt;p&gt;
-&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
-<packages>
-<package name="SOT223">
-<description>&lt;b&gt;Smal Outline Transistor&lt;/b&gt;</description>
-<wire x1="-3.124" y1="1.731" x2="-3.124" y2="-1.729" width="0.1524" layer="21"/>
-<wire x1="3.124" y1="-1.729" x2="3.124" y2="1.731" width="0.1524" layer="21"/>
-<wire x1="-3.124" y1="1.731" x2="3.124" y2="1.731" width="0.1524" layer="21"/>
-<wire x1="3.124" y1="-1.729" x2="-3.124" y2="-1.729" width="0.1524" layer="21"/>
-<smd name="1" x="-2.2606" y="-3.1496" dx="1.4986" dy="2.0066" layer="1"/>
-<smd name="2" x="0.0254" y="-3.1496" dx="1.4986" dy="2.0066" layer="1"/>
-<smd name="3" x="2.3114" y="-3.1496" dx="1.4986" dy="2.0066" layer="1"/>
-<smd name="4" x="0" y="3.1496" dx="3.81" dy="2.0066" layer="1"/>
-<text x="-2.54" y="4.318" size="1.27" layer="25" ratio="10">&gt;NAME</text>
-<text x="-2.794" y="-5.842" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
-<rectangle x1="-1.524" y1="1.778" x2="1.524" y2="3.302" layer="51"/>
-<rectangle x1="-2.667" y1="-3.302" x2="-1.905" y2="-1.778" layer="51"/>
-<rectangle x1="1.905" y1="-3.302" x2="2.667" y2="-1.778" layer="51"/>
-<rectangle x1="-0.381" y1="-3.302" x2="0.381" y2="-1.778" layer="51"/>
-</package>
-<package name="DD-3">
-<description>&lt;b&gt;DPAC&lt;/b&gt;</description>
-<wire x1="-5.398" y1="-4.445" x2="-5.084" y2="-4.445" width="0.1524" layer="21"/>
-<wire x1="-5.084" y1="-4.445" x2="5.076" y2="-4.445" width="0.1524" layer="21"/>
-<wire x1="5.076" y1="-4.445" x2="5.398" y2="-4.445" width="0.1524" layer="21"/>
-<wire x1="5.398" y1="-4.445" x2="5.398" y2="4.128" width="0.1524" layer="21"/>
-<wire x1="5.398" y1="4.128" x2="-5.398" y2="4.128" width="0.1524" layer="21"/>
-<wire x1="-5.398" y1="4.128" x2="-5.398" y2="-4.445" width="0.1524" layer="21"/>
-<wire x1="-5.084" y1="3.81" x2="5.076" y2="3.81" width="0.1524" layer="21"/>
-<wire x1="5.076" y1="3.81" x2="5.076" y2="-4.445" width="0.1524" layer="21"/>
-<wire x1="-5.084" y1="-4.445" x2="-5.084" y2="3.81" width="0.1524" layer="21"/>
-<wire x1="-5.398" y1="4.128" x2="-5.084" y2="3.81" width="0.1524" layer="21"/>
-<wire x1="5.398" y1="4.128" x2="5.076" y2="3.81" width="0.1524" layer="21"/>
-<wire x1="-5.398" y1="4.128" x2="-5.398" y2="5.08" width="0.1524" layer="21"/>
-<wire x1="-5.398" y1="5.08" x2="-4.445" y2="5.715" width="0.1524" layer="21"/>
-<wire x1="-4.445" y1="5.715" x2="4.445" y2="5.715" width="0.1524" layer="21"/>
-<wire x1="4.445" y1="5.715" x2="5.398" y2="5.08" width="0.1524" layer="21"/>
-<wire x1="5.398" y1="5.08" x2="5.398" y2="4.128" width="0.1524" layer="21"/>
-<smd name="1" x="-2.54" y="-7.9375" dx="1.27" dy="5.08" layer="1"/>
-<smd name="2" x="0" y="-7.9375" dx="1.27" dy="5.08" layer="1"/>
-<smd name="3" x="2.54" y="-7.9375" dx="1.27" dy="5.08" layer="1"/>
-<text x="-3.81" y="-10.795" size="1.27" layer="25" ratio="10" rot="R90">&gt;NAME</text>
-<text x="-2.54" y="-1.27" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
-<rectangle x1="-3.175" y1="-9.525" x2="-1.905" y2="-4.445" layer="51"/>
-<rectangle x1="-0.635" y1="-9.525" x2="0.635" y2="-4.445" layer="51"/>
-<rectangle x1="1.905" y1="-9.525" x2="3.175" y2="-4.445" layer="51"/>
-</package>
-</packages>
-<symbols>
-<symbol name="REG1118">
-<wire x1="-7.62" y1="-7.62" x2="7.62" y2="-7.62" width="0.4064" layer="94"/>
-<wire x1="7.62" y1="-7.62" x2="7.62" y2="5.08" width="0.4064" layer="94"/>
-<wire x1="7.62" y1="5.08" x2="-7.62" y2="5.08" width="0.4064" layer="94"/>
-<wire x1="-7.62" y1="5.08" x2="-7.62" y2="-7.62" width="0.4064" layer="94"/>
-<text x="-7.62" y="5.715" size="1.778" layer="95" ratio="10">&gt;NAME</text>
-<text x="-5.08" y="2.54" size="1.778" layer="96" ratio="10">&gt;VALUE</text>
-<pin name="VIN" x="-12.7" y="0" length="middle" direction="in"/>
-<pin name="VOUT" x="12.7" y="0" length="middle" direction="out" rot="R180"/>
-<pin name="GND" x="0" y="-12.7" length="middle" direction="pwr" rot="R90"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="REG1117" prefix="IC">
-<description>&lt;b&gt;800mA and 1A Low Dropout (LDO) Positive Regulator&lt;/b&gt;&lt;p&gt;
-1.8V, 2.5V, 2.85V, 3.3V, 5V, and Adj</description>
-<gates>
-<gate name="G$1" symbol="REG1118" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="SOT223">
+<device name="DO-1N4148" package="DO-1N4148">
 <connects>
-<connect gate="G$1" pin="GND" pad="1"/>
-<connect gate="G$1" pin="VIN" pad="3"/>
-<connect gate="G$1" pin="VOUT" pad="2"/>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
 </connects>
 <technologies>
-<technology name="">
-<attribute name="MF" value="" constant="no"/>
-<attribute name="MPN" value="REG1117" constant="no"/>
-<attribute name="OC_FARNELL" value="1097566" constant="no"/>
-<attribute name="OC_NEWARK" value="14P6981" constant="no"/>
-</technology>
+<technology name=""/>
 </technologies>
 </device>
-<device name="F" package="DD-3">
+<device name="SOT23_REFLOW" package="SOT23-R">
 <connects>
-<connect gate="G$1" pin="GND" pad="1"/>
-<connect gate="G$1" pin="VIN" pad="3"/>
-<connect gate="G$1" pin="VOUT" pad="2"/>
+<connect gate="G$1" pin="A" pad="1"/>
+<connect gate="G$1" pin="C" pad="3"/>
 </connects>
 <technologies>
-<technology name="">
-<attribute name="MF" value="TEXAS INSTRUMENTS" constant="no"/>
-<attribute name="MPN" value="REG1117FAKTTT" constant="no"/>
-<attribute name="OC_FARNELL" value="1296120" constant="no"/>
-<attribute name="OC_NEWARK" value="87H2562" constant="no"/>
-</technology>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SOT23_WAVE" package="SOT23-W">
+<connects>
+<connect gate="G$1" pin="A" pad="1"/>
+<connect gate="G$1" pin="C" pad="3"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SOD-523" package="SOD-523">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="K"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SOD-323" package="SOD-323">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="SOD-123" package="SOD-123">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="C"/>
+</connects>
+<technologies>
+<technology name=""/>
 </technologies>
 </device>
 </devices>
@@ -16874,6 +17241,289 @@ Source: Comchip CGRM4001-G.pdf</description>
 </deviceset>
 </devicesets>
 </library>
+<library name="SparkFun">
+<description>Spark Fun Electronics' preferred foot prints. &lt;b&gt;Not to be used for commercial purposes.&lt;/b&gt; We've spent an enormous amount of time creating and checking these footprints and parts. If you enjoy using this library, please buy one of our products at www.sparkfun.com.</description>
+<packages>
+<package name="INDUCTOR-1206">
+<wire x1="-1.778" y1="2.032" x2="-3.81" y2="2.032" width="0.127" layer="21"/>
+<wire x1="-3.81" y1="2.032" x2="-3.81" y2="-2.032" width="0.127" layer="21"/>
+<wire x1="-3.81" y1="-2.032" x2="-1.524" y2="-2.032" width="0.127" layer="21"/>
+<wire x1="1.524" y1="2.032" x2="3.81" y2="2.032" width="0.127" layer="21"/>
+<wire x1="3.81" y1="2.032" x2="3.81" y2="-2.032" width="0.127" layer="21"/>
+<wire x1="3.81" y1="-2.032" x2="1.524" y2="-2.032" width="0.127" layer="21"/>
+<smd name="P$1" x="-2.54" y="0" dx="3.556" dy="2.032" layer="1" rot="R90"/>
+<smd name="P$2" x="2.54" y="0" dx="3.556" dy="2.032" layer="1" rot="R90"/>
+<text x="-1.27" y="2.54" size="0.4064" layer="25">&gt;Name</text>
+<text x="-1.27" y="-2.54" size="0.4064" layer="27">&gt;Value</text>
+</package>
+<package name="0603">
+<wire x1="-1.473" y1="0.983" x2="1.473" y2="0.983" width="0.0508" layer="39"/>
+<wire x1="1.473" y1="0.983" x2="1.473" y2="-0.983" width="0.0508" layer="39"/>
+<wire x1="1.473" y1="-0.983" x2="-1.473" y2="-0.983" width="0.0508" layer="39"/>
+<wire x1="-1.473" y1="-0.983" x2="-1.473" y2="0.983" width="0.0508" layer="39"/>
+<wire x1="-0.356" y1="0.432" x2="0.356" y2="0.432" width="0.1016" layer="51"/>
+<wire x1="-0.356" y1="-0.419" x2="0.356" y2="-0.419" width="0.1016" layer="51"/>
+<smd name="1" x="-0.85" y="0" dx="1.1" dy="1" layer="1"/>
+<smd name="2" x="0.85" y="0" dx="1.1" dy="1" layer="1"/>
+<text x="-0.889" y="0.762" size="0.4064" layer="25" font="vector">&gt;NAME</text>
+<text x="-1.016" y="-1.143" size="0.4064" layer="27" font="vector">&gt;VALUE</text>
+<rectangle x1="-0.8382" y1="-0.4699" x2="-0.3381" y2="0.4801" layer="51"/>
+<rectangle x1="0.3302" y1="-0.4699" x2="0.8303" y2="0.4801" layer="51"/>
+<rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
+</package>
+<package name="CR54">
+<wire x1="2.8" y1="2.98" x2="-2.8" y2="2.98" width="0.127" layer="51"/>
+<wire x1="-2.8" y1="2.98" x2="-2.8" y2="-3" width="0.127" layer="51"/>
+<wire x1="-2.8" y1="-3" x2="2.8" y2="-3" width="0.127" layer="51"/>
+<wire x1="2.8" y1="-3" x2="2.8" y2="2.98" width="0.127" layer="51"/>
+<smd name="P$1" x="0" y="1.92" dx="5.5" dy="2.15" layer="1"/>
+<smd name="P$2" x="0" y="-1.92" dx="5.5" dy="2.15" layer="1"/>
+<text x="-2.54" y="3.81" size="0.4064" layer="25">&gt;Name</text>
+<text x="0" y="3.81" size="0.4064" layer="27">&gt;Value</text>
+</package>
+<package name="CDRH125">
+<wire x1="-3.5" y1="6" x2="-6" y2="6" width="0.2032" layer="21"/>
+<wire x1="-6" y1="6" x2="-6" y2="-6" width="0.2032" layer="21"/>
+<wire x1="-6" y1="-6" x2="-3.5" y2="-6" width="0.2032" layer="21"/>
+<wire x1="3.5" y1="-6" x2="6" y2="-6" width="0.2032" layer="21"/>
+<wire x1="6" y1="-6" x2="6" y2="6" width="0.2032" layer="21"/>
+<wire x1="6" y1="6" x2="3.5" y2="6" width="0.2032" layer="21"/>
+<smd name="1" x="0" y="4.9" dx="5.4" dy="4" layer="1"/>
+<smd name="2" x="0" y="-4.9" dx="5.4" dy="4" layer="1"/>
+<text x="-2.54" y="1.27" size="0.4064" layer="25">&gt;Name</text>
+<text x="-2.54" y="-1.27" size="0.4064" layer="27">&gt;Value</text>
+</package>
+<package name="C0402">
+<description>&lt;b&gt;CAPACITOR&lt;/b&gt;&lt;p&gt;
+chip</description>
+<wire x1="-0.245" y1="0.224" x2="0.245" y2="0.224" width="0.1524" layer="51"/>
+<wire x1="0.245" y1="-0.224" x2="-0.245" y2="-0.224" width="0.1524" layer="51"/>
+<wire x1="-1.473" y1="0.483" x2="1.473" y2="0.483" width="0.0508" layer="39"/>
+<wire x1="1.473" y1="0.483" x2="1.473" y2="-0.483" width="0.0508" layer="39"/>
+<wire x1="1.473" y1="-0.483" x2="-1.473" y2="-0.483" width="0.0508" layer="39"/>
+<wire x1="-1.473" y1="-0.483" x2="-1.473" y2="0.483" width="0.0508" layer="39"/>
+<smd name="1" x="-0.65" y="0" dx="0.7" dy="0.9" layer="1"/>
+<smd name="2" x="0.65" y="0" dx="0.7" dy="0.9" layer="1"/>
+<text x="-0.889" y="0.6985" size="0.4064" layer="25">&gt;NAME</text>
+<text x="-1.0795" y="-1.143" size="0.4064" layer="27">&gt;VALUE</text>
+<rectangle x1="-0.554" y1="-0.3048" x2="-0.254" y2="0.2951" layer="51"/>
+<rectangle x1="0.2588" y1="-0.3048" x2="0.5588" y2="0.2951" layer="51"/>
+<rectangle x1="-0.1999" y1="-0.3" x2="0.1999" y2="0.3" layer="35"/>
+</package>
+<package name="B82462G">
+<wire x1="3.15" y1="3.15" x2="-3.15" y2="3.15" width="0.127" layer="51"/>
+<wire x1="-3.15" y1="3.15" x2="-3.15" y2="-3.15" width="0.127" layer="51"/>
+<wire x1="-3.15" y1="-3.15" x2="3.15" y2="-3.15" width="0.127" layer="51"/>
+<wire x1="3.15" y1="-3.15" x2="3.15" y2="3.15" width="0.127" layer="51"/>
+<wire x1="-3.15" y1="3.15" x2="-2" y2="3.15" width="0.2032" layer="21"/>
+<wire x1="-3.15" y1="3.15" x2="-3.15" y2="-3.15" width="0.2032" layer="21"/>
+<wire x1="-3.15" y1="-3.15" x2="-2" y2="-3.15" width="0.2032" layer="21"/>
+<wire x1="2" y1="-3.15" x2="3.15" y2="-3.15" width="0.2032" layer="21"/>
+<wire x1="3.15" y1="-3.15" x2="3.15" y2="3.15" width="0.2032" layer="21"/>
+<wire x1="3.15" y1="3.15" x2="2" y2="3.15" width="0.2032" layer="21"/>
+<smd name="P$1" x="0" y="2.75" dx="2.4" dy="1.5" layer="1"/>
+<smd name="P$2" x="0" y="-2.75" dx="2.4" dy="1.5" layer="1"/>
+</package>
+<package name="CR75">
+<wire x1="-1" y1="3.65" x2="7" y2="3.65" width="0.127" layer="21"/>
+<wire x1="7" y1="3.65" x2="7" y2="2.55" width="0.127" layer="21"/>
+<wire x1="-1" y1="3.65" x2="-1" y2="2.55" width="0.127" layer="21"/>
+<wire x1="-1" y1="-3.65" x2="7" y2="-3.65" width="0.127" layer="21"/>
+<wire x1="7" y1="-3.65" x2="7" y2="-2.55" width="0.127" layer="21"/>
+<wire x1="-1" y1="-3.65" x2="-1" y2="-2.55" width="0.127" layer="21"/>
+<smd name="P$1" x="0" y="0" dx="4.7" dy="1.75" layer="1" rot="R90"/>
+<smd name="P$2" x="6.05" y="0" dx="4.7" dy="1.75" layer="1" rot="R90"/>
+</package>
+<package name="1210">
+<wire x1="-1.6" y1="1.3" x2="1.6" y2="1.3" width="0.127" layer="51"/>
+<wire x1="1.6" y1="1.3" x2="1.6" y2="-1.3" width="0.127" layer="51"/>
+<wire x1="1.6" y1="-1.3" x2="-1.6" y2="-1.3" width="0.127" layer="51"/>
+<wire x1="-1.6" y1="-1.3" x2="-1.6" y2="1.3" width="0.127" layer="51"/>
+<wire x1="-1.6" y1="1.3" x2="1.6" y2="1.3" width="0.2032" layer="21"/>
+<wire x1="-1.6" y1="-1.3" x2="1.6" y2="-1.3" width="0.2032" layer="21"/>
+<smd name="1" x="-1.6" y="0" dx="1.2" dy="2" layer="1"/>
+<smd name="2" x="1.6" y="0" dx="1.2" dy="2" layer="1"/>
+<text x="-0.8" y="0.5" size="0.4064" layer="25">&gt;NAME</text>
+<text x="-0.9" y="-0.7" size="0.4064" layer="27">&gt;VALUE</text>
+</package>
+<package name="1007">
+<description>1007 (2518 metric) package</description>
+<wire x1="0.9" y1="1.25" x2="-0.9" y2="1.25" width="0.127" layer="51"/>
+<wire x1="-0.9" y1="1.25" x2="-0.9" y2="-1.25" width="0.127" layer="51"/>
+<wire x1="-0.9" y1="-1.25" x2="0.9" y2="-1.25" width="0.127" layer="51"/>
+<wire x1="0.9" y1="-1.25" x2="0.9" y2="1.25" width="0.127" layer="51"/>
+<wire x1="-1" y1="-0.4" x2="-1" y2="0.4" width="0.127" layer="21"/>
+<wire x1="1" y1="-0.4" x2="1" y2="0.4" width="0.127" layer="21"/>
+<smd name="1" x="0" y="1" dx="2" dy="0.8" layer="1"/>
+<smd name="2" x="0" y="-1" dx="2" dy="0.8" layer="1"/>
+<text x="-1" y="1.6" size="0.4064" layer="25">&gt;NAME</text>
+<text x="-1" y="-2" size="0.4064" layer="27">&gt;VALUE</text>
+</package>
+</packages>
+<symbols>
+<symbol name="INDUCTOR">
+<wire x1="0" y1="5.08" x2="1.27" y2="3.81" width="0.254" layer="94" curve="-90" cap="flat"/>
+<wire x1="0" y1="2.54" x2="1.27" y2="3.81" width="0.254" layer="94" curve="90" cap="flat"/>
+<wire x1="0" y1="2.54" x2="1.27" y2="1.27" width="0.254" layer="94" curve="-90" cap="flat"/>
+<wire x1="0" y1="0" x2="1.27" y2="1.27" width="0.254" layer="94" curve="90" cap="flat"/>
+<wire x1="0" y1="0" x2="1.27" y2="-1.27" width="0.254" layer="94" curve="-90" cap="flat"/>
+<wire x1="0" y1="-2.54" x2="1.27" y2="-1.27" width="0.254" layer="94" curve="90" cap="flat"/>
+<wire x1="0" y1="-2.54" x2="1.27" y2="-3.81" width="0.254" layer="94" curve="-90" cap="flat"/>
+<wire x1="0" y1="-5.08" x2="1.27" y2="-3.81" width="0.254" layer="94" curve="90" cap="flat"/>
+<text x="2.54" y="5.08" size="1.778" layer="95">&gt;NAME</text>
+<text x="2.54" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
+<pin name="1" x="0" y="7.62" visible="off" length="short" direction="pas" swaplevel="1" rot="R270"/>
+<pin name="2" x="0" y="-7.62" visible="off" length="short" direction="pas" swaplevel="1" rot="R90"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="INDUCTOR" uservalue="yes">
+<description>&lt;b&gt;Inductors&lt;/b&gt;
+Basic Inductor/Choke - 0603 and 1206. Footprints are not proven and vary greatly between part numbers.</description>
+<gates>
+<gate name="G$1" symbol="INDUCTOR" x="0" y="0"/>
+</gates>
+<devices>
+<device name="H*" package="INDUCTOR-1206">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
+<connect gate="G$1" pin="2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name="1206"/>
+</technologies>
+</device>
+<device name="0603" package="0603">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="CR54" package="CR54">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
+<connect gate="G$1" pin="2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="PWR" package="CDRH125">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="0402" package="C0402">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="-B82462G" package="B82462G">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
+<connect gate="G$1" pin="2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="CR75" package="CR75">
+<connects>
+<connect gate="G$1" pin="1" pad="P$1"/>
+<connect gate="G$1" pin="2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1210" package="1210">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="1007" package="1007">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
+<library name="inductors">
+<description>&lt;b&gt;Inductors and Filters&lt;/b&gt;&lt;p&gt;
+Based on the previous library ind-a.lbr&lt;p&gt;
+&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+<package name="DR1030">
+<description>&lt;b&gt;DR1030 Series Low Profile Power Inductors&lt;/b&gt;&lt;p&gt;
+Source: &lt;a href="http://www.cooperbussmann.com/pdf/c73e479f-f867-4c64-ae26-9c1f23814163.pdf"&gt; Data sheet&lt;/a&gt;</description>
+<wire x1="5.05" y1="3.6057" x2="5.05" y2="-4.2986" width="0.2032" layer="21"/>
+<wire x1="5.05" y1="-4.2986" x2="4.1986" y2="-5.15" width="0.2032" layer="21" curve="-90"/>
+<wire x1="4.1986" y1="-5.15" x2="-3.5057" y2="-5.15" width="0.2032" layer="51"/>
+<wire x1="-3.5057" y1="-5.15" x2="-5.05" y2="-3.6057" width="0.2032" layer="21"/>
+<wire x1="-5.05" y1="-3.6057" x2="-5.05" y2="4.2308" width="0.2032" layer="21"/>
+<wire x1="-5.05" y1="4.2308" x2="-4.1308" y2="5.15" width="0.2032" layer="21"/>
+<wire x1="-4.1308" y1="5.15" x2="3.5057" y2="5.15" width="0.2032" layer="51"/>
+<wire x1="3.5057" y1="5.15" x2="5.05" y2="3.6057" width="0.2032" layer="21"/>
+<circle x="4.6" y="4.7" radius="0.5099" width="0" layer="21"/>
+<circle x="-4.6" y="-4.7" radius="0.5099" width="0" layer="21"/>
+<circle x="0" y="0" radius="3.3" width="0.2032" layer="21"/>
+<smd name="1" x="0" y="4.45" dx="3.3" dy="1.6" layer="1"/>
+<smd name="2" x="0" y="-4.45" dx="3.3" dy="1.6" layer="1"/>
+<text x="-5.1712" y="5.503" size="1.27" layer="25">&gt;NAME</text>
+<text x="-5.1712" y="-7.281" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+</packages>
+<symbols>
+<symbol name="L">
+<text x="-3.81" y="1.3716" size="1.778" layer="95">&gt;NAME</text>
+<text x="-3.81" y="-2.921" size="1.778" layer="96">&gt;VALUE</text>
+<rectangle x1="-2.54" y1="-0.889" x2="2.54" y2="0.889" layer="94"/>
+<pin name="2" x="5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1" rot="R180"/>
+<pin name="1" x="-5.08" y="0" visible="off" length="short" direction="pas" swaplevel="1"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="DR1030" prefix="L" uservalue="yes">
+<description>&lt;b&gt;DR1030 Series Low Profile Power Inductors&lt;/b&gt;&lt;p&gt;
+Source: &lt;a href="http://www.cooperbussmann.com/pdf/c73e479f-f867-4c64-ae26-9c1f23814163.pdf"&gt; Data sheet&lt;/a&gt;</description>
+<gates>
+<gate name="G$1" symbol="L" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="DR1030">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -16889,49 +17539,49 @@ Source: Comchip CGRM4001-G.pdf</description>
 <part name="RLY2" library="jason_eagle6" deviceset="9007-REED-RELAY" device=""/>
 <part name="JP1" library="pinhead" deviceset="PINHD-2X2" device=""/>
 <part name="Q8" library="transistor" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1"/>
-<part name="D10" library="jasons_stuff" deviceset="0805DIODE" device=""/>
-<part name="D9" library="jasons_stuff" deviceset="0805DIODE" device=""/>
+<part name="D12" library="jasons_stuff" deviceset="0805DIODE" device=""/>
+<part name="D11" library="jasons_stuff" deviceset="0805DIODE" device=""/>
 <part name="Q7" library="transistor" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1"/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
-<part name="R20" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="R21" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R23" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R24" library="rcl" deviceset="R-EU_" device="R0805"/>
 <part name="X2" library="jason_eagle6" deviceset="ACJM-MHDRA" device=""/>
 <part name="RLY3" library="jason_eagle6" deviceset="9007-REED-RELAY" device=""/>
 <part name="RLY4" library="jason_eagle6" deviceset="9007-REED-RELAY" device=""/>
 <part name="JP3" library="pinhead" deviceset="PINHD-2X2" device=""/>
 <part name="Q6" library="transistor" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1"/>
-<part name="D8" library="jasons_stuff" deviceset="0805DIODE" device=""/>
-<part name="D7" library="jasons_stuff" deviceset="0805DIODE" device=""/>
+<part name="D10" library="jasons_stuff" deviceset="0805DIODE" device=""/>
+<part name="D9" library="jasons_stuff" deviceset="0805DIODE" device=""/>
 <part name="Q5" library="transistor" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1"/>
 <part name="GND1" library="supply1" deviceset="GND" device=""/>
 <part name="GND2" library="supply1" deviceset="GND" device=""/>
-<part name="R18" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="R19" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R21" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R22" library="rcl" deviceset="R-EU_" device="R0805"/>
 <part name="X3" library="jason_eagle6" deviceset="ACJM-MHDRA" device=""/>
 <part name="RLY5" library="jason_eagle6" deviceset="9007-REED-RELAY" device=""/>
 <part name="RLY6" library="jason_eagle6" deviceset="9007-REED-RELAY" device=""/>
 <part name="JP5" library="pinhead" deviceset="PINHD-2X2" device=""/>
 <part name="Q4" library="transistor" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1"/>
-<part name="D6" library="jasons_stuff" deviceset="0805DIODE" device=""/>
-<part name="D5" library="jasons_stuff" deviceset="0805DIODE" device=""/>
+<part name="D8" library="jasons_stuff" deviceset="0805DIODE" device=""/>
+<part name="D7" library="jasons_stuff" deviceset="0805DIODE" device=""/>
 <part name="Q3" library="transistor" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1"/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
 <part name="GND6" library="supply1" deviceset="GND" device=""/>
-<part name="R16" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="R17" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R19" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R20" library="rcl" deviceset="R-EU_" device="R0805"/>
 <part name="X4" library="jason_eagle6" deviceset="ACJM-MHDRA" device=""/>
 <part name="RLY7" library="jason_eagle6" deviceset="9007-REED-RELAY" device=""/>
 <part name="RLY8" library="jason_eagle6" deviceset="9007-REED-RELAY" device=""/>
 <part name="JP7" library="pinhead" deviceset="PINHD-2X2" device=""/>
 <part name="Q2" library="transistor" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1"/>
-<part name="D4" library="jasons_stuff" deviceset="0805DIODE" device=""/>
-<part name="D3" library="jasons_stuff" deviceset="0805DIODE" device=""/>
+<part name="D6" library="jasons_stuff" deviceset="0805DIODE" device=""/>
+<part name="D5" library="jasons_stuff" deviceset="0805DIODE" device=""/>
 <part name="Q1" library="transistor" deviceset="*-NPN-" device="SOT23-BEC" technology="MMBT3904LT1"/>
 <part name="GND7" library="supply1" deviceset="GND" device=""/>
 <part name="GND8" library="supply1" deviceset="GND" device=""/>
-<part name="R14" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="R15" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R17" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R18" library="rcl" deviceset="R-EU_" device="R0805"/>
 <part name="MIDI_IN" library="jason_eagle6" deviceset="DIN5PIN" device=""/>
 <part name="X6" library="jason_eagle6" deviceset="VERTICAL_3_5MM_SOCKET" device=""/>
 <part name="U$9" library="jason_eagle6" deviceset="PWR_SOCKET_2_1MM" device=""/>
@@ -16939,56 +17589,72 @@ Source: Comchip CGRM4001-G.pdf</description>
 <part name="ACT" library="led" deviceset="LED" device="3MM"/>
 <part name="S1" library="switch-omron" deviceset="10-XX" device=""/>
 <part name="IC3" library="optocoupler" deviceset="6N138" device=""/>
-<part name="D2" library="jasons_stuff" deviceset="0805DIODE" device=""/>
-<part name="R13" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="R12" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="R11" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="IC1" library="jasons_stuff" deviceset="PIC16F1825" device="SO14"/>
+<part name="D4" library="jasons_stuff" deviceset="0805DIODE" device=""/>
+<part name="R15" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R16" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R14" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="IC2" library="jasons_stuff" deviceset="PIC16F1825" device="SO14"/>
 <part name="ICSP" library="tag-connect" deviceset="TC2030" device="-MCP-NL"/>
-<part name="C3" library="rcl" deviceset="C-EU" device="C0805"/>
+<part name="C2" library="rcl" deviceset="C-EU" device="C0805"/>
 <part name="GND9" library="supply1" deviceset="GND" device=""/>
 <part name="GND10" library="supply1" deviceset="GND" device=""/>
 <part name="GND11" library="supply1" deviceset="GND" device=""/>
-<part name="IC4" library="rectifier" deviceset="MB*S" device="" technology="1"/>
-<part name="IC2" library="burr-brown" deviceset="REG1117" device=""/>
-<part name="C4" library="rcl" deviceset="CPOL-EU" device="E2,5-6E"/>
-<part name="C5" library="rcl" deviceset="CPOL-EU" device="E2,5-6E"/>
-<part name="C2" library="rcl" deviceset="C-EU" device="C0805"/>
-<part name="C1" library="rcl" deviceset="C-EU" device="C0805"/>
-<part name="R3" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="R4" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R1" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R2" library="rcl" deviceset="R-EU_" device="R0805"/>
 <part name="GND12" library="supply1" deviceset="GND" device=""/>
 <part name="GND13" library="supply1" deviceset="GND" device=""/>
 <part name="GND14" library="supply1" deviceset="GND" device=""/>
 <part name="GND15" library="supply1" deviceset="GND" device=""/>
 <part name="GND16" library="supply1" deviceset="GND" device=""/>
 <part name="GND17" library="supply1" deviceset="GND" device=""/>
-<part name="L1" library="led" deviceset="LED" device="3MM"/>
-<part name="L2" library="led" deviceset="LED" device="3MM"/>
-<part name="L3" library="led" deviceset="LED" device="3MM"/>
-<part name="L4" library="led" deviceset="LED" device="3MM"/>
-<part name="L5" library="led" deviceset="LED" device="3MM"/>
-<part name="L6" library="led" deviceset="LED" device="3MM"/>
-<part name="L7" library="led" deviceset="LED" device="3MM"/>
-<part name="L8" library="led" deviceset="LED" device="3MM"/>
+<part name="A" library="led" deviceset="LED" device="3MM"/>
+<part name="B" library="led" deviceset="LED" device="3MM"/>
+<part name="C" library="led" deviceset="LED" device="3MM"/>
+<part name="D" library="led" deviceset="LED" device="3MM"/>
+<part name="E" library="led" deviceset="LED" device="3MM"/>
+<part name="F" library="led" deviceset="LED" device="3MM"/>
+<part name="G" library="led" deviceset="LED" device="3MM"/>
+<part name="H" library="led" deviceset="LED" device="3MM"/>
 <part name="R10" library="rcl" deviceset="R-EU_" device="R0805"/>
 <part name="R9" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="RR8" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="RR7" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R8" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R7" library="rcl" deviceset="R-EU_" device="R0805"/>
 <part name="R6" library="rcl" deviceset="R-EU_" device="R0805"/>
 <part name="R5" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="R2" library="rcl" deviceset="R-EU_" device="R0805"/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R4" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R3" library="rcl" deviceset="R-EU_" device="R0805"/>
 <part name="GND18" library="supply1" deviceset="GND" device=""/>
 <part name="JP13" library="pinhead" deviceset="PINHD-2X3" device=""/>
 <part name="JP14" library="pinhead" deviceset="PINHD-2X3" device=""/>
 <part name="JP15" library="pinhead" deviceset="PINHD-2X3" device=""/>
 <part name="JP16" library="pinhead" deviceset="PINHD-2X3" device=""/>
-<part name="D1" library="diode" deviceset="CGRM400*-G" device="" technology="1"/>
+<part name="D1" library="microbuilder" deviceset="DIODE" device="SOD-123"/>
+<part name="D3" library="microbuilder" deviceset="DIODE" device="SOD-123"/>
+<part name="IC1" library="jason_eagle6" deviceset="SP34063A_BOOST_REG" device=""/>
+<part name="R11" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="GND19" library="supply1" deviceset="GND" device=""/>
+<part name="C5" library="rcl" deviceset="CPOL-EU" device="E2.5-7"/>
+<part name="GND20" library="supply1" deviceset="GND" device=""/>
+<part name="R13" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="R12" library="rcl" deviceset="R-EU_" device="R0805"/>
+<part name="C1" library="rcl" deviceset="C-EU" device="C0805"/>
+<part name="GND21" library="supply1" deviceset="GND" device=""/>
+<part name="D2" library="diode" deviceset="CGRM400*-G" device="" technology="1"/>
+<part name="GND22" library="supply1" deviceset="GND" device=""/>
+<part name="C4" library="rcl" deviceset="CPOL-EU" device="E2.5-7"/>
+<part name="GND23" library="supply1" deviceset="GND" device=""/>
+<part name="P+6" library="supply1" deviceset="+5V" device=""/>
+<part name="GND24" library="supply1" deviceset="GND" device=""/>
+<part name="L1" library="SparkFun" deviceset="INDUCTOR" device="1210"/>
+<part name="C3" library="rcl" deviceset="CPOL-EU" device="E2.5-7"/>
+<part name="GND41" library="supply1" deviceset="GND" device=""/>
+<part name="L2" library="inductors" deviceset="DR1030" device=""/>
+<part name="GND25" library="supply1" deviceset="GND" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
+<text x="391.16" y="-38.1" size="3.81" layer="91">POWER  SUPPLY</text>
 </plain>
 <instances>
 <instance part="X1" gate="1" x="10.16" y="45.72" rot="R180"/>
@@ -16996,107 +17662,120 @@ Source: Comchip CGRM4001-G.pdf</description>
 <instance part="RLY2" gate="G$1" x="71.12" y="93.98" rot="R90"/>
 <instance part="JP1" gate="A" x="48.26" y="71.12" rot="R90"/>
 <instance part="Q8" gate="G$1" x="38.1" y="35.56"/>
-<instance part="D10" gate="G$1" x="36.068" y="83.82" rot="R90"/>
-<instance part="D9" gate="G$1" x="61.468" y="83.82" rot="R90"/>
+<instance part="D12" gate="G$1" x="36.068" y="83.82" rot="R90"/>
+<instance part="D11" gate="G$1" x="61.468" y="83.82" rot="R90"/>
 <instance part="Q7" gate="G$1" x="63.5" y="27.94"/>
 <instance part="GND3" gate="1" x="40.64" y="17.78"/>
 <instance part="GND4" gate="1" x="66.04" y="17.78"/>
-<instance part="R20" gate="G$1" x="27.94" y="27.94" rot="R180"/>
-<instance part="R21" gate="G$1" x="27.94" y="35.56" rot="R180"/>
+<instance part="R23" gate="G$1" x="27.94" y="27.94" rot="R180"/>
+<instance part="R24" gate="G$1" x="27.94" y="35.56" rot="R180"/>
 <instance part="X2" gate="1" x="93.98" y="45.72" rot="R180"/>
 <instance part="RLY3" gate="G$1" x="129.54" y="93.98" rot="R90"/>
 <instance part="RLY4" gate="G$1" x="154.94" y="93.98" rot="R90"/>
 <instance part="JP3" gate="A" x="132.08" y="71.12" rot="R90"/>
 <instance part="Q6" gate="G$1" x="121.92" y="35.56"/>
-<instance part="D8" gate="G$1" x="119.888" y="83.82" rot="R90"/>
-<instance part="D7" gate="G$1" x="145.288" y="83.82" rot="R90"/>
+<instance part="D10" gate="G$1" x="119.888" y="83.82" rot="R90"/>
+<instance part="D9" gate="G$1" x="145.288" y="83.82" rot="R90"/>
 <instance part="Q5" gate="G$1" x="147.32" y="27.94"/>
 <instance part="GND1" gate="1" x="124.46" y="17.78"/>
 <instance part="GND2" gate="1" x="149.86" y="17.78"/>
-<instance part="R18" gate="G$1" x="111.76" y="27.94" rot="R180"/>
-<instance part="R19" gate="G$1" x="111.76" y="35.56" rot="R180"/>
+<instance part="R21" gate="G$1" x="111.76" y="27.94" rot="R180"/>
+<instance part="R22" gate="G$1" x="111.76" y="35.56" rot="R180"/>
 <instance part="X3" gate="1" x="180.34" y="45.72" rot="R180"/>
 <instance part="RLY5" gate="G$1" x="215.9" y="93.98" rot="R90"/>
 <instance part="RLY6" gate="G$1" x="241.3" y="93.98" rot="R90"/>
 <instance part="JP5" gate="A" x="218.44" y="71.12" rot="R90"/>
 <instance part="Q4" gate="G$1" x="208.28" y="35.56"/>
-<instance part="D6" gate="G$1" x="206.248" y="83.82" rot="R90"/>
-<instance part="D5" gate="G$1" x="231.648" y="83.82" rot="R90"/>
+<instance part="D8" gate="G$1" x="206.248" y="83.82" rot="R90"/>
+<instance part="D7" gate="G$1" x="231.648" y="83.82" rot="R90"/>
 <instance part="Q3" gate="G$1" x="233.68" y="27.94"/>
 <instance part="GND5" gate="1" x="210.82" y="17.78"/>
 <instance part="GND6" gate="1" x="236.22" y="17.78"/>
-<instance part="R16" gate="G$1" x="198.12" y="27.94" rot="R180"/>
-<instance part="R17" gate="G$1" x="198.12" y="35.56" rot="R180"/>
+<instance part="R19" gate="G$1" x="198.12" y="27.94" rot="R180"/>
+<instance part="R20" gate="G$1" x="198.12" y="35.56" rot="R180"/>
 <instance part="X4" gate="1" x="264.16" y="45.72" rot="R180"/>
 <instance part="RLY7" gate="G$1" x="299.72" y="93.98" rot="R90"/>
 <instance part="RLY8" gate="G$1" x="325.12" y="93.98" rot="R90"/>
 <instance part="JP7" gate="A" x="302.26" y="71.12" rot="R90"/>
 <instance part="Q2" gate="G$1" x="292.1" y="35.56"/>
-<instance part="D4" gate="G$1" x="290.068" y="83.82" rot="R90"/>
-<instance part="D3" gate="G$1" x="315.468" y="83.82" rot="R90"/>
+<instance part="D6" gate="G$1" x="290.068" y="83.82" rot="R90"/>
+<instance part="D5" gate="G$1" x="315.468" y="83.82" rot="R90"/>
 <instance part="Q1" gate="G$1" x="317.5" y="27.94"/>
 <instance part="GND7" gate="1" x="294.64" y="17.78"/>
 <instance part="GND8" gate="1" x="320.04" y="17.78"/>
-<instance part="R14" gate="G$1" x="281.94" y="27.94" rot="R180"/>
-<instance part="R15" gate="G$1" x="281.94" y="35.56" rot="R180"/>
+<instance part="R17" gate="G$1" x="281.94" y="27.94" rot="R180"/>
+<instance part="R18" gate="G$1" x="281.94" y="35.56" rot="R180"/>
 <instance part="MIDI_IN" gate="G$1" x="-7.62" y="-40.64"/>
 <instance part="X6" gate="G$1" x="-35.56" y="-25.4"/>
-<instance part="U$9" gate="G$1" x="96.52" y="-17.78"/>
+<instance part="U$9" gate="G$1" x="327.66" y="-71.12" rot="MR180"/>
 <instance part="PWR" gate="G$1" x="139.7" y="-66.04"/>
 <instance part="ACT" gate="G$1" x="147.32" y="-66.04"/>
 <instance part="S1" gate="1" x="106.68" y="-66.04" rot="R270"/>
 <instance part="IC3" gate="G$1" x="17.78" y="-71.12"/>
-<instance part="D2" gate="G$1" x="-3.048" y="-58.42" rot="R270"/>
-<instance part="R13" gate="G$1" x="10.16" y="-50.8" rot="R270"/>
-<instance part="R12" gate="G$1" x="40.64" y="-71.12" rot="R180"/>
-<instance part="R11" gate="G$1" x="40.64" y="-68.58" rot="R180"/>
-<instance part="IC1" gate="G$1" x="228.6" y="-76.2"/>
+<instance part="D4" gate="G$1" x="-3.048" y="-58.42" rot="R270"/>
+<instance part="R15" gate="G$1" x="10.16" y="-50.8" rot="R270"/>
+<instance part="R16" gate="G$1" x="40.64" y="-71.12" rot="R180"/>
+<instance part="R14" gate="G$1" x="40.64" y="-68.58" rot="R180"/>
+<instance part="IC2" gate="G$1" x="228.6" y="-76.2"/>
 <instance part="ICSP" gate="G$1" x="297.18" y="-71.12"/>
-<instance part="C3" gate="G$1" x="198.12" y="-93.98" smashed="yes">
+<instance part="C2" gate="G$1" x="198.12" y="-93.98" smashed="yes">
 <attribute name="NAME" x="194.564" y="-98.425" size="1.778" layer="95"/>
 <attribute name="VALUE" x="199.644" y="-98.679" size="1.778" layer="96"/>
 </instance>
 <instance part="GND9" gate="1" x="198.12" y="-104.14"/>
 <instance part="GND10" gate="1" x="281.94" y="-106.68"/>
 <instance part="GND11" gate="1" x="99.06" y="-73.66"/>
-<instance part="IC4" gate="G$1" x="127" y="-17.78" rot="R90"/>
-<instance part="IC2" gate="G$1" x="162.56" y="-7.62"/>
-<instance part="C4" gate="G$1" x="142.24" y="-15.24"/>
-<instance part="C5" gate="G$1" x="182.88" y="-15.24"/>
-<instance part="C2" gate="G$1" x="147.32" y="-15.24"/>
-<instance part="C1" gate="G$1" x="177.8" y="-15.24"/>
-<instance part="R3" gate="G$1" x="139.7" y="-81.28" rot="R270"/>
-<instance part="R4" gate="G$1" x="147.32" y="-81.28" rot="R270"/>
+<instance part="R1" gate="G$1" x="139.7" y="-81.28" rot="R270"/>
+<instance part="R2" gate="G$1" x="147.32" y="-81.28" rot="R270"/>
 <instance part="GND12" gate="1" x="139.7" y="-91.44"/>
 <instance part="GND13" gate="1" x="147.32" y="-91.44"/>
 <instance part="GND14" gate="1" x="83.82" y="73.66"/>
 <instance part="GND15" gate="1" x="167.64" y="73.66"/>
 <instance part="GND16" gate="1" x="254" y="73.66"/>
 <instance part="GND17" gate="1" x="337.82" y="73.66"/>
-<instance part="L1" gate="G$1" x="266.7" y="-20.32"/>
-<instance part="L2" gate="G$1" x="271.78" y="-20.32"/>
-<instance part="L3" gate="G$1" x="276.86" y="-20.32"/>
-<instance part="L4" gate="G$1" x="281.94" y="-20.32"/>
-<instance part="L5" gate="G$1" x="287.02" y="-20.32"/>
-<instance part="L6" gate="G$1" x="292.1" y="-20.32"/>
-<instance part="L7" gate="G$1" x="297.18" y="-20.32"/>
-<instance part="L8" gate="G$1" x="302.26" y="-20.32"/>
+<instance part="A" gate="G$1" x="266.7" y="-20.32"/>
+<instance part="B" gate="G$1" x="271.78" y="-20.32"/>
+<instance part="C" gate="G$1" x="276.86" y="-20.32"/>
+<instance part="D" gate="G$1" x="281.94" y="-20.32"/>
+<instance part="E" gate="G$1" x="287.02" y="-20.32"/>
+<instance part="F" gate="G$1" x="292.1" y="-20.32"/>
+<instance part="G" gate="G$1" x="297.18" y="-20.32"/>
+<instance part="H" gate="G$1" x="302.26" y="-20.32"/>
 <instance part="R10" gate="G$1" x="266.7" y="-33.02" rot="R270"/>
 <instance part="R9" gate="G$1" x="271.78" y="-33.02" rot="R270"/>
-<instance part="RR8" gate="G$1" x="276.86" y="-33.02" rot="R270"/>
-<instance part="RR7" gate="G$1" x="281.94" y="-33.02" rot="R270"/>
+<instance part="R8" gate="G$1" x="276.86" y="-33.02" rot="R270"/>
+<instance part="R7" gate="G$1" x="281.94" y="-33.02" rot="R270"/>
 <instance part="R6" gate="G$1" x="287.02" y="-33.02" rot="R270"/>
 <instance part="R5" gate="G$1" x="292.1" y="-33.02" rot="R270"/>
-<instance part="R2" gate="G$1" x="297.18" y="-33.02" rot="R270"/>
-<instance part="R1" gate="G$1" x="302.26" y="-33.02" rot="R270"/>
+<instance part="R4" gate="G$1" x="297.18" y="-33.02" rot="R270"/>
+<instance part="R3" gate="G$1" x="302.26" y="-33.02" rot="R270"/>
 <instance part="GND18" gate="1" x="266.7" y="-45.72"/>
 <instance part="JP13" gate="A" x="73.66" y="68.58" rot="R90"/>
 <instance part="JP14" gate="A" x="157.48" y="68.58" rot="R90"/>
 <instance part="JP15" gate="A" x="243.84" y="68.58" rot="R90"/>
 <instance part="JP16" gate="A" x="327.66" y="68.58" rot="R90"/>
-<instance part="D1" gate="G$1" x="198.12" y="-55.88" smashed="yes" rot="R270">
-<attribute name="NAME" x="193.04" y="-56.9214" size="1.778" layer="95"/>
-</instance>
+<instance part="D1" gate="G$1" x="353.06" y="-66.04"/>
+<instance part="D3" gate="G$1" x="198.12" y="-55.88" rot="R270"/>
+<instance part="IC1" gate="G$1" x="416.56" y="-50.8" rot="MR0"/>
+<instance part="R11" gate="G$1" x="388.62" y="-58.42" rot="R90"/>
+<instance part="GND19" gate="1" x="383.54" y="-91.44"/>
+<instance part="C5" gate="G$1" x="383.54" y="-81.28"/>
+<instance part="GND20" gate="1" x="436.88" y="-68.58"/>
+<instance part="R13" gate="G$1" x="396.24" y="-81.28" rot="R90"/>
+<instance part="R12" gate="G$1" x="419.1" y="-73.66" rot="R180"/>
+<instance part="C1" gate="G$1" x="441.96" y="-58.42"/>
+<instance part="GND21" gate="1" x="441.96" y="-68.58"/>
+<instance part="D2" gate="G$1" x="447.04" y="-60.96" rot="R90"/>
+<instance part="GND22" gate="1" x="447.04" y="-68.58"/>
+<instance part="C4" gate="G$1" x="459.74" y="-81.28"/>
+<instance part="GND23" gate="1" x="459.74" y="-91.44"/>
+<instance part="P+6" gate="1" x="485.14" y="-50.8" smashed="yes"/>
+<instance part="GND24" gate="1" x="396.24" y="-91.44"/>
+<instance part="L1" gate="G$1" x="472.44" y="-73.66" rot="R90"/>
+<instance part="C3" gate="G$1" x="485.14" y="-81.28"/>
+<instance part="GND41" gate="1" x="485.14" y="-91.44"/>
+<instance part="L2" gate="G$1" x="459.74" y="-60.96" rot="R90"/>
+<instance part="GND25" gate="1" x="345.44" y="-91.44"/>
 </instances>
 <busses>
 </busses>
@@ -17183,7 +17862,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <segment>
 <pinref part="IC3" gate="G$1" pin="VCC"/>
 <wire x1="30.48" y1="-66.04" x2="50.8" y2="-66.04" width="0.1524" layer="91"/>
-<pinref part="R12" gate="G$1" pin="1"/>
+<pinref part="R16" gate="G$1" pin="1"/>
 <wire x1="50.8" y1="-66.04" x2="53.34" y2="-66.04" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="-71.12" x2="50.8" y2="-71.12" width="0.1524" layer="91"/>
 <wire x1="50.8" y1="-71.12" x2="50.8" y2="-66.04" width="0.1524" layer="91"/>
@@ -17201,24 +17880,24 @@ Source: Comchip CGRM4001-G.pdf</description>
 <wire x1="248.92" y1="-66.04" x2="248.92" y2="-63.5" width="0.1524" layer="91"/>
 <wire x1="248.92" y1="-63.5" x2="198.12" y2="-63.5" width="0.1524" layer="91"/>
 <wire x1="198.12" y1="-63.5" x2="198.12" y2="-68.58" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="G$1" pin="VDD"/>
+<pinref part="IC2" gate="G$1" pin="VDD"/>
 <wire x1="198.12" y1="-68.58" x2="208.28" y2="-68.58" width="0.1524" layer="91"/>
-<pinref part="C3" gate="G$1" pin="1"/>
+<pinref part="C2" gate="G$1" pin="1"/>
 <wire x1="198.12" y1="-91.44" x2="198.12" y2="-68.58" width="0.1524" layer="91"/>
 <junction x="198.12" y="-68.58"/>
 <wire x1="198.12" y1="-63.5" x2="195.58" y2="-63.5" width="0.1524" layer="91"/>
 <junction x="198.12" y="-63.5"/>
-<pinref part="D1" gate="G$1" pin="C"/>
 <wire x1="198.12" y1="-63.5" x2="198.12" y2="-58.42" width="0.1524" layer="91"/>
 <wire x1="198.12" y1="-63.5" x2="187.96" y2="-63.5" width="0.1524" layer="91"/>
 <label x="187.96" y="-63.5" size="1.778" layer="95"/>
+<pinref part="D3" gate="G$1" pin="C"/>
 </segment>
 </net>
 <net name="N$10" class="0">
 <segment>
 <pinref part="RLY1" gate="G$1" pin="P$3"/>
 <wire x1="40.64" y1="86.36" x2="40.64" y2="83.82" width="0.1524" layer="91"/>
-<pinref part="D10" gate="G$1" pin="P$1"/>
+<pinref part="D12" gate="G$1" pin="P$1"/>
 <junction x="40.64" y="86.36"/>
 <wire x1="40.64" y1="83.82" x2="40.64" y2="40.64" width="0.1524" layer="91"/>
 <junction x="40.64" y="83.82"/>
@@ -17229,7 +17908,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <net name="N$6" class="0">
 <segment>
 <pinref part="RLY2" gate="G$1" pin="P$3"/>
-<pinref part="D9" gate="G$1" pin="P$1"/>
+<pinref part="D11" gate="G$1" pin="P$1"/>
 <wire x1="66.04" y1="86.36" x2="66.04" y2="83.82" width="0.1524" layer="91"/>
 <junction x="66.04" y="86.36"/>
 <pinref part="Q7" gate="G$1" pin="C"/>
@@ -17285,7 +17964,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <segment>
 <pinref part="IC3" gate="G$1" pin="GND"/>
 <wire x1="30.48" y1="-76.2" x2="48.26" y2="-76.2" width="0.1524" layer="91"/>
-<pinref part="R11" gate="G$1" pin="1"/>
+<pinref part="R14" gate="G$1" pin="1"/>
 <wire x1="48.26" y1="-76.2" x2="53.34" y2="-76.2" width="0.1524" layer="91"/>
 <wire x1="45.72" y1="-68.58" x2="48.26" y2="-68.58" width="0.1524" layer="91"/>
 <wire x1="48.26" y1="-68.58" x2="48.26" y2="-76.2" width="0.1524" layer="91"/>
@@ -17294,11 +17973,11 @@ Source: Comchip CGRM4001-G.pdf</description>
 </segment>
 <segment>
 <pinref part="GND9" gate="1" pin="GND"/>
-<pinref part="C3" gate="G$1" pin="2"/>
+<pinref part="C2" gate="G$1" pin="2"/>
 <wire x1="198.12" y1="-101.6" x2="198.12" y2="-99.06" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="VSS"/>
+<pinref part="IC2" gate="G$1" pin="VSS"/>
 <pinref part="ICSP" gate="G$1" pin="VSS(GND)"/>
 <wire x1="251.46" y1="-68.58" x2="281.94" y2="-68.58" width="0.1524" layer="91"/>
 <pinref part="GND10" gate="1" pin="GND"/>
@@ -17307,45 +17986,19 @@ Source: Comchip CGRM4001-G.pdf</description>
 <junction x="281.94" y="-68.58"/>
 </segment>
 <segment>
-<pinref part="IC4" gate="G$1" pin="-"/>
-<wire x1="127" y1="-22.86" x2="127" y2="-25.4" width="0.1524" layer="91"/>
-<pinref part="IC2" gate="G$1" pin="GND"/>
-<wire x1="162.56" y1="-20.32" x2="162.56" y2="-25.4" width="0.1524" layer="91"/>
-<pinref part="C5" gate="G$1" pin="-"/>
-<wire x1="162.56" y1="-25.4" x2="177.8" y2="-25.4" width="0.1524" layer="91"/>
-<wire x1="177.8" y1="-25.4" x2="182.88" y2="-25.4" width="0.1524" layer="91"/>
-<wire x1="182.88" y1="-25.4" x2="182.88" y2="-20.32" width="0.1524" layer="91"/>
-<pinref part="C1" gate="G$1" pin="2"/>
-<wire x1="177.8" y1="-20.32" x2="177.8" y2="-25.4" width="0.1524" layer="91"/>
-<junction x="177.8" y="-25.4"/>
-<wire x1="127" y1="-25.4" x2="142.24" y2="-25.4" width="0.1524" layer="91"/>
-<junction x="162.56" y="-25.4"/>
-<pinref part="C2" gate="G$1" pin="2"/>
-<wire x1="142.24" y1="-25.4" x2="147.32" y2="-25.4" width="0.1524" layer="91"/>
-<wire x1="147.32" y1="-25.4" x2="162.56" y2="-25.4" width="0.1524" layer="91"/>
-<wire x1="147.32" y1="-20.32" x2="147.32" y2="-25.4" width="0.1524" layer="91"/>
-<junction x="147.32" y="-25.4"/>
-<pinref part="C4" gate="G$1" pin="-"/>
-<wire x1="142.24" y1="-20.32" x2="142.24" y2="-25.4" width="0.1524" layer="91"/>
-<junction x="142.24" y="-25.4"/>
-<wire x1="182.88" y1="-25.4" x2="195.58" y2="-25.4" width="0.1524" layer="91"/>
-<junction x="182.88" y="-25.4"/>
-<label x="190.5" y="-25.4" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="GND12" gate="1" pin="GND"/>
-<pinref part="R3" gate="G$1" pin="2"/>
+<pinref part="R1" gate="G$1" pin="2"/>
 <wire x1="139.7" y1="-88.9" x2="139.7" y2="-86.36" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND13" gate="1" pin="GND"/>
-<pinref part="R4" gate="G$1" pin="2"/>
+<pinref part="R2" gate="G$1" pin="2"/>
 <wire x1="147.32" y1="-88.9" x2="147.32" y2="-86.36" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R10" gate="G$1" pin="2"/>
 <wire x1="266.7" y1="-38.1" x2="266.7" y2="-40.64" width="0.1524" layer="91"/>
-<pinref part="R1" gate="G$1" pin="2"/>
+<pinref part="R3" gate="G$1" pin="2"/>
 <wire x1="266.7" y1="-40.64" x2="271.78" y2="-40.64" width="0.1524" layer="91"/>
 <wire x1="271.78" y1="-40.64" x2="276.86" y2="-40.64" width="0.1524" layer="91"/>
 <wire x1="276.86" y1="-40.64" x2="281.94" y2="-40.64" width="0.1524" layer="91"/>
@@ -17357,10 +18010,10 @@ Source: Comchip CGRM4001-G.pdf</description>
 <pinref part="R9" gate="G$1" pin="2"/>
 <wire x1="271.78" y1="-38.1" x2="271.78" y2="-40.64" width="0.1524" layer="91"/>
 <junction x="271.78" y="-40.64"/>
-<pinref part="RR8" gate="G$1" pin="2"/>
+<pinref part="R8" gate="G$1" pin="2"/>
 <wire x1="276.86" y1="-38.1" x2="276.86" y2="-40.64" width="0.1524" layer="91"/>
 <junction x="276.86" y="-40.64"/>
-<pinref part="RR7" gate="G$1" pin="2"/>
+<pinref part="R7" gate="G$1" pin="2"/>
 <wire x1="281.94" y1="-38.1" x2="281.94" y2="-40.64" width="0.1524" layer="91"/>
 <junction x="281.94" y="-40.64"/>
 <pinref part="R6" gate="G$1" pin="2"/>
@@ -17369,7 +18022,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <pinref part="R5" gate="G$1" pin="2"/>
 <wire x1="292.1" y1="-38.1" x2="292.1" y2="-40.64" width="0.1524" layer="91"/>
 <junction x="292.1" y="-40.64"/>
-<pinref part="R2" gate="G$1" pin="2"/>
+<pinref part="R4" gate="G$1" pin="2"/>
 <wire x1="297.18" y1="-38.1" x2="297.18" y2="-40.64" width="0.1524" layer="91"/>
 <junction x="297.18" y="-40.64"/>
 <pinref part="GND18" gate="1" pin="GND"/>
@@ -17420,10 +18073,52 @@ Source: Comchip CGRM4001-G.pdf</description>
 <wire x1="101.6" y1="-68.58" x2="99.06" y2="-68.58" width="0.1524" layer="91"/>
 <junction x="99.06" y="-68.58"/>
 </segment>
+<segment>
+<pinref part="GND19" gate="1" pin="GND"/>
+<pinref part="C5" gate="G$1" pin="-"/>
+<wire x1="383.54" y1="-88.9" x2="383.54" y2="-86.36" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="IC1" gate="G$1" pin="GND"/>
+<pinref part="GND20" gate="1" pin="GND"/>
+<wire x1="434.34" y1="-55.88" x2="436.88" y2="-55.88" width="0.1524" layer="91"/>
+<wire x1="436.88" y1="-55.88" x2="436.88" y2="-66.04" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="C1" gate="G$1" pin="2"/>
+<pinref part="GND21" gate="1" pin="GND"/>
+<wire x1="441.96" y1="-63.5" x2="441.96" y2="-66.04" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND22" gate="1" pin="GND"/>
+<pinref part="D2" gate="G$1" pin="A"/>
+<wire x1="447.04" y1="-66.04" x2="447.04" y2="-63.5" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND23" gate="1" pin="GND"/>
+<pinref part="C4" gate="G$1" pin="-"/>
+<wire x1="459.74" y1="-88.9" x2="459.74" y2="-86.36" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND24" gate="1" pin="GND"/>
+<pinref part="R13" gate="G$1" pin="1"/>
+<wire x1="396.24" y1="-88.9" x2="396.24" y2="-86.36" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="GND41" gate="1" pin="GND"/>
+<pinref part="C3" gate="G$1" pin="-"/>
+<wire x1="485.14" y1="-88.9" x2="485.14" y2="-86.36" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="U$9" gate="G$1" pin="PIN"/>
+<wire x1="345.44" y1="-76.2" x2="340.36" y2="-76.2" width="0.1524" layer="91"/>
+<wire x1="345.44" y1="-88.9" x2="345.44" y2="-76.2" width="0.1524" layer="91"/>
+<pinref part="GND25" gate="1" pin="GND"/>
+</segment>
 </net>
 <net name="N$7" class="0">
 <segment>
-<pinref part="R21" gate="G$1" pin="1"/>
+<pinref part="R24" gate="G$1" pin="1"/>
 <pinref part="Q8" gate="G$1" pin="B"/>
 <wire x1="33.02" y1="35.56" x2="35.56" y2="35.56" width="0.1524" layer="91"/>
 <junction x="33.02" y="35.56"/>
@@ -17432,7 +18127,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="N$8" class="0">
 <segment>
-<pinref part="R20" gate="G$1" pin="1"/>
+<pinref part="R23" gate="G$1" pin="1"/>
 <pinref part="Q7" gate="G$1" pin="B"/>
 <wire x1="33.02" y1="27.94" x2="60.96" y2="27.94" width="0.1524" layer="91"/>
 <junction x="33.02" y="27.94"/>
@@ -17441,37 +18136,37 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="TRIG6" class="0">
 <segment>
-<pinref part="R16" gate="G$1" pin="2"/>
+<pinref part="R19" gate="G$1" pin="2"/>
 <wire x1="193.04" y1="27.94" x2="177.8" y2="27.94" width="0.1524" layer="91"/>
 <label x="177.8" y="30.48" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="L6" gate="G$1" pin="A"/>
+<pinref part="F" gate="G$1" pin="A"/>
 <wire x1="292.1" y1="-17.78" x2="292.1" y2="-10.16" width="0.1524" layer="91"/>
 <label x="292.1" y="-15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
 <label x="261.62" y="-96.52" size="1.778" layer="95" rot="R90"/>
-<pinref part="IC1" gate="G$1" pin="RA2/INT"/>
+<pinref part="IC2" gate="G$1" pin="RA2/INT"/>
 <wire x1="251.46" y1="-76.2" x2="261.62" y2="-76.2" width="0.1524" layer="91"/>
 <wire x1="261.62" y1="-76.2" x2="261.62" y2="-96.52" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="TRIG5" class="0">
 <segment>
-<pinref part="R17" gate="G$1" pin="2"/>
+<pinref part="R20" gate="G$1" pin="2"/>
 <wire x1="193.04" y1="35.56" x2="177.8" y2="35.56" width="0.1524" layer="91"/>
 <label x="177.8" y="35.56" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="L5" gate="G$1" pin="A"/>
+<pinref part="E" gate="G$1" pin="A"/>
 <wire x1="287.02" y1="-17.78" x2="287.02" y2="-10.16" width="0.1524" layer="91"/>
 <label x="287.02" y="-15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
 <label x="259.08" y="-96.52" size="1.778" layer="95" rot="R90"/>
 <wire x1="259.08" y1="-78.74" x2="259.08" y2="-96.52" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="G$1" pin="RCO/SCL/SCK"/>
+<pinref part="IC2" gate="G$1" pin="RCO/SCL/SCK"/>
 <wire x1="251.46" y1="-78.74" x2="259.08" y2="-78.74" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -17539,7 +18234,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <segment>
 <pinref part="RLY3" gate="G$1" pin="P$3"/>
 <wire x1="124.46" y1="86.36" x2="124.46" y2="83.82" width="0.1524" layer="91"/>
-<pinref part="D8" gate="G$1" pin="P$1"/>
+<pinref part="D10" gate="G$1" pin="P$1"/>
 <junction x="124.46" y="86.36"/>
 <wire x1="124.46" y1="83.82" x2="124.46" y2="40.64" width="0.1524" layer="91"/>
 <junction x="124.46" y="83.82"/>
@@ -17549,7 +18244,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <net name="N$16" class="0">
 <segment>
 <pinref part="RLY4" gate="G$1" pin="P$3"/>
-<pinref part="D7" gate="G$1" pin="P$1"/>
+<pinref part="D9" gate="G$1" pin="P$1"/>
 <wire x1="149.86" y1="86.36" x2="149.86" y2="83.82" width="0.1524" layer="91"/>
 <junction x="149.86" y="86.36"/>
 <pinref part="Q5" gate="G$1" pin="C"/>
@@ -17559,51 +18254,51 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="N$17" class="0">
 <segment>
-<pinref part="R19" gate="G$1" pin="1"/>
+<pinref part="R22" gate="G$1" pin="1"/>
 <pinref part="Q6" gate="G$1" pin="B"/>
 <wire x1="116.84" y1="35.56" x2="119.38" y2="35.56" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$18" class="0">
 <segment>
-<pinref part="R18" gate="G$1" pin="1"/>
+<pinref part="R21" gate="G$1" pin="1"/>
 <pinref part="Q5" gate="G$1" pin="B"/>
 <wire x1="116.84" y1="27.94" x2="144.78" y2="27.94" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="TRIG3" class="0">
 <segment>
-<pinref part="L3" gate="G$1" pin="A"/>
+<pinref part="C" gate="G$1" pin="A"/>
 <wire x1="276.86" y1="-17.78" x2="276.86" y2="-10.16" width="0.1524" layer="91"/>
 <label x="276.86" y="-15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<pinref part="R19" gate="G$1" pin="2"/>
+<pinref part="R22" gate="G$1" pin="2"/>
 <wire x1="106.68" y1="35.56" x2="91.44" y2="35.56" width="0.1524" layer="91"/>
 <label x="91.44" y="35.56" size="1.778" layer="95"/>
 </segment>
 <segment>
 <label x="254" y="-96.52" size="1.778" layer="95" rot="R90"/>
 <wire x1="254" y1="-83.82" x2="254" y2="-96.52" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="G$1" pin="RC2"/>
+<pinref part="IC2" gate="G$1" pin="RC2"/>
 <wire x1="251.46" y1="-83.82" x2="254" y2="-83.82" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="TRIG4" class="0">
 <segment>
-<pinref part="L4" gate="G$1" pin="A"/>
+<pinref part="D" gate="G$1" pin="A"/>
 <wire x1="281.94" y1="-17.78" x2="281.94" y2="-10.16" width="0.1524" layer="91"/>
 <label x="281.94" y="-15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<pinref part="R18" gate="G$1" pin="2"/>
+<pinref part="R21" gate="G$1" pin="2"/>
 <wire x1="106.68" y1="27.94" x2="91.44" y2="27.94" width="0.1524" layer="91"/>
 <label x="91.44" y="27.94" size="1.778" layer="95"/>
 </segment>
 <segment>
 <label x="256.54" y="-96.52" size="1.778" layer="95" rot="R90"/>
 <wire x1="256.54" y1="-81.28" x2="256.54" y2="-96.52" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="G$1" pin="RC1/SDA/SDI"/>
+<pinref part="IC2" gate="G$1" pin="RC1/SDA/SDI"/>
 <wire x1="251.46" y1="-81.28" x2="256.54" y2="-81.28" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -17671,7 +18366,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <segment>
 <pinref part="RLY5" gate="G$1" pin="P$3"/>
 <wire x1="210.82" y1="86.36" x2="210.82" y2="83.82" width="0.1524" layer="91"/>
-<pinref part="D6" gate="G$1" pin="P$1"/>
+<pinref part="D8" gate="G$1" pin="P$1"/>
 <junction x="210.82" y="86.36"/>
 <wire x1="210.82" y1="83.82" x2="210.82" y2="40.64" width="0.1524" layer="91"/>
 <junction x="210.82" y="83.82"/>
@@ -17681,7 +18376,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <net name="N$25" class="0">
 <segment>
 <pinref part="RLY6" gate="G$1" pin="P$3"/>
-<pinref part="D5" gate="G$1" pin="P$1"/>
+<pinref part="D7" gate="G$1" pin="P$1"/>
 <wire x1="236.22" y1="86.36" x2="236.22" y2="83.82" width="0.1524" layer="91"/>
 <junction x="236.22" y="86.36"/>
 <pinref part="Q3" gate="G$1" pin="C"/>
@@ -17691,14 +18386,14 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="N$26" class="0">
 <segment>
-<pinref part="R17" gate="G$1" pin="1"/>
+<pinref part="R20" gate="G$1" pin="1"/>
 <pinref part="Q4" gate="G$1" pin="B"/>
 <wire x1="203.2" y1="35.56" x2="205.74" y2="35.56" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$27" class="0">
 <segment>
-<pinref part="R16" gate="G$1" pin="1"/>
+<pinref part="R19" gate="G$1" pin="1"/>
 <pinref part="Q3" gate="G$1" pin="B"/>
 <wire x1="203.2" y1="27.94" x2="231.14" y2="27.94" width="0.1524" layer="91"/>
 </segment>
@@ -17752,7 +18447,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <segment>
 <pinref part="RLY7" gate="G$1" pin="P$3"/>
 <wire x1="294.64" y1="86.36" x2="294.64" y2="83.82" width="0.1524" layer="91"/>
-<pinref part="D4" gate="G$1" pin="P$1"/>
+<pinref part="D6" gate="G$1" pin="P$1"/>
 <junction x="294.64" y="86.36"/>
 <wire x1="294.64" y1="83.82" x2="294.64" y2="40.64" width="0.1524" layer="91"/>
 <junction x="294.64" y="83.82"/>
@@ -17762,7 +18457,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <net name="N$34" class="0">
 <segment>
 <pinref part="RLY8" gate="G$1" pin="P$3"/>
-<pinref part="D3" gate="G$1" pin="P$1"/>
+<pinref part="D5" gate="G$1" pin="P$1"/>
 <wire x1="320.04" y1="86.36" x2="320.04" y2="83.82" width="0.1524" layer="91"/>
 <junction x="320.04" y="86.36"/>
 <pinref part="Q1" gate="G$1" pin="C"/>
@@ -17772,31 +18467,31 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="N$35" class="0">
 <segment>
-<pinref part="R15" gate="G$1" pin="1"/>
+<pinref part="R18" gate="G$1" pin="1"/>
 <pinref part="Q2" gate="G$1" pin="B"/>
 <wire x1="287.02" y1="35.56" x2="289.56" y2="35.56" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$36" class="0">
 <segment>
-<pinref part="R14" gate="G$1" pin="1"/>
+<pinref part="R17" gate="G$1" pin="1"/>
 <pinref part="Q1" gate="G$1" pin="B"/>
 <wire x1="287.02" y1="27.94" x2="314.96" y2="27.94" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="TRIG7" class="0">
 <segment>
-<pinref part="R15" gate="G$1" pin="2"/>
+<pinref part="R18" gate="G$1" pin="2"/>
 <wire x1="276.86" y1="35.56" x2="261.62" y2="35.56" width="0.1524" layer="91"/>
 <label x="261.62" y="35.56" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="L7" gate="G$1" pin="A"/>
+<pinref part="G" gate="G$1" pin="A"/>
 <wire x1="297.18" y1="-17.78" x2="297.18" y2="-10.16" width="0.1524" layer="91"/>
 <label x="297.18" y="-15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="RC3/SS#"/>
+<pinref part="IC2" gate="G$1" pin="RC3/SS#"/>
 <wire x1="208.28" y1="-83.82" x2="205.74" y2="-83.82" width="0.1524" layer="91"/>
 <wire x1="205.74" y1="-83.82" x2="205.74" y2="-96.52" width="0.1524" layer="91"/>
 <label x="205.74" y="-96.52" size="1.778" layer="95" rot="R90"/>
@@ -17804,17 +18499,17 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="TRIG8" class="0">
 <segment>
-<pinref part="R14" gate="G$1" pin="2"/>
+<pinref part="R17" gate="G$1" pin="2"/>
 <wire x1="276.86" y1="27.94" x2="261.62" y2="27.94" width="0.1524" layer="91"/>
 <label x="261.62" y="30.48" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="L8" gate="G$1" pin="A"/>
+<pinref part="H" gate="G$1" pin="A"/>
 <wire x1="302.26" y1="-17.78" x2="302.26" y2="-10.16" width="0.1524" layer="91"/>
 <label x="302.26" y="-15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="RC4/TX"/>
+<pinref part="IC2" gate="G$1" pin="RC4/TX"/>
 <wire x1="208.28" y1="-81.28" x2="203.2" y2="-81.28" width="0.1524" layer="91"/>
 <wire x1="203.2" y1="-81.28" x2="203.2" y2="-96.52" width="0.1524" layer="91"/>
 <label x="203.2" y="-96.52" size="1.778" layer="95" rot="R90"/>
@@ -17822,7 +18517,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="N$37" class="0">
 <segment>
-<pinref part="D2" gate="G$1" pin="P$1"/>
+<pinref part="D4" gate="G$1" pin="P$1"/>
 <wire x1="-7.62" y1="-58.42" x2="-10.16" y2="-58.42" width="0.1524" layer="91"/>
 <wire x1="-10.16" y1="-58.42" x2="-25.4" y2="-58.42" width="0.1524" layer="91"/>
 <wire x1="-25.4" y1="-58.42" x2="-25.4" y2="-43.18" width="0.1524" layer="91"/>
@@ -17844,35 +18539,35 @@ Source: Comchip CGRM4001-G.pdf</description>
 <pinref part="X6" gate="G$1" pin="4"/>
 <wire x1="-25.4" y1="-25.4" x2="10.16" y2="-25.4" width="0.1524" layer="91"/>
 <wire x1="10.16" y1="-43.18" x2="10.16" y2="-25.4" width="0.1524" layer="91"/>
-<pinref part="R13" gate="G$1" pin="1"/>
+<pinref part="R15" gate="G$1" pin="1"/>
 <wire x1="10.16" y1="-45.72" x2="10.16" y2="-43.18" width="0.1524" layer="91"/>
 <junction x="10.16" y="-43.18"/>
 </segment>
 </net>
 <net name="N$39" class="0">
 <segment>
-<pinref part="D2" gate="G$1" pin="P$2"/>
+<pinref part="D4" gate="G$1" pin="P$2"/>
 <pinref part="IC3" gate="G$1" pin="A"/>
 <wire x1="10.16" y1="-58.42" x2="0" y2="-58.42" width="0.1524" layer="91"/>
 <wire x1="0" y1="-58.42" x2="-2.54" y2="-58.42" width="0.1524" layer="91"/>
 <wire x1="5.08" y1="-66.04" x2="0" y2="-66.04" width="0.1524" layer="91"/>
 <wire x1="0" y1="-66.04" x2="0" y2="-58.42" width="0.1524" layer="91"/>
 <junction x="0" y="-58.42"/>
-<pinref part="R13" gate="G$1" pin="2"/>
+<pinref part="R15" gate="G$1" pin="2"/>
 <wire x1="10.16" y1="-55.88" x2="10.16" y2="-58.42" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$40" class="0">
 <segment>
 <pinref part="IC3" gate="G$1" pin="VB"/>
-<pinref part="R11" gate="G$1" pin="2"/>
+<pinref part="R14" gate="G$1" pin="2"/>
 <wire x1="30.48" y1="-68.58" x2="35.56" y2="-68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="MIDI_IN" class="0">
 <segment>
 <pinref part="IC3" gate="G$1" pin="VO"/>
-<pinref part="R12" gate="G$1" pin="2"/>
+<pinref part="R16" gate="G$1" pin="2"/>
 <wire x1="30.48" y1="-71.12" x2="33.02" y2="-71.12" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="-71.12" x2="35.56" y2="-71.12" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="-71.12" x2="33.02" y2="-78.74" width="0.1524" layer="91"/>
@@ -17881,14 +18576,14 @@ Source: Comchip CGRM4001-G.pdf</description>
 <label x="53.34" y="-78.74" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="RC5/RX"/>
+<pinref part="IC2" gate="G$1" pin="RC5/RX"/>
 <wire x1="208.28" y1="-78.74" x2="187.96" y2="-78.74" width="0.1524" layer="91"/>
 <label x="187.96" y="-78.74" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="VPP" class="0">
 <segment>
-<pinref part="IC1" gate="G$1" pin="RA3/MCLR#/VPP"/>
+<pinref part="IC2" gate="G$1" pin="RA3/MCLR#/VPP"/>
 <wire x1="208.28" y1="-76.2" x2="203.2" y2="-76.2" width="0.1524" layer="91"/>
 <wire x1="203.2" y1="-76.2" x2="203.2" y2="-60.96" width="0.1524" layer="91"/>
 <wire x1="203.2" y1="-60.96" x2="251.46" y2="-60.96" width="0.1524" layer="91"/>
@@ -17901,7 +18596,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <segment>
 <label x="187.96" y="-73.66" size="1.778" layer="95"/>
 <wire x1="208.28" y1="-73.66" x2="187.96" y2="-73.66" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="G$1" pin="RA4/SDO"/>
+<pinref part="IC2" gate="G$1" pin="RA4/SDO"/>
 </segment>
 <segment>
 <label x="147.32" y="-60.96" size="1.778" layer="95" rot="R90"/>
@@ -17913,7 +18608,7 @@ Source: Comchip CGRM4001-G.pdf</description>
 <segment>
 <label x="187.96" y="-71.12" size="1.778" layer="95"/>
 <wire x1="208.28" y1="-71.12" x2="187.96" y2="-71.12" width="0.1524" layer="91"/>
-<pinref part="IC1" gate="G$1" pin="RA5"/>
+<pinref part="IC2" gate="G$1" pin="RA5"/>
 </segment>
 <segment>
 <pinref part="S1" gate="1" pin="S"/>
@@ -17928,18 +18623,18 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="TRIG1" class="0">
 <segment>
-<pinref part="L1" gate="G$1" pin="A"/>
+<pinref part="A" gate="G$1" pin="A"/>
 <wire x1="266.7" y1="-17.78" x2="266.7" y2="-10.16" width="0.1524" layer="91"/>
 <label x="266.7" y="-15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<pinref part="R21" gate="G$1" pin="2"/>
+<pinref part="R24" gate="G$1" pin="2"/>
 <wire x1="22.86" y1="35.56" x2="7.62" y2="35.56" width="0.1524" layer="91"/>
 <label x="7.62" y="35.56" size="1.778" layer="95"/>
 <junction x="22.86" y="35.56"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="RA0/ICSPDAT"/>
+<pinref part="IC2" gate="G$1" pin="RA0/ICSPDAT"/>
 <pinref part="ICSP" gate="G$1" pin="ICSP_DAT/PGD"/>
 <wire x1="251.46" y1="-71.12" x2="266.7" y2="-71.12" width="0.1524" layer="91"/>
 <wire x1="266.7" y1="-71.12" x2="284.48" y2="-71.12" width="0.1524" layer="91"/>
@@ -17950,18 +18645,18 @@ Source: Comchip CGRM4001-G.pdf</description>
 </net>
 <net name="TRIG2" class="0">
 <segment>
-<pinref part="L2" gate="G$1" pin="A"/>
+<pinref part="B" gate="G$1" pin="A"/>
 <wire x1="271.78" y1="-17.78" x2="271.78" y2="-10.16" width="0.1524" layer="91"/>
 <label x="271.78" y="-15.24" size="1.778" layer="95" rot="R90"/>
 </segment>
 <segment>
-<pinref part="R20" gate="G$1" pin="2"/>
+<pinref part="R23" gate="G$1" pin="2"/>
 <wire x1="22.86" y1="27.94" x2="7.62" y2="27.94" width="0.1524" layer="91"/>
 <label x="7.62" y="27.94" size="1.778" layer="95"/>
 <junction x="22.86" y="27.94"/>
 </segment>
 <segment>
-<pinref part="IC1" gate="G$1" pin="RA1/ICPCLK"/>
+<pinref part="IC2" gate="G$1" pin="RA1/ICPCLK"/>
 <pinref part="ICSP" gate="G$1" pin="ICSP_CLK/PGC"/>
 <wire x1="251.46" y1="-73.66" x2="264.16" y2="-73.66" width="0.1524" layer="91"/>
 <wire x1="264.16" y1="-73.66" x2="284.48" y2="-73.66" width="0.1524" layer="91"/>
@@ -17970,50 +18665,16 @@ Source: Comchip CGRM4001-G.pdf</description>
 <label x="264.16" y="-96.52" size="1.778" layer="95" rot="R90"/>
 </segment>
 </net>
-<net name="N$43" class="0">
-<segment>
-<pinref part="IC4" gate="G$1" pin="+"/>
-<wire x1="127" y1="-12.7" x2="127" y2="-7.62" width="0.1524" layer="91"/>
-<pinref part="IC2" gate="G$1" pin="VIN"/>
-<wire x1="127" y1="-7.62" x2="142.24" y2="-7.62" width="0.1524" layer="91"/>
-<pinref part="C2" gate="G$1" pin="1"/>
-<wire x1="142.24" y1="-7.62" x2="147.32" y2="-7.62" width="0.1524" layer="91"/>
-<wire x1="147.32" y1="-7.62" x2="149.86" y2="-7.62" width="0.1524" layer="91"/>
-<wire x1="147.32" y1="-12.7" x2="147.32" y2="-7.62" width="0.1524" layer="91"/>
-<junction x="147.32" y="-7.62"/>
-<pinref part="C4" gate="G$1" pin="+"/>
-<wire x1="142.24" y1="-12.7" x2="142.24" y2="-7.62" width="0.1524" layer="91"/>
-<junction x="142.24" y="-7.62"/>
-</segment>
-</net>
-<net name="N$46" class="0">
-<segment>
-<pinref part="U$9" gate="G$1" pin="BARREL"/>
-<pinref part="IC4" gate="G$1" pin="AC1"/>
-<wire x1="109.22" y1="-17.78" x2="121.92" y2="-17.78" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="N$47" class="0">
-<segment>
-<pinref part="U$9" gate="G$1" pin="PIN"/>
-<wire x1="109.22" y1="-12.7" x2="114.3" y2="-12.7" width="0.1524" layer="91"/>
-<wire x1="114.3" y1="-12.7" x2="114.3" y2="-10.16" width="0.1524" layer="91"/>
-<wire x1="114.3" y1="-10.16" x2="134.62" y2="-10.16" width="0.1524" layer="91"/>
-<wire x1="134.62" y1="-10.16" x2="134.62" y2="-17.78" width="0.1524" layer="91"/>
-<pinref part="IC4" gate="G$1" pin="AC2"/>
-<wire x1="134.62" y1="-17.78" x2="132.08" y2="-17.78" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="N$41" class="0">
 <segment>
-<pinref part="R3" gate="G$1" pin="1"/>
+<pinref part="R1" gate="G$1" pin="1"/>
 <pinref part="PWR" gate="G$1" pin="C"/>
 <wire x1="139.7" y1="-76.2" x2="139.7" y2="-71.12" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$48" class="0">
 <segment>
-<pinref part="R4" gate="G$1" pin="1"/>
+<pinref part="R2" gate="G$1" pin="1"/>
 <pinref part="ACT" gate="G$1" pin="C"/>
 <wire x1="147.32" y1="-76.2" x2="147.32" y2="-71.12" width="0.1524" layer="91"/>
 </segment>
@@ -18021,56 +18682,56 @@ Source: Comchip CGRM4001-G.pdf</description>
 <net name="N$49" class="0">
 <segment>
 <pinref part="R10" gate="G$1" pin="1"/>
-<pinref part="L1" gate="G$1" pin="C"/>
+<pinref part="A" gate="G$1" pin="C"/>
 <wire x1="266.7" y1="-27.94" x2="266.7" y2="-25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$50" class="0">
 <segment>
 <pinref part="R9" gate="G$1" pin="1"/>
-<pinref part="L2" gate="G$1" pin="C"/>
+<pinref part="B" gate="G$1" pin="C"/>
 <wire x1="271.78" y1="-27.94" x2="271.78" y2="-25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$51" class="0">
 <segment>
-<pinref part="RR8" gate="G$1" pin="1"/>
-<pinref part="L3" gate="G$1" pin="C"/>
+<pinref part="R8" gate="G$1" pin="1"/>
+<pinref part="C" gate="G$1" pin="C"/>
 <wire x1="276.86" y1="-27.94" x2="276.86" y2="-25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$52" class="0">
 <segment>
-<pinref part="RR7" gate="G$1" pin="1"/>
-<pinref part="L4" gate="G$1" pin="C"/>
+<pinref part="R7" gate="G$1" pin="1"/>
+<pinref part="D" gate="G$1" pin="C"/>
 <wire x1="281.94" y1="-27.94" x2="281.94" y2="-25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$53" class="0">
 <segment>
 <pinref part="R6" gate="G$1" pin="1"/>
-<pinref part="L5" gate="G$1" pin="C"/>
+<pinref part="E" gate="G$1" pin="C"/>
 <wire x1="287.02" y1="-27.94" x2="287.02" y2="-25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$54" class="0">
 <segment>
 <pinref part="R5" gate="G$1" pin="1"/>
-<pinref part="L6" gate="G$1" pin="C"/>
+<pinref part="F" gate="G$1" pin="C"/>
 <wire x1="292.1" y1="-27.94" x2="292.1" y2="-25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$55" class="0">
 <segment>
-<pinref part="R2" gate="G$1" pin="1"/>
-<pinref part="L7" gate="G$1" pin="C"/>
+<pinref part="R4" gate="G$1" pin="1"/>
+<pinref part="G" gate="G$1" pin="C"/>
 <wire x1="297.18" y1="-27.94" x2="297.18" y2="-25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$56" class="0">
 <segment>
-<pinref part="R1" gate="G$1" pin="1"/>
-<pinref part="L8" gate="G$1" pin="C"/>
+<pinref part="R3" gate="G$1" pin="1"/>
+<pinref part="H" gate="G$1" pin="C"/>
 <wire x1="302.26" y1="-27.94" x2="302.26" y2="-25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -18136,13 +18797,13 @@ Source: Comchip CGRM4001-G.pdf</description>
 <net name="SUPPLY" class="0">
 <segment>
 <pinref part="RLY7" gate="G$1" pin="P$2"/>
-<pinref part="D4" gate="G$1" pin="P$2"/>
+<pinref part="D6" gate="G$1" pin="P$2"/>
 <wire x1="289.56" y1="86.36" x2="289.56" y2="83.82" width="0.1524" layer="91"/>
 <junction x="289.56" y="86.36"/>
 <wire x1="289.56" y1="83.82" x2="289.56" y2="58.42" width="0.1524" layer="91"/>
 <junction x="289.56" y="83.82"/>
 <pinref part="RLY8" gate="G$1" pin="P$2"/>
-<pinref part="D3" gate="G$1" pin="P$2"/>
+<pinref part="D5" gate="G$1" pin="P$2"/>
 <wire x1="314.96" y1="86.36" x2="314.96" y2="83.82" width="0.1524" layer="91"/>
 <junction x="314.96" y="86.36"/>
 <wire x1="314.96" y1="83.82" x2="314.96" y2="58.42" width="0.1524" layer="91"/>
@@ -18150,13 +18811,13 @@ Source: Comchip CGRM4001-G.pdf</description>
 <wire x1="314.96" y1="58.42" x2="289.56" y2="58.42" width="0.1524" layer="91"/>
 <junction x="289.56" y="58.42"/>
 <pinref part="RLY5" gate="G$1" pin="P$2"/>
-<pinref part="D6" gate="G$1" pin="P$2"/>
+<pinref part="D8" gate="G$1" pin="P$2"/>
 <wire x1="205.74" y1="86.36" x2="205.74" y2="83.82" width="0.1524" layer="91"/>
 <junction x="205.74" y="86.36"/>
 <wire x1="205.74" y1="83.82" x2="205.74" y2="58.42" width="0.1524" layer="91"/>
 <junction x="205.74" y="83.82"/>
 <pinref part="RLY6" gate="G$1" pin="P$2"/>
-<pinref part="D5" gate="G$1" pin="P$2"/>
+<pinref part="D7" gate="G$1" pin="P$2"/>
 <wire x1="231.14" y1="86.36" x2="231.14" y2="83.82" width="0.1524" layer="91"/>
 <junction x="231.14" y="86.36"/>
 <wire x1="231.14" y1="83.82" x2="231.14" y2="58.42" width="0.1524" layer="91"/>
@@ -18166,13 +18827,13 @@ Source: Comchip CGRM4001-G.pdf</description>
 <wire x1="289.56" y1="58.42" x2="231.14" y2="58.42" width="0.1524" layer="91"/>
 <junction x="231.14" y="58.42"/>
 <pinref part="RLY3" gate="G$1" pin="P$2"/>
-<pinref part="D8" gate="G$1" pin="P$2"/>
+<pinref part="D10" gate="G$1" pin="P$2"/>
 <wire x1="119.38" y1="86.36" x2="119.38" y2="83.82" width="0.1524" layer="91"/>
 <junction x="119.38" y="86.36"/>
 <wire x1="119.38" y1="83.82" x2="119.38" y2="58.42" width="0.1524" layer="91"/>
 <junction x="119.38" y="83.82"/>
 <pinref part="RLY4" gate="G$1" pin="P$2"/>
-<pinref part="D7" gate="G$1" pin="P$2"/>
+<pinref part="D9" gate="G$1" pin="P$2"/>
 <wire x1="144.78" y1="86.36" x2="144.78" y2="83.82" width="0.1524" layer="91"/>
 <junction x="144.78" y="86.36"/>
 <wire x1="144.78" y1="83.82" x2="144.78" y2="58.42" width="0.1524" layer="91"/>
@@ -18182,13 +18843,13 @@ Source: Comchip CGRM4001-G.pdf</description>
 <wire x1="205.74" y1="58.42" x2="144.78" y2="58.42" width="0.1524" layer="91"/>
 <junction x="144.78" y="58.42"/>
 <pinref part="RLY1" gate="G$1" pin="P$2"/>
-<pinref part="D10" gate="G$1" pin="P$2"/>
+<pinref part="D12" gate="G$1" pin="P$2"/>
 <wire x1="35.56" y1="86.36" x2="35.56" y2="83.82" width="0.1524" layer="91"/>
 <junction x="35.56" y="86.36"/>
 <wire x1="35.56" y1="83.82" x2="35.56" y2="58.42" width="0.1524" layer="91"/>
 <junction x="35.56" y="83.82"/>
 <pinref part="RLY2" gate="G$1" pin="P$2"/>
-<pinref part="D9" gate="G$1" pin="P$2"/>
+<pinref part="D11" gate="G$1" pin="P$2"/>
 <wire x1="60.96" y1="86.36" x2="60.96" y2="83.82" width="0.1524" layer="91"/>
 <junction x="60.96" y="86.36"/>
 <wire x1="60.96" y1="83.82" x2="60.96" y2="58.42" width="0.1524" layer="91"/>
@@ -18201,84 +18862,178 @@ Source: Comchip CGRM4001-G.pdf</description>
 <junction x="60.96" y="58.42"/>
 </segment>
 <segment>
-<pinref part="IC2" gate="G$1" pin="VOUT"/>
-<wire x1="175.26" y1="-7.62" x2="177.8" y2="-7.62" width="0.1524" layer="91"/>
-<pinref part="C1" gate="G$1" pin="1"/>
-<wire x1="177.8" y1="-7.62" x2="182.88" y2="-7.62" width="0.1524" layer="91"/>
-<wire x1="182.88" y1="-7.62" x2="195.58" y2="-7.62" width="0.1524" layer="91"/>
-<wire x1="177.8" y1="-12.7" x2="177.8" y2="-7.62" width="0.1524" layer="91"/>
-<junction x="177.8" y="-7.62"/>
-<pinref part="C5" gate="G$1" pin="+"/>
-<wire x1="182.88" y1="-12.7" x2="182.88" y2="-7.62" width="0.1524" layer="91"/>
-<junction x="182.88" y="-7.62"/>
-<label x="190.5" y="-7.62" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="D1" gate="G$1" pin="A"/>
 <wire x1="198.12" y1="-53.34" x2="198.12" y2="-50.8" width="0.1524" layer="91"/>
 <label x="195.58" y="-50.8" size="1.778" layer="95"/>
+<pinref part="D3" gate="G$1" pin="A"/>
+</segment>
+<segment>
+<pinref part="P+6" gate="1" pin="+5V"/>
+<pinref part="L1" gate="G$1" pin="2"/>
+<wire x1="480.06" y1="-73.66" x2="485.14" y2="-73.66" width="0.1524" layer="91"/>
+<wire x1="485.14" y1="-73.66" x2="485.14" y2="-53.34" width="0.1524" layer="91"/>
+<pinref part="C3" gate="G$1" pin="+"/>
+<wire x1="485.14" y1="-78.74" x2="485.14" y2="-73.66" width="0.1524" layer="91"/>
+<junction x="485.14" y="-73.66"/>
+<label x="485.14" y="-48.26" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$42" class="0">
+<segment>
+<wire x1="345.44" y1="-71.12" x2="345.44" y2="-66.04" width="0.1524" layer="91"/>
+<pinref part="U$9" gate="G$1" pin="BARREL"/>
+<wire x1="340.36" y1="-71.12" x2="345.44" y2="-71.12" width="0.1524" layer="91"/>
+<pinref part="D1" gate="G$1" pin="A"/>
+<wire x1="350.52" y1="-66.04" x2="345.44" y2="-66.04" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="+9V" class="0">
+<segment>
+<pinref part="C5" gate="G$1" pin="+"/>
+<pinref part="R11" gate="G$1" pin="1"/>
+<wire x1="383.54" y1="-66.04" x2="383.54" y2="-78.74" width="0.1524" layer="91"/>
+<wire x1="388.62" y1="-63.5" x2="388.62" y2="-66.04" width="0.1524" layer="91"/>
+<wire x1="388.62" y1="-66.04" x2="393.7" y2="-66.04" width="0.1524" layer="91"/>
+<wire x1="393.7" y1="-66.04" x2="393.7" y2="-53.34" width="0.1524" layer="91"/>
+<pinref part="IC1" gate="G$1" pin="VCC"/>
+<wire x1="393.7" y1="-53.34" x2="398.78" y2="-53.34" width="0.1524" layer="91"/>
+<wire x1="388.62" y1="-66.04" x2="383.54" y2="-66.04" width="0.1524" layer="91"/>
+<junction x="388.62" y="-66.04"/>
+<junction x="383.54" y="-66.04"/>
+<wire x1="355.6" y1="-66.04" x2="383.54" y2="-66.04" width="0.1524" layer="91"/>
+<pinref part="D1" gate="G$1" pin="C"/>
+</segment>
+</net>
+<net name="N$44" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="SW_C"/>
+<wire x1="434.34" y1="-48.26" x2="436.88" y2="-48.26" width="0.1524" layer="91"/>
+<wire x1="436.88" y1="-48.26" x2="436.88" y2="-40.64" width="0.1524" layer="91"/>
+<wire x1="436.88" y1="-40.64" x2="388.62" y2="-40.64" width="0.1524" layer="91"/>
+<wire x1="388.62" y1="-40.64" x2="388.62" y2="-48.26" width="0.1524" layer="91"/>
+<pinref part="IC1" gate="G$1" pin="SENS"/>
+<wire x1="388.62" y1="-48.26" x2="388.62" y2="-50.8" width="0.1524" layer="91"/>
+<wire x1="388.62" y1="-50.8" x2="398.78" y2="-50.8" width="0.1524" layer="91"/>
+<pinref part="IC1" gate="G$1" pin="DR_C"/>
+<wire x1="398.78" y1="-48.26" x2="388.62" y2="-48.26" width="0.1524" layer="91"/>
+<junction x="388.62" y="-48.26"/>
+<pinref part="R11" gate="G$1" pin="2"/>
+<wire x1="388.62" y1="-53.34" x2="388.62" y2="-50.8" width="0.1524" layer="91"/>
+<junction x="388.62" y="-50.8"/>
+</segment>
+</net>
+<net name="N$45" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="TC"/>
+<pinref part="C1" gate="G$1" pin="1"/>
+<wire x1="434.34" y1="-53.34" x2="441.96" y2="-53.34" width="0.1524" layer="91"/>
+<wire x1="441.96" y1="-53.34" x2="441.96" y2="-55.88" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$46" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="SW_E"/>
+<pinref part="D2" gate="G$1" pin="C"/>
+<wire x1="434.34" y1="-50.8" x2="447.04" y2="-50.8" width="0.1524" layer="91"/>
+<wire x1="447.04" y1="-50.8" x2="447.04" y2="-58.42" width="0.1524" layer="91"/>
+<wire x1="447.04" y1="-50.8" x2="459.74" y2="-50.8" width="0.1524" layer="91"/>
+<junction x="447.04" y="-50.8"/>
+<pinref part="L2" gate="G$1" pin="2"/>
+<wire x1="459.74" y1="-55.88" x2="459.74" y2="-50.8" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$47" class="0">
+<segment>
+<pinref part="IC1" gate="G$1" pin="COMP"/>
+<pinref part="R13" gate="G$1" pin="2"/>
+<wire x1="398.78" y1="-55.88" x2="396.24" y2="-55.88" width="0.1524" layer="91"/>
+<wire x1="396.24" y1="-55.88" x2="396.24" y2="-73.66" width="0.1524" layer="91"/>
+<pinref part="R12" gate="G$1" pin="2"/>
+<wire x1="396.24" y1="-73.66" x2="396.24" y2="-76.2" width="0.1524" layer="91"/>
+<wire x1="414.02" y1="-73.66" x2="396.24" y2="-73.66" width="0.1524" layer="91"/>
+<junction x="396.24" y="-73.66"/>
+</segment>
+</net>
+<net name="N$57" class="0">
+<segment>
+<pinref part="L1" gate="G$1" pin="1"/>
+<pinref part="C4" gate="G$1" pin="+"/>
+<wire x1="459.74" y1="-73.66" x2="459.74" y2="-78.74" width="0.1524" layer="91"/>
+<junction x="459.74" y="-73.66"/>
+<wire x1="459.74" y1="-73.66" x2="464.82" y2="-73.66" width="0.1524" layer="91"/>
+<pinref part="R12" gate="G$1" pin="1"/>
+<wire x1="424.18" y1="-73.66" x2="459.74" y2="-73.66" width="0.1524" layer="91"/>
+<wire x1="459.74" y1="-66.04" x2="459.74" y2="-73.66" width="0.1524" layer="91"/>
+<pinref part="L2" gate="G$1" pin="1"/>
 </segment>
 </net>
 </nets>
 </sheet>
 </sheets>
 <errors>
-<approved hash="104,1,251.46,-68.58,IC1,VSS,GND,,,"/>
+<approved hash="102,1,485.14,-53.34,+5V,SUPPLY,,,,"/>
+<approved hash="104,1,251.46,-68.58,IC2,VSS,GND,,,"/>
 <approved hash="104,1,284.48,-68.58,ICSP,VSS(GND),GND,,,"/>
 <approved hash="113,1,45.5888,69.8077,JP1,,,,,"/>
 <approved hash="113,1,34.9335,35.8563,Q8,,,,,"/>
 <approved hash="113,1,60.3335,28.2363,Q7,,,,,"/>
-<approved hash="113,1,27.94,26.9452,R20,,,,,"/>
-<approved hash="113,1,27.94,34.5652,R21,,,,,"/>
+<approved hash="113,1,27.94,26.9452,R23,,,,,"/>
+<approved hash="113,1,27.94,34.5652,R24,,,,,"/>
 <approved hash="113,1,129.409,69.8077,JP3,,,,,"/>
 <approved hash="113,1,118.753,35.8563,Q6,,,,,"/>
 <approved hash="113,1,144.153,28.2363,Q5,,,,,"/>
-<approved hash="113,1,111.76,26.9452,R18,,,,,"/>
-<approved hash="113,1,111.76,34.5652,R19,,,,,"/>
+<approved hash="113,1,111.76,26.9452,R21,,,,,"/>
+<approved hash="113,1,111.76,34.5652,R22,,,,,"/>
 <approved hash="113,1,215.769,69.8077,JP5,,,,,"/>
 <approved hash="113,1,205.113,35.8563,Q4,,,,,"/>
 <approved hash="113,1,230.513,28.2363,Q3,,,,,"/>
-<approved hash="113,1,198.12,26.9452,R16,,,,,"/>
-<approved hash="113,1,198.12,34.5652,R17,,,,,"/>
+<approved hash="113,1,198.12,26.9452,R19,,,,,"/>
+<approved hash="113,1,198.12,34.5652,R20,,,,,"/>
 <approved hash="113,1,299.589,69.8077,JP7,,,,,"/>
 <approved hash="113,1,288.933,35.8563,Q2,,,,,"/>
 <approved hash="113,1,314.333,28.2363,Q1,,,,,"/>
-<approved hash="113,1,281.94,26.9452,R14,,,,,"/>
-<approved hash="113,1,281.94,34.5652,R15,,,,,"/>
+<approved hash="113,1,281.94,26.9452,R17,,,,,"/>
+<approved hash="113,1,281.94,34.5652,R18,,,,,"/>
 <approved hash="113,1,140.022,-67.31,PWR,,,,,"/>
 <approved hash="113,1,147.642,-67.31,ACT,,,,,"/>
 <approved hash="113,1,106.68,-63.8895,S1,,,,,"/>
-<approved hash="113,1,11.1548,-50.8,R13,,,,,"/>
-<approved hash="113,1,40.64,-72.1148,R12,,,,,"/>
-<approved hash="113,1,40.64,-69.5748,R11,,,,,"/>
+<approved hash="113,1,11.1548,-50.8,R15,,,,,"/>
+<approved hash="113,1,40.64,-72.1148,R16,,,,,"/>
+<approved hash="113,1,40.64,-69.5748,R14,,,,,"/>
 <approved hash="113,1,293.18,-69.85,ICSP,,,,,"/>
-<approved hash="113,1,197.062,-95.25,C3,,,,,"/>
-<approved hash="113,1,143.598,-16.51,C4,,,,,"/>
-<approved hash="113,1,184.238,-16.51,C5,,,,,"/>
-<approved hash="113,1,148.991,-16.51,C2,,,,,"/>
-<approved hash="113,1,179.471,-16.51,C1,,,,,"/>
-<approved hash="113,1,140.695,-81.28,R3,,,,,"/>
-<approved hash="113,1,148.315,-81.28,R4,,,,,"/>
-<approved hash="113,1,267.022,-21.59,L1,,,,,"/>
-<approved hash="113,1,272.102,-21.59,L2,,,,,"/>
-<approved hash="113,1,277.182,-21.59,L3,,,,,"/>
-<approved hash="113,1,282.262,-21.59,L4,,,,,"/>
-<approved hash="113,1,287.342,-21.59,L5,,,,,"/>
-<approved hash="113,1,292.422,-21.59,L6,,,,,"/>
-<approved hash="113,1,297.502,-21.59,L7,,,,,"/>
-<approved hash="113,1,302.582,-21.59,L8,,,,,"/>
+<approved hash="113,1,197.062,-95.25,C2,,,,,"/>
+<approved hash="113,1,140.695,-81.28,R1,,,,,"/>
+<approved hash="113,1,148.315,-81.28,R2,,,,,"/>
+<approved hash="113,1,267.022,-21.59,A,,,,,"/>
+<approved hash="113,1,272.102,-21.59,B,,,,,"/>
+<approved hash="113,1,277.182,-21.59,C,,,,,"/>
+<approved hash="113,1,282.262,-21.59,D,,,,,"/>
+<approved hash="113,1,287.342,-21.59,E,,,,,"/>
+<approved hash="113,1,292.422,-21.59,F,,,,,"/>
+<approved hash="113,1,297.502,-21.59,G,,,,,"/>
+<approved hash="113,1,302.582,-21.59,H,,,,,"/>
 <approved hash="113,1,267.695,-33.02,R10,,,,,"/>
 <approved hash="113,1,272.775,-33.02,R9,,,,,"/>
-<approved hash="113,1,277.855,-33.02,RR8,,,,,"/>
-<approved hash="113,1,282.935,-33.02,RR7,,,,,"/>
+<approved hash="113,1,277.855,-33.02,R8,,,,,"/>
+<approved hash="113,1,282.935,-33.02,R7,,,,,"/>
 <approved hash="113,1,288.015,-33.02,R6,,,,,"/>
 <approved hash="113,1,293.095,-33.02,R5,,,,,"/>
-<approved hash="113,1,298.175,-33.02,R2,,,,,"/>
-<approved hash="113,1,303.255,-33.02,R1,,,,,"/>
+<approved hash="113,1,298.175,-33.02,R4,,,,,"/>
+<approved hash="113,1,303.255,-33.02,R3,,,,,"/>
 <approved hash="113,1,72.2588,69.8077,JP13,,,,,"/>
 <approved hash="113,1,156.079,69.8077,JP14,,,,,"/>
 <approved hash="113,1,242.439,69.8077,JP15,,,,,"/>
 <approved hash="113,1,326.259,69.8077,JP16,,,,,"/>
+<approved hash="113,1,353.06,-64.8631,D1,,,,,"/>
+<approved hash="113,1,199.297,-55.88,D3,,,,,"/>
+<approved hash="113,1,387.625,-58.42,R11,,,,,"/>
+<approved hash="113,1,384.898,-82.55,C5,,,,,"/>
+<approved hash="113,1,395.245,-81.28,R13,,,,,"/>
+<approved hash="113,1,419.1,-74.6548,R12,,,,,"/>
+<approved hash="113,1,443.631,-59.69,C1,,,,,"/>
+<approved hash="113,1,461.098,-82.55,C4,,,,,"/>
+<approved hash="113,1,472.44,-71.6143,L1,,,,,"/>
+<approved hash="113,1,486.498,-82.55,C3,,,,,"/>
+<approved hash="113,1,458.809,-60.96,L2,,,,,"/>
 </errors>
 </schematic>
 </drawing>
