@@ -28,9 +28,10 @@
 // 1.0 	21Dec2013	Initial version
 // 1.1 	15Dec2014	Add support for relay board
 // 1.2 	21Mar2015	First release of relay board
+// 1.3 	02Oct2018	Support MIDI MIDI switcher board
 //
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 2
+#define VERSION_MINOR 3
 //
 ////////////////////////////////////////////////////////////
 
@@ -38,11 +39,10 @@
 #include <memory.h>
 #include <eeprom.h>
 
-// for Transistor board comment this line out 
-//#define RELAY_SWITCHER 1
+// Only one line to be uncommented 
+//#define RELAY_SWITCHER 1		
 //#define TRS_SWITCHER 1
 #define SMT_SWITCHER 1
-
 
 
 // CONFIG OPTIONS 
@@ -89,14 +89,15 @@ P6		RC3 - RC2		P2
 SMT Switcher Board
 		
 		VDD - VSS
-P0		RA5	- RA0/PGD	
+P8		RA5	- RA0/PGD	
 LED		RA4 - RA1/PGC	RX
-SW		VPP - RA2		P4
-P2		RC5 - RC0		P8
-P5		RC4 - RC1		P3
-P6		RC3 - RC2		P7
+SW		VPP - RA2		P5
+P7		RC5 - RC0		P1
+P4		RC4 - RC1		P6
+P3		RC3 - RC2		P2
 		
 */
+
 #ifdef RELAY_SWITCHER
 	#define P_OUT0		latc.3 
 	#define P_OUT1		latc.4 
@@ -160,23 +161,23 @@ P6		RC3 - RC2		P7
 
 #elif SMT_SWITCHER
 
-	#define P_OUT0		lata.5
-	#define P_OUT1		latc.5
-	#define P_OUT2		latc.1
-	#define P_OUT3		lata.2
-	#define P_OUT4		latc.4
-	#define P_OUT5		latc.3
-	#define P_OUT6		latc.2
-	#define P_OUT7		latc.0
+	#define P_OUT0		latc.0
+	#define P_OUT1		latc.2
+	#define P_OUT2		latc.3
+	#define P_OUT3		latc.4
+	#define P_OUT4		lata.2
+	#define P_OUT5		latc.1
+	#define P_OUT6		latc.5
+	#define P_OUT7		lata.5
 	
-	#define T_OUT0		trisa.5
-	#define T_OUT1		trisc.5 
-	#define T_OUT2		trisc.1
-	#define T_OUT3		trisa.2 
-	#define T_OUT4		trisc.4
-	#define T_OUT5		trisc.3 
-	#define T_OUT6		trisc.2
-	#define T_OUT7		trisc.0	
+	#define T_OUT0		trisc.0
+	#define T_OUT1		trisc.2 
+	#define T_OUT2		trisc.3
+	#define T_OUT3		trisc.4 
+	#define T_OUT4		trisa.2
+	#define T_OUT5		trisc.1 
+	#define T_OUT6		trisc.5
+	#define T_OUT7		trisa.5	
 	
 	#define P_LED		porta.4
 	#define P_MODE		porta.3
@@ -187,7 +188,7 @@ P6		RC3 - RC2		P7
 
 	#define P_WPU		wpua.3
 
-	#define APFCON0_MASK	0x80
+	#define APFCON0_MASK	0x84
 
 #else
 	#define P_OUT0		portc.4 
@@ -961,7 +962,8 @@ void main()
 #ifdef RELAY_SWITCHER
 
 		// Manage outputs for relay switcher. PWM is ignored and switching
-		// is done on the TRIS bit
+		// is done on the TRIS bit. The outputs are active low for ON and 
+		// floating for OFF
 		#define OUT_STATE(P) !(P.status.count)
 		#define OUT_STATEN(P) !!(P.status.count)
 		T_OUT0 = port0.cfg.invert? OUT_STATEN(port0) : OUT_STATE(port0);
@@ -980,7 +982,11 @@ void main()
 		P_OUT5 = 0;		
 		P_OUT6 = 0;		
 		P_OUT7 = 0;		
-#elif (TRS_SWITCHER || SMT_SWITCHER)
+		
+#elif TRS_SWITCHER
+
+		// Manage outputs for TRS relay switcher. PWM is ignored and switching
+		// is active high
 		#define OUT_STATE(P) !!(P.status.count)
 		#define OUT_STATEN(P) !(P.status.count)
 		P_OUT0 = port0.cfg.invert? OUT_STATEN(port0) : OUT_STATE(port0);
@@ -992,8 +998,9 @@ void main()
 		P_OUT6 = port6.cfg.invert? OUT_STATEN(port6) : OUT_STATE(port6);
 		P_OUT7 = port7.cfg.invert? OUT_STATEN(port7) : OUT_STATE(port7);		
 #else		
-		// Manage outputs for transistor switcher. PWM is used and switching
-		// is done on the digital output bit
+
+		// Manage outputs for transistor switchers. PWM is used and switching
+		// is active high
 		#define OUT_STATE(P) (P.status.count && (pwm < P.status.duty))
 		#define OUT_STATEN(P) (!P.status.count && (pwm < P.status.duty))
 		P_OUT0 = port0.cfg.invert? OUT_STATEN(port0) : OUT_STATE(port0);
