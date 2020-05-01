@@ -1,3 +1,1 @@
-# MIDI-Switcher
-
-Check out the MIDI Switcher site at [http://six4pix.com/switcher](http://six4pix.com/switcher)
+The old project. Check MIDI-Switcher-2 for new one
